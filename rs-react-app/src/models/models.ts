@@ -12,6 +12,7 @@ export interface State {
 export interface ButtonProps {
   text: string;
   onAction: () => void;
+  class: string;
 };
 
 export interface ItemModel {
@@ -32,3 +33,11 @@ export interface PersonShort {
   name: string;
   url: string;
 };
+
+export interface PersonFind {
+  properties: Record<string, string>;
+  __id: number;
+  description: string;
+  uid: string;
+  _v: number;
+}

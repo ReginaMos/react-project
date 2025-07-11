@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../elements/ButtonElement';
+import '../styles/Header.css'
 
 type Props = {
   onSearch: (value: string) => void;
@@ -29,14 +30,14 @@ export default class Search extends React.Component<Props, State> {
 
   render() {
     return (
-      <div>
+      <div className="search">
         <input
           type="text"
           value={this.state.inputText}
           onChange={this.handleInput}
           placeholder="Search"
         />
-        <Button onAction={this.handleClick} text='Find'/>
+        <Button onAction={this.handleClick} text='Find' class='find-btn'/>
       </div>
     );
   }

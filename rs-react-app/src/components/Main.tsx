@@ -21,7 +21,7 @@ export default class Main extends React.Component<ItemState> {
         return (
             <main>
                 <Content items={this.props.items}/>
-                <Button onAction={this.handleCrash} text="Crash App" />
+                <Button onAction={this.handleCrash} text="Crash App" class='error-btn'/>
             </main>
         );
     }

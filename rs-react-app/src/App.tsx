@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Main from './components/Main';
 import Header from './components/Header';
-import type { ItemModel, ItemState, PersonShort } from './models/models'
+import type { ItemModel, ItemState, PersonShort, PersonFind } from './models/models'
 
 export default class App extends React.Component<{}, ItemState> {
   constructor(props: {}) {
@@ -46,7 +46,7 @@ export default class App extends React.Component<{}, ItemState> {
       const data = await response.json();
       if (searchTerm) {
         const results = data.result || [];
-        detailedItems = results.map((item: any) => ({
+        detailedItems = results.map((item: PersonFind) => ({
           name: item.properties.name,
           description: item.description,
         }));
