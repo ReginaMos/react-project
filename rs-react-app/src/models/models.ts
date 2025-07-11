@@ -8,3 +8,8 @@ export interface State {
   hasError: boolean;
   error: Error | null;
 };
+
+export interface ButtonProps {
+  text: string;
+  onAction: () => void;
+};
