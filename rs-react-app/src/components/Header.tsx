@@ -1,10 +1,13 @@
+import React from 'react';
 import Search from '../elements/SearchElement';
 
-export default function Header() {
-    return (
-        <header>
-            Header
-            <Search/>
-        </header>
-    )
+export default class Header extends React.Component {
+    render() {
+        return (
+            <header>
+                Header
+                <Search/>
+            </header>
+        )
+    }
 }

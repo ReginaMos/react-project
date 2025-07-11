@@ -1,7 +1,11 @@
-export default function Content() {
-    return (
-        <>
-            Content Component
-        </>
-    )
+import React from 'react';
+
+export default class Header extends React.Component {
+    render() {
+        return (
+            <>
+                Content Component
+            </>
+        )
+    }
 }

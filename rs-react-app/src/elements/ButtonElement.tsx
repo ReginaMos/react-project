@@ -1,10 +1,13 @@
 import type { ButtonProps } from "../models/models"
+import React from 'react';
 
-export default function Button(props: ButtonProps) {
-
-    return (
-        <button onClick={props.onAction}>
-            {props.text}
-        </button>
-    )
+export default class Button extends React.Component<ButtonProps> {
+    render() {
+        return (
+            <button onClick={this.props.onAction}>
+                {this.props.text}
+            </button>
+        )
+    }
+    
 }

@@ -13,3 +13,18 @@ export interface ButtonProps {
   text: string;
   onAction: () => void;
 };
+
+export interface ItemModel {
+  name: string;
+  description: string;
+}
+
+export interface ItemState {
+  items: ItemModel[];
+}
+
+export interface PersonShort {
+  uid: string;
+  name: string;
+  url: string;
+};
