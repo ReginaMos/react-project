@@ -1,0 +1,15 @@
+.item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.item-name, .item-description {
+    text-align: left;
+}
+
+button {
+    display: flex;
+    margin-top: 30px;
+}

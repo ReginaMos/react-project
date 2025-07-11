@@ -19,6 +19,10 @@ export interface ItemModel {
   description: string;
 }
 
+export interface ItemProps extends ItemModel {
+  key: number;
+}
+
 export interface ItemState {
   items: ItemModel[];
 }

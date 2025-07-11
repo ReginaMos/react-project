@@ -41,7 +41,6 @@ export default class App extends React.Component<{}, ItemState> {
       );
 
       this.setState({ items: detailedItems });
-        console.log(detailedItems);
       } catch (err) {
         console.error("API error:", err);
       }
@@ -56,7 +55,7 @@ export default class App extends React.Component<{}, ItemState> {
     return (
       <>
         <Header />
-        <Main />
+        <Main items={this.state.items}/>
       </>
     );
   }

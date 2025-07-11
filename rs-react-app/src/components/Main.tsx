@@ -1,8 +1,10 @@
 import React from 'react';
 import Content from './ContentComponent';
 import Button from '../elements/ButtonElement';
+import type { ItemState } from '../models/models'
+import '../styles/Main.css'
 
-export default class Main extends React.Component {
+export default class Main extends React.Component<ItemState> {
     state = {
         crash: false,
     };
@@ -19,7 +21,7 @@ export default class Main extends React.Component {
         return (
             <main>
                 Main Part
-                <Content />
+                <Content items={this.props.items}/>
                 <Button onAction={this.handleCrash} text="Crash App" />
             </main>
         );
