@@ -50,7 +50,7 @@ export default class App extends React.Component<
 
   fetchPeople = async (find: string) => {
     this.setState({ isLoading: true });
-    const baseUrl = 'https://www.swapi.tech/api/p22eople';
+    const baseUrl = 'https://www.swapi.tech/api/people';
     const searchTerm = this.deleteSpaces(find);
     const url = searchTerm ? `${baseUrl}/?name=${searchTerm}` : baseUrl;
     let detailedItems: ItemModel[] = [];

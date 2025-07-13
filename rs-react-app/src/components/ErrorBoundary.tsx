@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { ErrorProps, State } from '../models/models';
+import '../styles/ErrorBoundary.css';
 
 export default class ErrorBoundary extends React.Component<ErrorProps, State> {
   constructor(props: ErrorProps) {
@@ -16,7 +17,7 @@ export default class ErrorBoundary extends React.Component<ErrorProps, State> {
       return (
         <main>
           <h2>Ooops! Something went wrong!</h2>
-          <button onClick={() => window.location.reload()}>Reload page</button>
+          <button onClick={() => window.location.reload()} className="error-button">Reload page</button>
         </main>
       );
     }

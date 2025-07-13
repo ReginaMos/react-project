@@ -5,12 +5,12 @@
   "type": "module",
   "homepage": "https://reginamos.github.io/react-project/",
   "scripts": {
-    "dev": "npm run format && npm run lint && vite",
+    "dev": "npm run format:fix && npm run lint && vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
-    "format": "prettier --write .",
+    "format:fix": "prettier --write .",
     "deploy": "npm run build && gh-pages -d dist -e rs-react-app"
   },
   "dependencies": {
