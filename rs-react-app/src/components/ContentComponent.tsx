@@ -6,20 +6,30 @@ export default class Content extends React.Component<ItemState> {
   render() {
     return (
       <div>
-        <h2>Results:</h2>
+        {
+          this.props.items.length === 0 &&
+          <h3>There aren`t any elements by your request...</h3>
+        }
 
-        <div className="item main">
-          <div className="item-name">Item Name</div>
-          <div className="item-description">Item Description</div>
-        </div>
+        {
+          this.props.items.length > 0 &&
+          <>
+            <h2>Results:</h2>
 
-        {this.props.items.map((item, index) => (
-          <ContentItem
-            name={item.name}
-            description={item.description}
-            key={index}
-          />
-        ))}
+            <div className="item main">
+              <div className="item-name">Item Name</div>
+              <div className="item-description">Item Description</div>
+            </div>
+          
+            {this.props.items.map((item, index) => (
+              <ContentItem
+                name={item.name}
+                description={item.description}
+                key={index}
+              />
+            ))}
+          </>
+          }
       </div>
     );
   }
