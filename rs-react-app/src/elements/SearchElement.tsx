@@ -1,22 +1,19 @@
 import React from 'react';
 import Button from '../elements/ButtonElement';
-import '../styles/Header.css'
-
-type Props = {
-  onSearch: (value: string) => void;
-};
+import type { PropsFunction } from '../models/models';
+import '../styles/Header.css';
 
 type State = {
   inputText: string;
 };
 
-export default class Search extends React.Component<Props, State> {
-  constructor(props: Props) {
+export default class Search extends React.Component<PropsFunction, State> {
+  constructor(props: PropsFunction) {
     super(props);
-    const find = localStorage.getItem('search_ReginaMos') || "";
+    const find = localStorage.getItem('search_ReginaMos') || '';
     this.state = {
-      inputText: find
-    }
+      inputText: find,
+    };
   }
 
   handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +34,7 @@ export default class Search extends React.Component<Props, State> {
           onChange={this.handleInput}
           placeholder="Search"
         />
-        <Button onAction={this.handleClick} text='Find' class='find-btn'/>
+        <Button onAction={this.handleClick} text="Find" class="find-btn" />
       </div>
     );
   }
