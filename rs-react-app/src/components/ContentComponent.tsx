@@ -6,13 +6,11 @@ export default class Content extends React.Component<ItemState> {
   render() {
     return (
       <div>
-        {
-          this.props.items.length === 0 &&
+        {this.props.items.length === 0 && (
           <h3>There aren`t any elements by your request...</h3>
-        }
+        )}
 
-        {
-          this.props.items.length > 0 &&
+        {this.props.items.length > 0 && (
           <>
             <h2>Results:</h2>
 
@@ -20,7 +18,7 @@ export default class Content extends React.Component<ItemState> {
               <div className="item-name">Item Name</div>
               <div className="item-description">Item Description</div>
             </div>
-          
+
             {this.props.items.map((item, index) => (
               <ContentItem
                 name={item.name}
@@ -29,7 +27,7 @@ export default class Content extends React.Component<ItemState> {
               />
             ))}
           </>
-          }
+        )}
       </div>
     );
   }

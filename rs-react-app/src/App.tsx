@@ -20,7 +20,7 @@ export default class App extends React.Component<
     this.state = {
       items: [],
       isLoading: false,
-      isApiError: ''
+      isApiError: '',
     };
   }
 
@@ -36,7 +36,7 @@ export default class App extends React.Component<
 
       return {
         name: name,
-        description: person.description
+        description: person.description,
       };
     } catch (error) {
       console.error(`Error fetching description for ${name}`, error);
@@ -76,7 +76,7 @@ export default class App extends React.Component<
 
       this.setState({ items: detailedItems });
     } catch (err: unknown) {
-      this.setState({ isLoading: false, isApiError: "API error: " + err });
+      this.setState({ isLoading: false, isApiError: 'API error: ' + err });
     }
     this.setState({ isLoading: false });
   };
@@ -92,7 +92,7 @@ export default class App extends React.Component<
         <Header onSearch={this.fetchPeople} />
         <Main items={this.state.items} />
         {this.state.isLoading && <Loader />}
-        {this.state.isApiError && <Chips text={this.state.isApiError}/>}
+        {this.state.isApiError && <Chips text={this.state.isApiError} />}
       </>
     );
   }
