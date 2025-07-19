@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import Search from '../elements/SearchElement';
 
 const localStorageMock = (() => {
-  let store: Record<string, string> = {};
+  let store: Record<string, string | undefined> = {};
   return {
     getItem: vi.fn((key: string) => store[key] || ''),
     setItem: vi.fn((key: string, value: string) => {
@@ -15,7 +15,7 @@ const localStorageMock = (() => {
       store = {};
     }),
     removeItem: vi.fn((key: string) => {
-      delete store[key];
+      store[key] = undefined;
     }),
   };
 })();

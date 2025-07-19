@@ -15,7 +15,7 @@ const fetchMock = vi.fn();
 globalThis.fetch = fetchMock;
 
 const localStorageMock = (() => {
-  let store: Record<string, string> = {};
+  let store: Record<string, string | undefined> = {};
   return {
     getItem: vi.fn((key: string) => store[key] || null),
     setItem: vi.fn((key: string, value: string) => {
@@ -24,7 +24,7 @@ const localStorageMock = (() => {
     clear: vi.fn(() => {
       store = {};
     }),
-    removeItem: vi.fn((key: string) => delete store[key]),
+    removeItem: vi.fn((key: string) => (store[key] = undefined)),
   };
 })();
 

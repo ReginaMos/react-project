@@ -45,7 +45,7 @@ describe('ContentItem Component', () => {
     expect(screen.getByText('Darth Vader')).toBeInTheDocument();
 
     let container = document.querySelector('.item') as HTMLElement;
-    let descElement = container.querySelector('.item-description');
+    const descElement = container.querySelector('.item-description');
     expect(descElement).toHaveTextContent('');
 
     rerender(<ContentItem name={''} description="Sith Lord" />);

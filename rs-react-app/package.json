@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prepare": "husky",
+    "prepare": "cd ../ && husky rs-react-app/.husky",
     "format:fix": "prettier --write .",
     "deploy": "npm run build && gh-pages -d dist -e rs-react-app",
     "test": "vitest",
