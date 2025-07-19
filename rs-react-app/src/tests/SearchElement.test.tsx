@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import Search from '../elements/SearchElement';
@@ -50,12 +50,14 @@ describe('Search Component', () => {
     const input = screen.getByPlaceholderText('Search');
     await user.type(input, 'test value');
 
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      'search_ReginaMos',
-      'test value'
-    );
+    await waitFor(() => {
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        'search_ReginaMos',
+        'test value'
+      );
 
-    expect(localStorage.setItem).toHaveBeenCalledTimes(10);
+      expect(localStorage.setItem).toHaveBeenCalledTimes(10);
+    });
   });
 
   it('should call onSearch callback when button clicked', async () => {
@@ -65,9 +67,10 @@ describe('Search Component', () => {
     const input = screen.getByPlaceholderText('Search');
     await user.type(input, 'search query');
     await user.click(screen.getByText('Find'));
-
-    expect(mockOnSearch).toHaveBeenCalledWith('search query');
-    expect(mockOnSearch).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockOnSearch).toHaveBeenCalledWith('search query');
+      expect(mockOnSearch).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('should load initial value from localStorage', () => {

@@ -105,6 +105,8 @@ describe('ErrorBoundary Component', () => {
       value: { reload: reloadMock },
       writable: true,
     });
+    const errorSpy = vi.spyOn(console, 'error');
+    errorSpy.mockImplementation(() => {});
 
     const ErrorComponent = () => {
       throw new Error('Test error');
@@ -116,7 +118,10 @@ describe('ErrorBoundary Component', () => {
       </ErrorBoundary>
     );
 
-    fireEvent.click(screen.getByText('Reload page'));
+    const reloadButton = screen.getByText('Reload page');
+    fireEvent.click(reloadButton);
+
     expect(reloadMock).toHaveBeenCalledTimes(1);
+    errorSpy.mockRestore();
   });
 });
