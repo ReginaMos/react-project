@@ -1,49 +1,71 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
-import Main from '../components/Main';
-import type { ItemModel } from '../models/models';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { StrictMode } from 'react';
+import React from 'react';
 
-describe('Main Component', () => {
-  const mockItems: ItemModel[] = [
-    { name: 'Luke', description: 'Jedi master' },
-    { name: 'Vader', description: 'Sith lord' },
-  ];
+const renderMock = vi.fn();
+const createRootMock = vi.fn(() => ({ render: renderMock }));
 
-  const consoleErrorMock = vi
-    .spyOn(console, 'error')
-    .mockImplementation(() => {});
+vi.mock('react-dom/client', () => ({
+  createRoot: createRootMock,
+}));
+
+describe('main application element', () => {
+  const originalConsoleError = console.error;
+  const originalGetElementById = document.getElementById;
+
+  beforeEach(() => {
+    console.error = vi.fn();
+
+    document.getElementById = vi.fn((id) => {
+      if (id === 'root') {
+        return document.createElement('div');
+      }
+      return null;
+    });
+  });
 
   afterEach(() => {
-    consoleErrorMock.mockRestore();
+    console.error = originalConsoleError;
+    document.getElementById = originalGetElementById;
+    vi.restoreAllMocks();
   });
 
-  it('renders content correctly', () => {
-    render(<Main items={mockItems} />);
+  it('creates root and renders app', async () => {
+    const rootDiv = document.createElement('div');
+    document.getElementById = vi.fn(() => rootDiv);
 
-    expect(screen.getByText('Crash App')).toBeInTheDocument();
+    await import('../main');
+
+    expect(document.getElementById).toHaveBeenCalledWith('root');
+    expect(createRootMock).toHaveBeenCalledWith(rootDiv);
+    expect(renderMock).toHaveBeenCalledTimes(1);
+
+    const renderedElement = renderMock.mock.calls[0][0];
+    expect(renderedElement.type).toBe(StrictMode);
   });
 
-  it('throws error when crash button is clicked', () => {
-    const consoleErrorMock = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+  it('throws error when root element is missing', async () => {
+    document.getElementById = vi.fn(() => null);
 
-    let caughtError = false;
-    try {
-      render(<Main items={mockItems} />);
-      fireEvent.click(screen.getByText('Crash App'));
-    } catch (error) {
-      caughtError = true;
-      expect(error).toBeInstanceOf(Error);
-      expect((error as Error).message).toBe('Oooops! Something went wrong!');
-    }
+    vi.resetModules();
 
-    expect(caughtError).toBe(true);
-    consoleErrorMock.mockRestore();
+    await expect(import('../main')).rejects.toThrow('Root element not found');
   });
 
-  it('does not throw error without button click', () => {
-    render(<Main items={mockItems} />);
-    expect(screen.getByText('Crash App')).toBeInTheDocument();
+  it('renders App inside ErrorBoundary and StrictMode', async () => {
+    const rootDiv = document.createElement('div');
+    document.getElementById = vi.fn(() => rootDiv);
+
+    vi.resetModules();
+    await import('../main');
+
+    expect(renderMock).toHaveBeenCalledTimes(1);
+    const rendered = renderMock.mock.calls[0][0];
+
+    expect(rendered.type).toBe(React.StrictMode);
+
+    const errorBoundary = rendered.props.children;
+    expect(errorBoundary.type.name).toBe('ErrorBoundary');
+    expect(errorBoundary.props.children.type.name).toBe('App');
   });
 });
