@@ -2,13 +2,13 @@ export interface ErrorProps {
   children: React.ReactNode;
 }
 
+export interface AppContextType {
+  onSearch: (searchTerm: string) => void;
+};
+
 export interface State {
   hasError: boolean;
   error: Error | null;
-}
-
-export interface PropsFunction {
-  onSearch: (value: string) => void;
 }
 
 export interface ButtonProps {

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, createContext, useContext, useEffect } from 'react';
 import './App.css';
 import Main from './components/Main';
 import Header from './components/Header';
@@ -6,94 +6,53 @@ import Loader from './elements/LoaderElement';
 import Chips from './elements/ChipsElement';
 import type {
   ItemModel,
-  ItemState,
-  PersonShort,
-  PersonFind,
+  AppContextType
 } from './models/models';
+import { fetchPeople } from './utils/fetchPeople';
+import useLocalStorage from './hooks/useLocalStorage';
 
-export default class App extends React.Component<
-  Record<string, never>,
-  ItemState
-> {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.state = {
-      items: [],
-      isLoading: false,
-      isApiError: '',
-    };
-  }
+const AppContext = createContext<AppContextType>({
+  onSearch: () => {},
+});
 
-  deleteSpaces = (str: string) => {
-    return str.replace(/\s+/g, '');
-  };
+export const useAppContext = () => useContext(AppContext);
 
-  getPersonInfo = async (url: string, name: string) => {
+export default function App() {
+  const [items, setItems] = useState<ItemModel[]>([]);
+  const [isLoading, setLoading] = useState(false);
+  const [isApiError, setApiError] = useState('');
+
+  const [searchTerm, setSearchTerm] = useLocalStorage<string>('search_ReginaMos', '');
+
+  const onSearch = async (find: string) => {
+    setLoading(true);
+    setApiError('');
     try {
-      const res = await fetch(url);
-      const details = await res.json();
-      const person = details.result;
-
-      return {
-        name: name,
-        description: person.description,
-      };
-    } catch (error) {
-      console.error(`Error fetching description for ${name}`, error);
-
-      return {
-        name: name,
-        description: 'Description unavailable',
-      };
-    }
-  };
-
-  fetchPeople = async (find: string) => {
-    this.setState({ isLoading: true });
-    const baseUrl = 'https://www.swapi.tech/api/people';
-    const searchTerm = this.deleteSpaces(find);
-    const url = searchTerm ? `${baseUrl}/?name=${searchTerm}` : baseUrl;
-    let detailedItems: ItemModel[] = [];
-
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      if (searchTerm) {
-        const results = data.result || [];
-        detailedItems = results.map((item: PersonFind) => ({
-          name: item.properties.name,
-          description: item.description,
-        }));
+      const data = await fetchPeople(find);
+      if (Array.isArray(data)) {
+        setItems(data);
+        setSearchTerm(find);
       } else {
-        const results = data.results || [];
-        detailedItems = await Promise.all(
-          results.map(
-            async (item: PersonShort) =>
-              await this.getPersonInfo(item.url, item.name)
-          )
-        );
+        setApiError('API error: ' + (data instanceof Error ? data.message : String(data)));
       }
-
-      this.setState({ items: detailedItems });
-    } catch (err: unknown) {
-      this.setState({ isLoading: false, isApiError: 'API error: ' + err });
+    } catch (err) {
+      setApiError('Unexpected error: ' + (err instanceof Error ? err.message : String(err)));
     }
-    this.setState({ isLoading: false });
+    setLoading(false);
   };
 
-  componentDidMount() {
-    const find = localStorage.getItem('search_ReginaMos') || '';
-    this.fetchPeople(find);
-  }
+  useEffect(() => {
+    if (searchTerm) {
+      onSearch(searchTerm);
+    }
+  }, []);
 
-  render() {
-    return (
-      <>
-        <Header onSearch={this.fetchPeople} />
-        <Main items={this.state.items} />
-        {this.state.isLoading && <Loader />}
-        {this.state.isApiError && <Chips text={this.state.isApiError} />}
-      </>
-    );
-  }
+  return (
+    <AppContext.Provider value={{ onSearch }}>
+      <Header />
+      <Main items={items} />
+      {isLoading && <Loader />}
+      {isApiError && <Chips text={isApiError} />}
+    </AppContext.Provider>
+  );
 }
