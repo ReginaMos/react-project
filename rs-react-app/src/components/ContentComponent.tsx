@@ -1,7 +1,8 @@
 import ContentItem from './ContentItem';
-import type {ItemsContextType } from '../models/models';
+import type { ItemsContextType } from '../models/models';
+import '../styles/Content.css';
 
-export default function Content({items: items}: ItemsContextType) {
+export default function Content({ items: items }: ItemsContextType) {
   return (
     <div>
       {items.length === 0 && (

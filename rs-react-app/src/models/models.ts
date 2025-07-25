@@ -4,11 +4,11 @@ export interface ErrorProps {
 
 export interface SearchContextType {
   onSearch: (searchTerm: string) => void;
-};
+}
 
 export interface ItemsContextType {
   items: ItemModel[];
-};
+}
 
 export interface State {
   hasError: boolean;

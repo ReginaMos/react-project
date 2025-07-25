@@ -43,6 +43,12 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+
+  background-image: url('./assets/background.jpg');
+  color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 h1 {
@@ -75,16 +81,6 @@ button {
   }
 }
 
-body {
-  background-image: url('./assets/background.jpg');
-  color: #fff;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  width: 100vw;
-  height: 100vh;
-}
-
 header,
 main {
   backdrop-filter: blur(10px);
@@ -92,4 +88,27 @@ main {
   background-color: rgba(171, 178, 219, 0.315);
   border-radius: 10px;
   padding: 20px;
+}
+
+header {
+  margin-bottom: 50px;
+  min-width: 350px;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+}
+
+.nav-link {
+  color: #fff;
+  font-size: 20px;
+  padding: 10px 15px;
+  border-radius: 10px;
+}
+
+.nav-link.active {
+  border: 1px solid #fff;
 }

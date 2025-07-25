@@ -1,15 +1,29 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/react-project/rs-react-app/">
       <header>
-        <nav>
-          <Link to="/">Главная</Link>
-          <Link to="/about">О нас</Link>
+        <nav className="nav">
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive ? 'nav-link active' : 'nav-link'
+            }
+          >
+            Home
+          </NavLink>
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              isActive ? 'nav-link active' : 'nav-link'
+            }
+          >
+            About
+          </NavLink>
         </nav>
       </header>
 
@@ -21,5 +35,5 @@ export default function App() {
         </Routes>
       </main>
     </BrowserRouter>
-  )
+  );
 }
