@@ -1,11 +1,11 @@
 import React from 'react';
 import Button from '../elements/ButtonElement';
-import { useAppContext } from '../App';
+import { useSearchContext } from '../App';
 import useLocalStorage from '../hooks/useLocalStorage';
 import '../styles/Header.css';
 
 export default function Search() {
-  const { onSearch } = useAppContext();
+  const { onSearch } = useSearchContext();
   const [inputText, setInputText] = useLocalStorage<string>('search_ReginaMos', '');
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {

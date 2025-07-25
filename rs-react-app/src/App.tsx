@@ -6,16 +6,22 @@ import Loader from './elements/LoaderElement';
 import Chips from './elements/ChipsElement';
 import type {
   ItemModel,
-  AppContextType
+  SearchContextType,
+  ItemsContextType
 } from './models/models';
 import { fetchPeople } from './utils/fetchPeople';
 import useLocalStorage from './hooks/useLocalStorage';
 
-const AppContext = createContext<AppContextType>({
+const SearchContext = createContext<SearchContextType>({
   onSearch: () => {},
 });
 
-export const useAppContext = () => useContext(AppContext);
+const ItemsContext = createContext<ItemsContextType>({
+  items: []
+});
+
+export const useSearchContext = () => useContext(SearchContext);
+export const useItemsContext = () => useContext(ItemsContext);
 
 export default function App() {
   const [items, setItems] = useState<ItemModel[]>([]);
@@ -48,11 +54,17 @@ export default function App() {
   }, []);
 
   return (
-    <AppContext.Provider value={{ onSearch }}>
-      <Header />
-      <Main items={items} />
+    <>
+      <SearchContext.Provider value={{ onSearch }}>
+        <Header />
+      </SearchContext.Provider>
+      <ItemsContext.Provider value={{ items }}>
+        <Main />
+      </ItemsContext.Provider>
+
       {isLoading && <Loader />}
       {isApiError && <Chips text={isApiError} />}
-    </AppContext.Provider>
+    </>
+   
   );
 }

@@ -2,8 +2,12 @@ export interface ErrorProps {
   children: React.ReactNode;
 }
 
-export interface AppContextType {
+export interface SearchContextType {
   onSearch: (searchTerm: string) => void;
+};
+
+export interface ItemsContextType {
+  items: ItemModel[];
 };
 
 export interface State {
@@ -24,12 +28,6 @@ export interface ChipsProps {
 export interface ItemModel {
   name: string;
   description: string;
-}
-
-export interface ItemState {
-  items: ItemModel[];
-  isLoading?: boolean;
-  isApiError?: string;
 }
 
 export interface PersonShort {
