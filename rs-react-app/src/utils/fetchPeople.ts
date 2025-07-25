@@ -1,6 +1,6 @@
 import type { ItemModel, PersonFind, PersonShort } from '../models/models';
 
-function deleteSpaces(str: string) {
+export function deleteSpaces(str: string) {
   return str.replace(/\s+/g, '');
 }
 
@@ -27,7 +27,7 @@ async function getPersonInfo(url: string, name: string): Promise<ItemModel> {
 export async function fetchPeople(find: string) {
   const baseUrl = 'https://www.swapi.tech/api/people/'; //?page=1&limit=15
   const searchTerm = deleteSpaces(find);
-  const url = searchTerm ? `${baseUrl}/?name=${searchTerm}` : baseUrl;
+  const url = searchTerm ? `${baseUrl}?name=${searchTerm}` : baseUrl;
   let detailedItems: ItemModel[] = [];
 
   try {

@@ -43,7 +43,7 @@ describe('Search Component', () => {
     expect(screen.getByText('Find')).toBeInTheDocument();
   });
 
-  it('should update localStorage on input change', async () => {
+  it('should update localStorage on input change using hook', async () => {
     const user = userEvent.setup();
     render(<Search onSearch={mockOnSearch} />);
 
@@ -51,12 +51,9 @@ describe('Search Component', () => {
     await user.type(input, 'test value');
 
     await waitFor(() => {
-      expect(localStorage.setItem).toHaveBeenCalledWith(
-        'search_ReginaMos',
-        'test value'
+      expect(window.localStorage.getItem('search_ReginaMos')).toBe(
+        '"test value"'
       );
-
-      expect(localStorage.setItem).toHaveBeenCalledTimes(10);
     });
   });
 
@@ -73,8 +70,11 @@ describe('Search Component', () => {
     });
   });
 
-  it('should load initial value from localStorage', () => {
-    window.localStorage.setItem('search_ReginaMos', 'saved value');
+  it('should load initial value from localStorage using hook', () => {
+    window.localStorage.setItem(
+      'search_ReginaMos',
+      JSON.stringify('saved value')
+    );
     render(<Search onSearch={mockOnSearch} />);
 
     expect(screen.getByDisplayValue('saved value')).toBeInTheDocument();
