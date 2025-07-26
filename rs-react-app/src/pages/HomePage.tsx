@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import '../styles/MainPage.css';
+import useLocalStorage from '../hooks/useLocalStorage';
+import '../styles/HomePage/HomePage.css';
 import Content from '../components/ContentComponent';
 import Loader from '../elements/LoaderElement';
 import Chips from '../elements/ChipsElement';
+import Search from '../elements/SearchElement';
 import type { ItemModel } from '../models/models';
 import { fetchPeople } from '../utils/fetchPeople';
-import useLocalStorage from '../hooks/useLocalStorage';
-import Search from '../elements/SearchElement';
 
 export default function HomePage() {
   const [items, setItems] = useState<ItemModel[]>([]);

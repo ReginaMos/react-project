@@ -81,13 +81,16 @@ button {
   }
 }
 
-header,
-main {
+header {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   background-color: rgb(51 52 57 / 44%);
   border-radius: 10px;
   padding: 20px;
+}
+
+main {
+  margin: 0 auto;
 }
 
 header {

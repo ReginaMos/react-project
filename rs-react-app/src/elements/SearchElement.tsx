@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../elements/ButtonElement';
 import useLocalStorage from '../hooks/useLocalStorage';
-import '../styles/Search.css';
+import '../styles/HomePage/Search.css';
 import type { SearchContextType } from '../models/models';
 
 export default function Search({ onSearch }: SearchContextType) {

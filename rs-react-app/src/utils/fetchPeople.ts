@@ -13,6 +13,12 @@ async function getPersonInfo(url: string, name: string): Promise<ItemModel> {
     return {
       name: name,
       description: person.description,
+      gender: person.properties.gender,
+      skin_color: person.properties.skin_color,
+      eye_color: person.properties.eye_color,
+      birth_year: person.properties.birth_year,
+      height: person.properties.height,
+      hair_color: person.properties.hair_color,
     };
   } catch (error) {
     console.error(`Error fetching description for ${name}`, error);
@@ -20,6 +26,12 @@ async function getPersonInfo(url: string, name: string): Promise<ItemModel> {
     return {
       name: name,
       description: 'Description unavailable',
+      gender: 'Gender unavailable',
+      skin_color: 'Skin color unavailable',
+      eye_color: 'Eye color unavailable',
+      birth_year: 'Birth year unavailable',
+      height: 'Height unavailable',
+      hair_color: 'Hair color unavailable',
     };
   }
 }

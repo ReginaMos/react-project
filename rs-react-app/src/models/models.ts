@@ -28,6 +28,18 @@ export interface ChipsProps {
 export interface ItemModel {
   name: string;
   description: string;
+  gender: string;
+  skin_color: string;
+  eye_color: string;
+  birth_year: string;
+  height: string;
+  hair_color: string;
+}
+
+export interface ShortItemModel {
+  name: string;
+  description: string;
+  gender: string;
 }
 
 export interface PersonShort {
