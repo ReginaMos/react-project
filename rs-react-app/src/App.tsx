@@ -9,7 +9,7 @@ export default function App() {
       <header>
         <nav className="nav">
           <NavLink
-            to="/"
+            to="/people"
             className={({ isActive }) =>
               isActive ? 'nav-link active' : 'nav-link'
             }
@@ -29,7 +29,8 @@ export default function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/people" element={<HomePage />} />
+          <Route path="/people/:id" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

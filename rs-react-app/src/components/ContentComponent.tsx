@@ -16,6 +16,7 @@ export default function Content({ items: items }: ItemsContextType) {
               name={item.name}
               description={item.description}
               gender={item.gender}
+              id={item.id}
               key={index}
             />
           ))}

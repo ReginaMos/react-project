@@ -4,13 +4,18 @@ export function deleteSpaces(str: string) {
   return str.replace(/\s+/g, '');
 }
 
-async function getPersonInfo(url: string, name: string): Promise<ItemModel> {
+async function getPersonInfo(
+  url: string,
+  name: string,
+  id: string
+): Promise<ItemModel> {
   try {
     const res = await fetch(url);
     const details = await res.json();
     const person = details.result;
 
     return {
+      id: +id,
       name: name,
       description: person.description,
       gender: person.properties.gender,
@@ -24,6 +29,7 @@ async function getPersonInfo(url: string, name: string): Promise<ItemModel> {
     console.error(`Error fetching description for ${name}`, error);
 
     return {
+      id: +id,
       name: name,
       description: 'Description unavailable',
       gender: 'Gender unavailable',
@@ -55,7 +61,8 @@ export async function fetchPeople(find: string) {
       const results = data.results || [];
       detailedItems = await Promise.all(
         results.map(
-          async (item: PersonShort) => await getPersonInfo(item.url, item.name)
+          async (item: PersonShort) =>
+            await getPersonInfo(item.url, item.name, item.uid)
         )
       );
     }

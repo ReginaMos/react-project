@@ -1,12 +1,4 @@
-.content {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-
-.item {
+.details {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -15,7 +7,7 @@
 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  background-color: rgb(51 52 57 / 44%);
+  background-color: rgba(56, 72, 151, 0.44);
   border-radius: 10px;
   padding: 20px;
 

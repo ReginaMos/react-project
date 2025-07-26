@@ -26,6 +26,7 @@ export interface ChipsProps {
 }
 
 export interface ItemModel {
+  id: number;
   name: string;
   description: string;
   gender: string;
@@ -37,6 +38,7 @@ export interface ItemModel {
 }
 
 export interface ShortItemModel {
+  id: number;
   name: string;
   description: string;
   gender: string;
