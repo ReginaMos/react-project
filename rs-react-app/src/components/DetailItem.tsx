@@ -1,16 +1,8 @@
-// import type { ItemModel } from '../models/models';
 import '../styles/HomePage/Detail.css';
 import closeIcon from '../assets/close-icon.svg';
-// import { useNavigate } from 'react-router-dom';
 import type { DetailsState } from '../models/models';
 
 export default function DetailItem({ item, onClose }: DetailsState) {
-  // const navigator = useNavigate();
-
-  // const handleClick = () => {
-  //   navigator('/');
-  // };
-
   return (
     <div className="details">
       <div className="close-icon">

@@ -1,78 +1,93 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import ContentItem from '../components/ContentItem';
-import type { ItemModel } from '../models/models';
+import type { ShortItemModel } from '../models/models';
 
 describe('ContentItem Component', () => {
-  it('renders name and description correctly', () => {
-    const testItem: ItemModel = {
+  it('renders name, gender, and description correctly', () => {
+    const testItem: ShortItemModel = {
       name: 'Luke Skywalker',
       description: 'Jedi Knight from Tatooine',
+      gender: 'male',
+      onClick: vi.fn(),
     };
 
     render(<ContentItem {...testItem} />);
 
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+    expect(screen.getByText('Gender:')).toBeInTheDocument();
+    expect(screen.getByText('male')).toBeInTheDocument();
+    expect(screen.getByText('Info:')).toBeInTheDocument();
     expect(screen.getByText('Jedi Knight from Tatooine')).toBeInTheDocument();
-
-    const container = document.querySelector('.item') as HTMLElement;
-    const nameElement = container.querySelector('.item-name');
-    const descElement = container.querySelector('.item-description');
-
-    expect(nameElement).toHaveTextContent('Luke Skywalker');
-    expect(descElement).toHaveTextContent('Jedi Knight from Tatooine');
   });
 
-  it('handles missing name and description', () => {
-    render(<ContentItem name={''} description={''} />);
+  it('renders empty strings when props are missing', () => {
+    render(<ContentItem name="" description="" gender="" onClick={() => {}} />);
 
-    const container = document.querySelector('.item') as HTMLElement;
-    const nameElement = container.querySelector('.item-name');
-    const descElement = container.querySelector('.item-description');
+    expect(screen.getByText('Gender:')).toBeInTheDocument();
+    expect(screen.getByText('Info:')).toBeInTheDocument();
 
+    const nameElement = screen.getByText('', { selector: '.item-name' });
     expect(nameElement).toBeInTheDocument();
-    expect(nameElement).toHaveTextContent('');
-
-    expect(descElement).toBeInTheDocument();
-    expect(descElement).toHaveTextContent('');
   });
 
   it('handles partially missing data', () => {
     const { rerender } = render(
-      <ContentItem name="Darth Vader" description={''} />
+      <ContentItem
+        name="Darth Vader"
+        description=""
+        gender="male"
+        onClick={() => {}}
+      />
     );
 
     expect(screen.getByText('Darth Vader')).toBeInTheDocument();
+    expect(screen.getByText('Gender:')).toBeInTheDocument();
+    expect(screen.getByText('male')).toBeInTheDocument();
+    expect(screen.getByText('Info:')).toBeInTheDocument();
 
-    let container = document.querySelector('.item') as HTMLElement;
-    const descElement = container.querySelector('.item-description');
-    expect(descElement).toHaveTextContent('');
+    rerender(
+      <ContentItem
+        name="Dart Veyder"
+        description="Sith Lord"
+        gender="male"
+        onClick={() => {}}
+      />
+    );
 
-    rerender(<ContentItem name={''} description="Sith Lord" />);
-
-    container = document.querySelector('.item') as HTMLElement;
-    const nameElement = container.querySelector('.item-name');
-    expect(nameElement).toHaveTextContent('');
     expect(screen.getByText('Sith Lord')).toBeInTheDocument();
-  });
-
-  it('handles empty strings', () => {
-    render(<ContentItem name="" description="" />);
-
-    const container = document.querySelector('.item') as HTMLElement;
-    const nameElement = container.querySelector('.item-name');
-    const descElement = container.querySelector('.item-description');
-
-    expect(nameElement).toHaveTextContent('');
-    expect(descElement).toHaveTextContent('');
   });
 
   it('handles special characters', () => {
     render(
-      <ContentItem name="R2-D2 & C-3PO" description="Droids < > & @ # $ %" />
+      <ContentItem
+        name="R2-D2 & C-3PO"
+        description="Droids < > & @ # $ %"
+        gender="robot"
+        onClick={() => {}}
+      />
     );
 
     expect(screen.getByText('R2-D2 & C-3PO')).toBeInTheDocument();
+    expect(screen.getByText('robot')).toBeInTheDocument();
     expect(screen.getByText('Droids < > & @ # $ %')).toBeInTheDocument();
+  });
+
+  it('calls onClick when item is clicked', () => {
+    const handleClick = vi.fn();
+
+    render(
+      <ContentItem
+        name="Leia Organa"
+        description="Princess"
+        gender="female"
+        onClick={handleClick}
+      />
+    );
+
+    const container = screen.getByText('Leia Organa').closest('.item');
+    if (container) fireEvent.click(container);
+
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });

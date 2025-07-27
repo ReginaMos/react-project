@@ -1,64 +1,155 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Content from '../components/ContentComponent';
 import type { ItemModel } from '../models/models';
 
 describe('Content Component', () => {
   it('shows empty message when items array is empty', () => {
-    render(<Content items={[]} />);
+    const mockClick = vi.fn();
+
+    render(<Content items={[]} onClick={mockClick} />);
 
     expect(
       screen.getByText('There aren`t any elements by your request...')
     ).toBeInTheDocument();
-
-    expect(screen.queryByText('Results:')).not.toBeInTheDocument();
-    expect(screen.queryByText('Item Name')).not.toBeInTheDocument();
   });
 
   it('renders correct number of items', () => {
     const items: ItemModel[] = [
-      { name: 'Luke', description: 'Jedi' },
-      { name: 'Vader', description: 'Sith' },
-      { name: 'Yoda', description: 'Master' },
+      {
+        id: 1,
+        name: 'Luke',
+        description: 'Jedi',
+        gender: 'male',
+        skin_color: 'fair',
+        eye_color: 'blue',
+        birth_year: '19BBY',
+        height: '172',
+        hair_color: 'blond',
+      },
+      {
+        id: 2,
+        name: 'Vader',
+        description: 'Sith',
+        gender: 'male',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        birth_year: '41.9BBY',
+        height: '202',
+        hair_color: 'none',
+      },
+      {
+        id: 3,
+        name: 'Yoda',
+        description: 'Master',
+        gender: 'male',
+        skin_color: 'green',
+        eye_color: 'brown',
+        birth_year: '896BBY',
+        height: '66',
+        hair_color: 'white',
+      },
     ];
 
-    render(<Content items={items} />);
+    const mockClick = vi.fn();
 
-    expect(screen.getByText('Results:')).toBeInTheDocument();
-
-    const itemContainers = document.querySelectorAll('.item:not(.main)');
-    expect(itemContainers).toHaveLength(items.length);
-
-    expect(screen.getByText('Item Name')).toBeInTheDocument();
-    expect(screen.getByText('Item Description')).toBeInTheDocument();
+    render(<Content items={items} onClick={mockClick} />);
+    const itemTitles = screen.getAllByText(/(Luke|Vader|Yoda)/);
+    expect(itemTitles).toHaveLength(3);
   });
 
   it('displays item data correctly', () => {
     const items: ItemModel[] = [
-      { name: 'Han Solo', description: 'Smuggler' },
-      { name: 'Leia', description: 'Princess' },
+      {
+        id: 1,
+        name: 'Luke',
+        description: 'Jedi',
+        gender: 'male',
+        skin_color: 'fair',
+        eye_color: 'blue',
+        birth_year: '19BBY',
+        height: '172',
+        hair_color: 'blond',
+      },
+      {
+        id: 2,
+        name: 'Vader',
+        description: 'Sith',
+        gender: 'female',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        birth_year: '41.9BBY',
+        height: '202',
+        hair_color: 'none',
+      },
     ];
 
-    render(<Content items={items} />);
+    const mockClick = vi.fn();
 
-    expect(screen.getByText('Han Solo')).toBeInTheDocument();
-    expect(screen.getByText('Smuggler')).toBeInTheDocument();
+    render(<Content items={items} onClick={mockClick} />);
 
-    expect(screen.getByText('Leia')).toBeInTheDocument();
-    expect(screen.getByText('Princess')).toBeInTheDocument();
+    expect(screen.getByText('Luke')).toBeInTheDocument();
+    expect(screen.getByText('male')).toBeInTheDocument();
+    expect(screen.getByText('Jedi')).toBeInTheDocument();
+
+    expect(screen.getByText('Vader')).toBeInTheDocument();
+    expect(screen.getByText('female')).toBeInTheDocument();
+    expect(screen.getByText('Sith')).toBeInTheDocument();
   });
 
   it('handles items with missing values', () => {
     const items: ItemModel[] = [
-      { name: 'Obi-Wan', description: 'Jedi Master' },
-      { name: '', description: 'Mysterious character' },
-      { name: 'Chewbacca', description: '' },
-      { name: '', description: 'Droid' },
+      {
+        id: 1,
+        name: 'Obi-Wan',
+        description: 'Jedi Master',
+        gender: 'female',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        birth_year: '41.9BBY',
+        height: '202',
+        hair_color: 'none',
+      },
+      {
+        id: 20,
+        name: '',
+        description: 'Mysterious character',
+        gender: 'female',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        birth_year: '41.9BBY',
+        height: '202',
+        hair_color: 'none',
+      },
+      {
+        id: 3,
+        name: 'Chewbacca',
+        description: '',
+        gender: 'female',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        birth_year: '41.9BBY',
+        height: '202',
+        hair_color: 'none',
+      },
+      {
+        name: '',
+        description: 'Droid',
+        gender: 'female',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        birth_year: '41.9BBY',
+        height: '202',
+        hair_color: 'none',
+        id: 5,
+      },
     ];
 
-    render(<Content items={items} />);
+    const mockClick = vi.fn();
 
-    const itemContainers = document.querySelectorAll('.item:not(.main)');
+    render(<Content items={items} onClick={mockClick} />);
+
+    const itemContainers = document.querySelectorAll('.item');
     expect(itemContainers).toHaveLength(items.length);
 
     expect(screen.getByText('Obi-Wan')).toBeInTheDocument();
@@ -67,14 +158,14 @@ describe('Content Component', () => {
     const allNameElements = document.querySelectorAll('.item-name');
     const allDescElements = document.querySelectorAll('.item-description');
 
-    expect(allNameElements[2]).toBeEmptyDOMElement();
-    expect(allDescElements[2]).toHaveTextContent('Mysterious character');
+    expect(allNameElements[1]).toBeEmptyDOMElement();
+    expect(allDescElements[1]).toHaveTextContent('Mysterious character');
 
-    expect(allNameElements[3]).toHaveTextContent('Chewbacca');
-    expect(allDescElements[3]).toBeEmptyDOMElement();
+    expect(allNameElements[2]).toHaveTextContent('Chewbacca');
+    expect(allDescElements[2]).toHaveTextContent('Info:');
 
-    expect(allNameElements[4]).toHaveTextContent('');
-    expect(allDescElements[4]).toHaveTextContent('Droid');
+    expect(allNameElements[3]).toHaveTextContent('');
+    expect(allDescElements[3]).toHaveTextContent('Droid');
   });
 
   it('handles special characters and long strings', () => {
@@ -85,14 +176,30 @@ describe('Content Component', () => {
       {
         name: 'R2-D2 & C-3PO',
         description: 'Droids < > & @ # $ %',
+        gender: 'female',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        birth_year: '41.9BBY',
+        height: '202',
+        hair_color: 'none',
+        id: 5,
       },
       {
         name: longName,
         description: longDesc,
+        gender: 'female',
+        skin_color: 'white',
+        eye_color: 'yellow',
+        birth_year: '41.9BBY',
+        height: '202',
+        hair_color: 'none',
+        id: 5,
       },
     ];
 
-    render(<Content items={items} />);
+    const mockClick = vi.fn();
+
+    render(<Content items={items} onClick={mockClick} />);
 
     expect(screen.getByText('R2-D2 & C-3PO')).toBeInTheDocument();
     expect(screen.getByText('Droids < > & @ # $ %')).toBeInTheDocument();

@@ -14,23 +14,44 @@ describe('fetchPeople', () => {
       json: async () => ({
         result: [
           {
-            properties: { name: 'Luke Skywalker' },
+            uid: '1',
+            properties: {
+              name: 'Luke Skywalker',
+              gender: 'male',
+              skin_color: 'fair',
+              eye_color: 'blue',
+              birth_year: '19BBY',
+              height: '172',
+              hair_color: 'blond',
+            },
             description: 'A Jedi Knight',
           },
         ],
+        total_pages: 1,
       }),
     });
 
-    const result = await fetchPeople('Luke');
+    const result = await fetchPeople('1', 'Luke');
+
     expect(fetchMock).toHaveBeenCalledWith(
-      'https://www.swapi.tech/api/people/?name=Luke'
+      'https://www.swapi.tech/api/people?page=1&limit=10&name=Luke'
     );
-    expect(result).toEqual([
-      {
-        name: 'Luke Skywalker',
-        description: 'A Jedi Knight',
-      },
-    ]);
+    expect(result).toEqual({
+      items: [
+        {
+          id: 1,
+          name: 'Luke Skywalker',
+          description: 'A Jedi Knight',
+          gender: 'male',
+          skin_color: 'fair',
+          eye_color: 'blue',
+          birth_year: '19BBY',
+          height: '172',
+          hair_color: 'blond',
+        },
+      ],
+      count: 1,
+    });
   });
 
   it('calls empty search and returns full information', async () => {
@@ -40,8 +61,10 @@ describe('fetchPeople', () => {
           {
             name: 'Leia Organa',
             url: 'https://swapi.tech/api/people/2',
+            uid: '2',
           },
         ],
+        total_pages: 1,
       }),
     });
 
@@ -49,36 +72,54 @@ describe('fetchPeople', () => {
       json: async () => ({
         result: {
           description: 'Princess of Alderaan',
+          properties: {
+            gender: 'female',
+            skin_color: 'light',
+            eye_color: 'brown',
+            birth_year: '19BBY',
+            height: '150',
+            hair_color: 'brown',
+          },
         },
       }),
     });
 
-    const result = await fetchPeople('');
+    const result = await fetchPeople('1', '');
 
     expect(fetchMock).toHaveBeenNthCalledWith(
       1,
-      'https://www.swapi.tech/api/people/'
+      'https://www.swapi.tech/api/people?page=1&limit=10'
     );
     expect(fetchMock).toHaveBeenNthCalledWith(
       2,
       'https://swapi.tech/api/people/2'
     );
 
-    expect(result).toEqual([
-      {
-        name: 'Leia Organa',
-        description: 'Princess of Alderaan',
-      },
-    ]);
+    expect(result).toEqual({
+      items: [
+        {
+          id: 2,
+          name: 'Leia Organa',
+          description: 'Princess of Alderaan',
+          gender: 'female',
+          skin_color: 'light',
+          eye_color: 'brown',
+          birth_year: '19BBY',
+          height: '150',
+          hair_color: 'brown',
+        },
+      ],
+      count: 1,
+    });
   });
 
   it('return error if request failed', async () => {
     const error = new Error('Main fetch failed');
     fetchMock.mockRejectedValueOnce(error);
 
-    const result = await fetchPeople('Obi-Wan');
+    const result = await fetchPeople('1', 'Obi-Wan');
 
-    expect(result).toBe(error);
+    expect(result).toBe(String(error));
   });
 });
 

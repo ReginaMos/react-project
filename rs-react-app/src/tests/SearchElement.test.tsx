@@ -65,7 +65,7 @@ describe('Search Component', () => {
     await user.type(input, 'search query');
     await user.click(screen.getByText('Find'));
     await waitFor(() => {
-      expect(mockOnSearch).toHaveBeenCalledWith('search query');
+      expect(mockOnSearch).toHaveBeenCalledWith('1', 'search query');
       expect(mockOnSearch).toHaveBeenCalledTimes(1);
     });
   });

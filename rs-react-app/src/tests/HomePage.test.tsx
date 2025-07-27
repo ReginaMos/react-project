@@ -2,6 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import HomePage from '../pages/HomePage';
+import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('../components/Header', () => ({ default: () => <div>Header</div> }));
 vi.mock('../components/Main', () => ({ default: () => <div>Main</div> }));
@@ -66,11 +67,15 @@ describe('HomePage Component', () => {
   it('displays Chips on API error', async () => {
     fetchMock.mockRejectedValueOnce(new Error('API failed'));
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText('Chips: API error: API failed')
+        screen.getByText('Chips: API error: Error: API failed')
       ).toBeInTheDocument();
     });
   });
@@ -78,7 +83,11 @@ describe('HomePage Component', () => {
   it('shows Loader during API request', async () => {
     fetchMock.mockImplementationOnce(() => new Promise(() => {}));
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     await waitFor(() => {
       expect(screen.getByText('Loader')).toBeInTheDocument();
     });
@@ -87,18 +96,30 @@ describe('HomePage Component', () => {
   it('displays error text when API throws on 4xx or 5xx', async () => {
     fetchMock.mockRejectedValueOnce(new Error('404'));
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText('Chips: API error: 404')).toBeInTheDocument();
+      expect(
+        screen.getByText('Chips: API error: Error: 404')
+      ).toBeInTheDocument();
     });
 
     fetchMock.mockRejectedValueOnce(new Error('500'));
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
 
     await waitFor(() => {
-      expect(screen.getByText('Chips: API error: 500')).toBeInTheDocument();
+      expect(
+        screen.getByText('Chips: API error: Error: 500')
+      ).toBeInTheDocument();
     });
   });
 
@@ -107,7 +128,11 @@ describe('HomePage Component', () => {
       json: () => Promise.resolve({ results: [] }),
     });
 
-    render(<HomePage />);
+    render(
+      <MemoryRouter>
+        <HomePage />
+      </MemoryRouter>
+    );
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
     });
