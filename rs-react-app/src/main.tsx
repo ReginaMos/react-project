@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
+import { BrowserRouter } from 'react-router-dom';
 
 const rootEl = document.getElementById('root');
 if (!rootEl) {
@@ -12,7 +13,9 @@ if (!rootEl) {
 createRoot(rootEl).render(
   <StrictMode>
     <ErrorBoundary>
-      <App />
+      <BrowserRouter basename="/react-project/rs-react-app/">
+        <App />
+      </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>
 );

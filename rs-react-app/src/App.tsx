@@ -1,9 +1,9 @@
 import {
-  BrowserRouter,
   Routes,
   Route,
   NavLink,
   Navigate,
+  useLocation,
 } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -11,15 +11,16 @@ import NotFoundPage from './pages/NotFoundPage';
 import DetailPage from './pages/DetailPage';
 
 export default function App() {
+  const location = useLocation();
+  const isHomeOrDetail = /^\/(\d+)(\/\d+)?$/.test(location.pathname);
+
   return (
-    <BrowserRouter basename="/react-project/rs-react-app/">
+    <>
       <header>
         <nav className="nav">
           <NavLink
             to="/"
-            className={({ isActive }) =>
-              isActive ? 'nav-link active' : 'nav-link'
-            }
+            className={() => (isHomeOrDetail ? 'nav-link active' : 'nav-link')}
           >
             Home
           </NavLink>
@@ -44,6 +45,6 @@ export default function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
-    </BrowserRouter>
+    </>
   );
 }
