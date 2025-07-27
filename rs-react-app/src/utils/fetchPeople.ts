@@ -51,10 +51,11 @@ export async function fetchPeople(
   page: string,
   find: string
 ): Promise<APIResponse | string> {
-  const baseUrl = `https://www.swapi.tech/api/people?page=${page}&limit=10/`;
+  const baseUrl = `https://www.swapi.tech/api/people?page=${page}&limit=10`;
   const searchTerm = deleteSpaces(find);
-  const url = searchTerm ? `${baseUrl}?name=${searchTerm}` : baseUrl;
+  const url = searchTerm ?`${baseUrl}&name=${searchTerm}` : baseUrl;
   let detailedItems: ItemModel[] = [];
+  console.log(searchTerm)
 
   try {
     const response = await fetch(url);

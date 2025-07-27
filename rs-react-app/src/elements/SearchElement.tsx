@@ -15,7 +15,7 @@ export default function Search({ onSearch }: SearchContextType) {
   };
 
   const handleClick = () => {
-    onSearch(inputText);
+    onSearch('1', inputText);
   };
 
   return (

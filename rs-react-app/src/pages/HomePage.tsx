@@ -20,7 +20,7 @@ export default function HomePage() {
   const page = Number(searchParams.get('page')) || 1;
   const heroId = searchParams.get('hero');
 
-  const selectedItem = items.find(item => String(item.id) === heroId);
+  const selectedItem = items.find((item) => String(item.id) === heroId);
   const [searchTerm, setSearchTerm] = useLocalStorage<string>(
     'search_ReginaMos',
     ''
@@ -56,9 +56,7 @@ export default function HomePage() {
         setPagesCount(data.count);
         setSearchTerm(find);
       } else {
-        setApiError(
-          'API error: ' + data
-        );
+        setApiError('API error: ' + data);
       }
     } catch (err) {
       setApiError(
