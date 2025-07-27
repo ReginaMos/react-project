@@ -55,7 +55,6 @@ export async function fetchPeople(
   const searchTerm = deleteSpaces(find);
   const url = searchTerm ? `${baseUrl}&name=${searchTerm}` : baseUrl;
   let detailedItems: ItemModel[] = [];
-  console.log(searchTerm);
 
   try {
     const response = await fetch(url);

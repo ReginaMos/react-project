@@ -3,6 +3,7 @@ import Button from '../elements/ButtonElement';
 import useLocalStorage from '../hooks/useLocalStorage';
 import '../styles/HomePage/Search.css';
 import type { SearchContextType } from '../models/models';
+import { useNavigate } from 'react-router-dom';
 
 export default function Search({ onSearch }: SearchContextType) {
   const [inputText, setInputText] = useLocalStorage<string>(
@@ -10,11 +11,14 @@ export default function Search({ onSearch }: SearchContextType) {
     ''
   );
 
+  const navigate = useNavigate();
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value);
   };
 
   const handleClick = () => {
+    navigate('/1');
     onSearch('1', inputText);
   };
 

@@ -2,7 +2,7 @@ import ContentItem from './ContentItem';
 import type { ItemsContextType } from '../models/models';
 import '../styles/HomePage/Content.css';
 
-export default function Content({ items, onClick }: ItemsContextType) {
+export default function Content({ items }: ItemsContextType) {
   return (
     <div className="content">
       {items.length === 0 && (
@@ -19,7 +19,7 @@ export default function Content({ items, onClick }: ItemsContextType) {
               description={item.description}
               gender={item.gender}
               key={index}
-              onClick={() => onClick(String(item.id))}
+              id={item.id}
             />
           ))}
         </>

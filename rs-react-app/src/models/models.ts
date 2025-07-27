@@ -8,12 +8,10 @@ export interface SearchContextType {
 
 export interface ItemsContextType {
   items: ItemModel[];
-  onClick: (id: string) => void;
 }
 
 export interface DetailsState {
   item: ItemModel;
-  onClose: () => void;
 }
 
 export interface PaginationProps {
@@ -42,6 +40,11 @@ export interface ChipsProps {
   text: string;
 }
 
+export interface OutletContext {
+  selectedItem: ItemModel | undefined;
+  handleCloseDetails: () => void;
+}
+
 export interface ItemModel {
   id: number;
   name: string;
@@ -55,10 +58,10 @@ export interface ItemModel {
 }
 
 export interface ShortItemModel {
+  id: number;
   name: string;
   description: string;
   gender: string;
-  onClick: () => void;
 }
 
 export interface PersonShort {
