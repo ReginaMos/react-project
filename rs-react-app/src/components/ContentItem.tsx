@@ -10,7 +10,7 @@ export default function ContentItem({
   const navigator = useNavigate();
 
   const handleClick = (id: number) => {
-    navigator(`/people/${id}`);
+    navigator(`/${id}`);
   };
 
   return (

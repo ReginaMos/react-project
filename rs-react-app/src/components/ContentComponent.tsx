@@ -6,7 +6,7 @@ export default function Content({ items: items }: ItemsContextType) {
   return (
     <div className="content">
       {items.length === 0 && (
-        <h3>There aren`t any elements by your request...</h3>
+        <h3 className="empty-content">There aren`t any elements by your request...</h3>
       )}
 
       {items.length > 0 && (

@@ -54,8 +54,15 @@ export async function fetchPeople(find: string) {
     if (searchTerm) {
       const results = data.result || [];
       detailedItems = results.map((item: PersonFind) => ({
+        id: +item.uid,
         name: item.properties.name,
         description: item.description,
+        gender: item.properties.gender,
+        skin_color: item.properties.skin_color,
+        eye_color: item.properties.eye_color,
+        birth_year: item.properties.birth_year,
+        height: item.properties.height,
+        hair_color: item.properties.hair_color,
       }));
     } else {
       const results = data.results || [];
