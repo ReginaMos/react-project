@@ -1,13 +1,16 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Content from '../components/ContentComponent';
 import type { ItemModel } from '../models/models';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('Content Component', () => {
   it('shows empty message when items array is empty', () => {
-    const mockClick = vi.fn();
-
-    render(<Content items={[]} onClick={mockClick} />);
+    render(
+      <MemoryRouter>
+        <Content items={[]} />
+      </MemoryRouter>
+    );
 
     expect(
       screen.getByText('There aren`t any elements by your request...')
@@ -51,9 +54,11 @@ describe('Content Component', () => {
       },
     ];
 
-    const mockClick = vi.fn();
-
-    render(<Content items={items} onClick={mockClick} />);
+    render(
+      <MemoryRouter>
+        <Content items={items} />
+      </MemoryRouter>
+    );
     const itemTitles = screen.getAllByText(/(Luke|Vader|Yoda)/);
     expect(itemTitles).toHaveLength(3);
   });
@@ -84,9 +89,11 @@ describe('Content Component', () => {
       },
     ];
 
-    const mockClick = vi.fn();
-
-    render(<Content items={items} onClick={mockClick} />);
+    render(
+      <MemoryRouter>
+        <Content items={items} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText('Luke')).toBeInTheDocument();
     expect(screen.getByText('male')).toBeInTheDocument();
@@ -145,9 +152,11 @@ describe('Content Component', () => {
       },
     ];
 
-    const mockClick = vi.fn();
-
-    render(<Content items={items} onClick={mockClick} />);
+    render(
+      <MemoryRouter>
+        <Content items={items} />
+      </MemoryRouter>
+    );
 
     const itemContainers = document.querySelectorAll('.item');
     expect(itemContainers).toHaveLength(items.length);
@@ -197,9 +206,11 @@ describe('Content Component', () => {
       },
     ];
 
-    const mockClick = vi.fn();
-
-    render(<Content items={items} onClick={mockClick} />);
+    render(
+      <MemoryRouter>
+        <Content items={items} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText('R2-D2 & C-3PO')).toBeInTheDocument();
     expect(screen.getByText('Droids < > & @ # $ %')).toBeInTheDocument();

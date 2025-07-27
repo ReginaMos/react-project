@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import Search from '../elements/SearchElement';
+import { MemoryRouter } from 'react-router-dom';
 
 const localStorageMock = (() => {
   let store: Record<string, string | undefined> = {};
@@ -37,7 +38,11 @@ describe('Search Component', () => {
   });
 
   it('should render component correctly', () => {
-    render(<Search onSearch={mockOnSearch} />);
+    render(
+      <MemoryRouter>
+        <Search onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
     expect(screen.getByText('Find')).toBeInTheDocument();
@@ -45,7 +50,11 @@ describe('Search Component', () => {
 
   it('should update localStorage on input change using hook', async () => {
     const user = userEvent.setup();
-    render(<Search onSearch={mockOnSearch} />);
+    render(
+      <MemoryRouter>
+        <Search onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
 
     const input = screen.getByPlaceholderText('Search');
     await user.type(input, 'test value');
@@ -59,7 +68,11 @@ describe('Search Component', () => {
 
   it('should call onSearch callback when button clicked', async () => {
     const user = userEvent.setup();
-    render(<Search onSearch={mockOnSearch} />);
+    render(
+      <MemoryRouter>
+        <Search onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
 
     const input = screen.getByPlaceholderText('Search');
     await user.type(input, 'search query');
@@ -75,7 +88,11 @@ describe('Search Component', () => {
       'search_ReginaMos',
       JSON.stringify('saved value')
     );
-    render(<Search onSearch={mockOnSearch} />);
+    render(
+      <MemoryRouter>
+        <Search onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByDisplayValue('saved value')).toBeInTheDocument();
   });
