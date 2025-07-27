@@ -55,11 +55,10 @@ export interface ItemModel {
 }
 
 export interface ShortItemModel {
-  // id: number;
   name: string;
   description: string;
   gender: string;
-  onClick: (id: string) => void;
+  onClick: () => void;
 }
 
 export interface PersonShort {

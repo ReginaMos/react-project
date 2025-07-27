@@ -4,9 +4,10 @@ export default function ContentItem({
   name,
   description,
   gender,
+  onClick 
 }: ShortItemModel) {
   return (
-    <div className="item">
+    <div className="item" onClick={onClick}>
       <div className="item-name">{name}</div>
       <div className="item-info">
         <div className="item-gender">

@@ -19,10 +19,7 @@ export default function Content({ items, onClick }: ItemsContextType) {
               description={item.description}
               gender={item.gender}
               key={index}
-              onClick={() => {
-                console.log('click', item.id);
-                onClick('' + item.id);
-              }}
+              onClick={() => onClick(String(item.id))}
             />
           ))}
         </>

@@ -20,7 +20,7 @@ export default function HomePage() {
   const page = Number(searchParams.get('page')) || 1;
   const heroId = searchParams.get('hero');
 
-  const selectedItem = heroId ? items[+heroId - 1] : null;
+  const selectedItem = items.find(item => String(item.id) === heroId);
   const [searchTerm, setSearchTerm] = useLocalStorage<string>(
     'search_ReginaMos',
     ''
@@ -37,19 +37,13 @@ export default function HomePage() {
   };
 
   const handleOpenDetails = (id: string) => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      params.set('hero', id);
-      return params;
-    });
+    searchParams.set('hero', id);
+    setSearchParams(searchParams);
   };
 
   const handleCloseDetails = () => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      params.delete('hero');
-      return params;
-    });
+    searchParams.delete('hero');
+    setSearchParams(searchParams);
   };
 
   const onSearch = async (page: string, find: string) => {
@@ -60,11 +54,10 @@ export default function HomePage() {
       if (typeof data !== 'string') {
         setItems(data.items);
         setPagesCount(data.count);
-        console.log(pagesCount);
         setSearchTerm(find);
       } else {
         setApiError(
-          'API error: ' + data //(data instanceof Error ? data.message : String(data))
+          'API error: ' + data
         );
       }
     } catch (err) {
@@ -77,8 +70,9 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    onSearch('1', searchTerm);
-  }, []);
+    const pageFromUrl = searchParams.get('page') || '1';
+    onSearch(pageFromUrl, searchTerm);
+  }, [page, searchTerm]);
 
   return (
     <div className="home-page">
