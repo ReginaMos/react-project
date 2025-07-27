@@ -59,9 +59,10 @@ export async function fetchPeople(
   try {
     const response = await fetch(url);
     const data = await response.json();
-    const count = data.total_pages;
+    let count = data.total_pages;
     if (searchTerm) {
       const results = data.result || [];
+      const firstItem = (+page - 1) * 10;
       detailedItems = results.map((item: PersonFind) => ({
         id: +item.uid,
         name: item.properties.name,
@@ -72,7 +73,8 @@ export async function fetchPeople(
         birth_year: item.properties.birth_year,
         height: item.properties.height,
         hair_color: item.properties.hair_color,
-      }));
+      })).slice(firstItem, firstItem + 10);
+      count = Math.ceil(results.length / 10);
     } else {
       const results = data.results || [];
       detailedItems = await Promise.all(
