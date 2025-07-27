@@ -3,11 +3,28 @@ export interface ErrorProps {
 }
 
 export interface SearchContextType {
-  onSearch: (searchTerm: string) => void;
+  onSearch: (page: string, searchTerm: string) => void;
 }
 
 export interface ItemsContextType {
   items: ItemModel[];
+  onClick: (id: string) => void;
+}
+
+export interface DetailsState {
+  item: ItemModel;
+  onClose: () => void;
+}
+
+export interface PaginationProps {
+  currentPage: number;
+  onPageChange: (newPage: string) => void;
+  pagesCount: number;
+}
+
+export interface APIResponse {
+  items: ItemModel[];
+  count: number;
 }
 
 export interface State {
@@ -38,10 +55,11 @@ export interface ItemModel {
 }
 
 export interface ShortItemModel {
-  id: number;
+  // id: number;
   name: string;
   description: string;
   gender: string;
+  onClick: (id: string) => void;
 }
 
 export interface PersonShort {

@@ -1,4 +1,9 @@
-import type { ItemModel, PersonFind, PersonShort } from '../models/models';
+import type {
+  APIResponse,
+  ItemModel,
+  PersonFind,
+  PersonShort,
+} from '../models/models';
 
 export function deleteSpaces(str: string) {
   return str.replace(/\s+/g, '');
@@ -42,8 +47,11 @@ async function getPersonInfo(
   }
 }
 
-export async function fetchPeople(find: string) {
-  const baseUrl = 'https://www.swapi.tech/api/people/'; //?page=1&limit=15
+export async function fetchPeople(
+  page: string,
+  find: string
+): Promise<APIResponse | string> {
+  const baseUrl = `https://www.swapi.tech/api/people?page=${page}&limit=10/`;
   const searchTerm = deleteSpaces(find);
   const url = searchTerm ? `${baseUrl}?name=${searchTerm}` : baseUrl;
   let detailedItems: ItemModel[] = [];
@@ -51,6 +59,7 @@ export async function fetchPeople(find: string) {
   try {
     const response = await fetch(url);
     const data = await response.json();
+    const count = data.total_pages;
     if (searchTerm) {
       const results = data.result || [];
       detailedItems = results.map((item: PersonFind) => ({
@@ -74,8 +83,11 @@ export async function fetchPeople(find: string) {
       );
     }
 
-    return detailedItems;
-  } catch (err: unknown) {
-    return err;
+    return {
+      items: detailedItems,
+      count: count,
+    };
+  } catch (err) {
+    return String(err);
   }
 }
