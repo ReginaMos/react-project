@@ -1,12 +1,18 @@
-header {
-  margin-bottom: 50px;
-}
-
 .search {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 20px;
+
+  width: fit-content;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgb(51 52 57 / 44%);
+  border-radius: 10px;
+  padding: 20px;
+
+  margin-bottom: 30px;
 }
 
 input {

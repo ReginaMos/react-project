@@ -1,0 +1,35 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  min-height: 80vh;
+}
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 50px;
+  transition: transform 0.3s ease;
+}
+
+.content-layout .content {
+  width: 100%;
+  transition: margin-right 0.3s ease;
+}
+
+.content-layout.with-details .content {
+  width: 60%;
+}
+
+.content-layout .details {
+  width: 40%;
+}

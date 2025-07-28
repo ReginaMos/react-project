@@ -1,0 +1,47 @@
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.empty-content {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgb(51 52 57 / 44%);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgb(51 52 57 / 44%);
+  border-radius: 10px;
+  padding: 20px;
+
+  max-width: 350px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.item:hover {
+  box-shadow: 4px 3px 5px 15px rgba(120, 155, 182, 0.2);
+  transform: scale(1.1);
+}
+
+.item-name {
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.item-info {
+  text-align: left;
+}

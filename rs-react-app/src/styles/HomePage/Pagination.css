@@ -1,0 +1,33 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.current-page {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(132, 132, 133, 0.322);
+
+  padding: 10px 20px;
+  border-radius: 50%;
+}
+
+.pagination-arrow {
+  max-width: 40px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(132, 132, 133, 0.322);
+
+  padding: 10px;
+  border-radius: 50%;
+
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.pagination-arrow:hover {
+  transform: scale(1.2);
+}

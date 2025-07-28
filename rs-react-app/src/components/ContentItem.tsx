@@ -1,13 +1,31 @@
-import React from 'react';
-import type { ItemModel } from '../models/models';
+import { useNavigate, useParams } from 'react-router-dom';
+import type { ShortItemModel } from '../models/models';
 
-export default class ContentItem extends React.Component<ItemModel> {
-  render() {
-    return (
-      <div className="item">
-        <div className="item-name">{this.props.name}</div>
-        <div className="item-description">{this.props.description}</div>
+export default function ContentItem({
+  name,
+  description,
+  gender,
+  id,
+}: ShortItemModel) {
+  const navigate = useNavigate();
+  const params = useParams();
+  const page = Number(params.pageNumber) || 1;
+
+  const handleOpenDetails = () => {
+    navigate(`/${page}/${id}`);
+  };
+
+  return (
+    <div className="item" onClick={handleOpenDetails}>
+      <div className="item-name">{name}</div>
+      <div className="item-info">
+        <div className="item-gender">
+          <b>Gender:</b> {gender}
+        </div>
+        <div className="item-description">
+          <b>Info:</b> {description}
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
 }

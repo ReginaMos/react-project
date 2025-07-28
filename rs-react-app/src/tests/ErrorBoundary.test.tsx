@@ -1,8 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ErrorBoundary from '../components/ErrorBoundary';
-import Main from '../components/Main';
-import type { ItemModel } from '../models/models';
 
 const consoleErrorMock = vi
   .spyOn(console, 'error')
@@ -67,35 +65,6 @@ describe('ErrorBoundary Component', () => {
     ).toBeInTheDocument();
     expect(consoleErrorMock).toHaveBeenCalled();
 
-    consoleErrorMock.mockRestore();
-  });
-
-  it('handles error thrown by MainComponent crash button', () => {
-    const mockItems: ItemModel[] = [
-      { name: 'Luke', description: 'Jedi master' },
-      { name: 'Vader', description: 'Sith lord' },
-    ];
-
-    const consoleErrorMock = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
-
-    render(
-      <ErrorBoundary>
-        <Main items={mockItems} />
-      </ErrorBoundary>
-    );
-
-    expect(screen.getByText('Crash App')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByText('Crash App'));
-
-    expect(
-      screen.getByText('Ooops! Something went wrong!')
-    ).toBeInTheDocument();
-    expect(screen.getByText('Reload page')).toBeInTheDocument();
-
-    expect(consoleErrorMock).toHaveBeenCalled();
     consoleErrorMock.mockRestore();
   });
 

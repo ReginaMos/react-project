@@ -1,213 +1,53 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi } from 'vitest';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 
-vi.mock('../components/Header', () => ({ default: () => <div>Header</div> }));
-vi.mock('../components/Main', () => ({ default: () => <div>Main</div> }));
-vi.mock('../elements/LoaderElement', () => ({
-  default: () => <div>Loader</div>,
-}));
-vi.mock('../elements/ChipsElement', () => ({
-  default: ({ text }: { text: string }) => <div>Chips: {text}</div>,
+vi.mock('../pages/HomePage', () => ({
+  default: () => <div>Mocked Home Page</div>,
 }));
 
-const fetchMock = vi.fn();
-globalThis.fetch = fetchMock;
+vi.mock('../pages/AboutPage', () => ({
+  default: () => <div>Mocked About Page</div>,
+}));
 
-const localStorageMock = (() => {
-  let store: Record<string, string | undefined> = {};
-  return {
-    getItem: vi.fn((key: string) => store[key] || null),
-    setItem: vi.fn((key: string, value: string) => {
-      store[key] = value.toString();
-    }),
-    clear: vi.fn(() => {
-      store = {};
-    }),
-    removeItem: vi.fn((key: string) => (store[key] = undefined)),
-  };
-})();
+vi.mock('../pages/DetailPage', () => ({
+  default: () => <div>Mocked Detail Page</div>,
+}));
 
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock,
-});
+vi.mock('../pages/NotFoundPage', () => ({
+  default: () => <div>Mocked Not Found Page</div>,
+}));
 
-describe('App Component', () => {
-  beforeEach(() => {
-    fetchMock.mockClear();
-    localStorageMock.getItem.mockClear();
-    localStorageMock.setItem.mockClear();
-    localStorageMock.clear();
-    vi.clearAllMocks();
+describe('App component routing', () => {
+  it('renders navigation links', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('About')).toBeInTheDocument();
   });
 
-  it('fetches value from localStorage on mount', async () => {
-    localStorageMock.setItem('search_ReginaMos', 'luke');
-    fetchMock.mockResolvedValueOnce({
-      json: () => Promise.resolve({ results: [] }),
-    });
+  it('redirects from / to /1 and renders HomePage', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <App />
+      </MemoryRouter>
+    );
 
-    render(<App />);
-
-    await waitFor(() => {
-      expect(localStorageMock.getItem).toHaveBeenCalledWith('search_ReginaMos');
-      expect(fetchMock).toHaveBeenCalledWith(
-        'https://www.swapi.tech/api/people/?name=luke'
-      );
-    });
+    expect(screen.getByText('Mocked Home Page')).toBeInTheDocument();
   });
 
-  it('uses empty string when localStorage value is missing', async () => {
-    fetchMock.mockResolvedValueOnce({
-      json: () => Promise.resolve({ results: [] }),
-    });
+  it('renders AboutPage on /about route', () => {
+    render(
+      <MemoryRouter initialEntries={['/about']}>
+        <App />
+      </MemoryRouter>
+    );
 
-    render(<App />);
-    await waitFor(() => {
-      expect(localStorageMock.getItem).toHaveBeenCalledWith('search_ReginaMos');
-      expect(fetchMock).toHaveBeenCalledWith(
-        'https://www.swapi.tech/api/people'
-      );
-    });
-  });
-
-  it('displays Chips on API error', async () => {
-    fetchMock.mockRejectedValueOnce(new Error('API failed'));
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Chips: API error: Error: API failed')
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('shows Loader during API request', async () => {
-    fetchMock.mockImplementationOnce(() => new Promise(() => {}));
-
-    render(<App />);
-    await waitFor(() => {
-      expect(screen.getByText('Loader')).toBeInTheDocument();
-    });
-  });
-
-  it('calls API with correct parameters', async () => {
-    localStorageMock.setItem('search_ReginaMos', 'r2');
-    fetchMock.mockResolvedValueOnce({
-      json: () => Promise.resolve({ result: [] }),
-    });
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledWith(
-        'https://www.swapi.tech/api/people/?name=r2'
-      );
-    });
-  });
-
-  it('displays list of people from API (empty search)', async () => {
-    fetchMock.mockResolvedValueOnce({
-      json: () =>
-        Promise.resolve({
-          results: [
-            { name: 'Luke Skywalker', url: 'url/luke' },
-            { name: 'Leia Organa', url: 'url/leia' },
-          ],
-        }),
-    });
-
-    fetchMock.mockResolvedValueOnce({
-      json: () =>
-        Promise.resolve({
-          result: { description: 'Jedi Knight' },
-        }),
-    });
-    fetchMock.mockResolvedValueOnce({
-      json: () =>
-        Promise.resolve({
-          result: { description: 'Princess' },
-        }),
-    });
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(screen.getByText('Main')).toBeInTheDocument();
-    });
-  });
-
-  it('displays detailed items when searching by name', async () => {
-    localStorageMock.setItem('search_ReginaMos', 'luke');
-
-    fetchMock.mockResolvedValueOnce({
-      json: () =>
-        Promise.resolve({
-          result: [
-            {
-              properties: { name: 'Luke Skywalker' },
-              description: 'A Jedi Knight',
-            },
-          ],
-        }),
-    });
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledWith(
-        'https://www.swapi.tech/api/people/?name=luke'
-      );
-      expect(screen.getByText('Main')).toBeInTheDocument();
-    });
-  });
-
-  it('displays error text when API throws on 4xx or 5xx', async () => {
-    fetchMock.mockRejectedValueOnce(new Error('404'));
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Chips: API error: Error: 404')
-      ).toBeInTheDocument();
-    });
-
-    fetchMock.mockRejectedValueOnce(new Error('500'));
-
-    render(<App />);
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Chips: API error: Error: 500')
-      ).toBeInTheDocument();
-    });
-  });
-
-  it('calls API on component mount', async () => {
-    fetchMock.mockResolvedValueOnce({
-      json: () => Promise.resolve({ results: [] }),
-    });
-
-    render(<App />);
-    await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  describe('deleteSpaces function', () => {
-    it('correctly removes spaces from strings', () => {
-      const appInstance = new App({});
-
-      expect(appInstance.deleteSpaces('hello world')).toBe('helloworld');
-      expect(appInstance.deleteSpaces('  test  ')).toBe('test');
-      expect(appInstance.deleteSpaces('a b c d')).toBe('abcd');
-      expect(appInstance.deleteSpaces('no-spaces')).toBe('no-spaces');
-      expect(appInstance.deleteSpaces('   ')).toBe('');
-      expect(appInstance.deleteSpaces('special !@#$ chars')).toBe(
-        'special!@#$chars'
-      );
-    });
+    expect(screen.getByText('Mocked About Page')).toBeInTheDocument();
   });
 });

@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import Search from '../elements/SearchElement';
+import { MemoryRouter } from 'react-router-dom';
 
 const localStorageMock = (() => {
   let store: Record<string, string | undefined> = {};
@@ -37,45 +38,61 @@ describe('Search Component', () => {
   });
 
   it('should render component correctly', () => {
-    render(<Search onSearch={mockOnSearch} />);
+    render(
+      <MemoryRouter>
+        <Search onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByPlaceholderText('Search')).toBeInTheDocument();
     expect(screen.getByText('Find')).toBeInTheDocument();
   });
 
-  it('should update localStorage on input change', async () => {
+  it('should update localStorage on input change using hook', async () => {
     const user = userEvent.setup();
-    render(<Search onSearch={mockOnSearch} />);
+    render(
+      <MemoryRouter>
+        <Search onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
 
     const input = screen.getByPlaceholderText('Search');
     await user.type(input, 'test value');
 
     await waitFor(() => {
-      expect(localStorage.setItem).toHaveBeenCalledWith(
-        'search_ReginaMos',
-        'test value'
+      expect(window.localStorage.getItem('search_ReginaMos')).toBe(
+        '"test value"'
       );
-
-      expect(localStorage.setItem).toHaveBeenCalledTimes(10);
     });
   });
 
   it('should call onSearch callback when button clicked', async () => {
     const user = userEvent.setup();
-    render(<Search onSearch={mockOnSearch} />);
+    render(
+      <MemoryRouter>
+        <Search onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
 
     const input = screen.getByPlaceholderText('Search');
     await user.type(input, 'search query');
     await user.click(screen.getByText('Find'));
     await waitFor(() => {
-      expect(mockOnSearch).toHaveBeenCalledWith('search query');
+      expect(mockOnSearch).toHaveBeenCalledWith('1', 'search query');
       expect(mockOnSearch).toHaveBeenCalledTimes(1);
     });
   });
 
-  it('should load initial value from localStorage', () => {
-    window.localStorage.setItem('search_ReginaMos', 'saved value');
-    render(<Search onSearch={mockOnSearch} />);
+  it('should load initial value from localStorage using hook', () => {
+    window.localStorage.setItem(
+      'search_ReginaMos',
+      JSON.stringify('saved value')
+    );
+    render(
+      <MemoryRouter>
+        <Search onSearch={mockOnSearch} />
+      </MemoryRouter>
+    );
 
     expect(screen.getByDisplayValue('saved value')).toBeInTheDocument();
   });

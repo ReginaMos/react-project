@@ -1,0 +1,11 @@
+.contacts {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.contacts-heading {
+  font-weight: 600;
+  font-size: 20px;
+}

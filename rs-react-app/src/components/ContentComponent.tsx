@@ -1,34 +1,29 @@
-import React from 'react';
-import type { ItemState } from '../models/models';
 import ContentItem from './ContentItem';
+import type { ItemsContextType } from '../models/models';
+import '../styles/HomePage/Content.css';
 
-export default class Content extends React.Component<ItemState> {
-  render() {
-    return (
-      <div>
-        {this.props.items.length === 0 && (
-          <h3>There aren`t any elements by your request...</h3>
-        )}
+export default function Content({ items }: ItemsContextType) {
+  return (
+    <div className="content">
+      {items.length === 0 && (
+        <h3 className="empty-content">
+          There aren`t any elements by your request...
+        </h3>
+      )}
 
-        {this.props.items.length > 0 && (
-          <>
-            <h2>Results:</h2>
-
-            <div className="item main">
-              <div className="item-name">Item Name</div>
-              <div className="item-description">Item Description</div>
-            </div>
-
-            {this.props.items.map((item, index) => (
-              <ContentItem
-                name={item.name}
-                description={item.description}
-                key={index}
-              />
-            ))}
-          </>
-        )}
-      </div>
-    );
-  }
+      {items.length > 0 && (
+        <>
+          {items.map((item, index) => (
+            <ContentItem
+              name={item.name}
+              description={item.description}
+              gender={item.gender}
+              key={index}
+              id={item.id}
+            />
+          ))}
+        </>
+      )}
+    </div>
+  );
 }
