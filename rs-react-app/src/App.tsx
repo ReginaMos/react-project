@@ -38,9 +38,8 @@ export default function App() {
       <main>
         <Routes>
           <Route path="/" element={<Navigate to="/1" replace />} />
-          <Route path=":pageNumber" element={<HomePage />}>
-            <Route path=":heroNumber" element={<DetailPage />} />
-          </Route>
+          <Route path="/:pageNumber" element={<HomePage />} />
+          <Route path="/:pageNumber/:heroNumber" element={<DetailPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
