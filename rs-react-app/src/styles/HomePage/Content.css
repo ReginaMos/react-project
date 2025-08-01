@@ -32,6 +32,10 @@
   transition: all 0.3s ease-in-out;
 }
 
+main.dark .about-page,  main.dark .item{
+  background-color: rgba(223, 223, 224, 0.555);
+}
+
 .item:hover {
   box-shadow: 4px 3px 5px 15px rgba(120, 155, 182, 0.2);
   transform: scale(1.1);

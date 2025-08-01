@@ -9,10 +9,15 @@ import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import NotFoundPage from './pages/NotFoundPage';
 import DetailPage from './pages/DetailPage';
+import { ThemeContext } from './theme/ThemeContext';
+import { useContext } from 'react';
 
 export default function App() {
   const location = useLocation();
   const isHomeOrDetail = /^\/(\d+)(\/\d+)?$/.test(location.pathname);
+
+  const { theme, changeTheme } = useContext(ThemeContext);
+  const iconSrc = theme === 'light' ? './assets/sun.svg' : './assets/moon.svg'; 
 
   return (
     <>
@@ -33,9 +38,11 @@ export default function App() {
             About
           </NavLink>
         </nav>
+
+        <img src={iconSrc} alt="theme-icon" onClick={changeTheme} />
       </header>
 
-      <main>
+      <main className={theme}>
         <Routes>
           <Route path="/" element={<Navigate to="/1" replace />} />
           <Route path="/:pageNumber" element={<HomePage />} />

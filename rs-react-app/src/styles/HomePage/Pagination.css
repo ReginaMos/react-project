@@ -28,6 +28,10 @@
   transition: all 0.3s ease-in-out;
 }
 
+main.dark .current-page, main.dark .pagination-arrow {
+  background-color: rgba(215, 215, 219, 0.322);
+}
+
 .pagination-arrow:hover {
   transform: scale(1.2);
 }
