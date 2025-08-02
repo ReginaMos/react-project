@@ -7,9 +7,12 @@ import Loader from '../elements/LoaderElement';
 import Chips from '../elements/ChipsElement';
 import Search from '../elements/SearchElement';
 import Pagination from '../components/Pagination';
+import StoreStateElement from '../elements/StoreStateElement';
 import type { ItemModel } from '../models/models';
 import { fetchPeople } from '../utils/fetchPeople';
 import NotFoundPage from './NotFoundPage';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/store';
 
 export default function HomePage() {
   const [items, setItems] = useState<ItemModel[]>([]);
@@ -18,6 +21,7 @@ export default function HomePage() {
   const [pagesCount, setPagesCount] = useState(0);
   const navigate = useNavigate();
   const params = useParams();
+  const inStore = useSelector((state: RootState) => state.favourites.items.length);
 
   const page = Number(params.pageNumber) || 1;
   const heroId = params.heroNumber || null;
@@ -29,7 +33,7 @@ export default function HomePage() {
   );
 
   const handlePageChange = (newPage: string) => {
-    if (heroId) {
+    if (heroId && +heroId > +newPage * 10) {
       navigate(`/${newPage}/${heroId}`);
     } else {
       navigate(`/${newPage}`);
@@ -86,6 +90,7 @@ export default function HomePage() {
 
       {isLoading && <Loader />}
       {isApiError && <Chips text={isApiError} />}
+      {inStore > 0 && <StoreStateElement/>}
     </div>
   );
 }

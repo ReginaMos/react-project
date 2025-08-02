@@ -1,0 +1,27 @@
+.store-state {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgb(51 52 57 / 44%);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+main.dark .store-state {
+background-color: rgba(223, 223, 224, 0.555);
+}
+
+.store-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.store-count {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
