@@ -1,0 +1,7 @@
+main.dark h2 {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(223, 223, 224, 0.555);
+  border-radius: 10px;
+  padding: 20px;
+}

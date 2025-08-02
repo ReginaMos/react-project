@@ -4,6 +4,9 @@ import './index.css';
 import App from './App.tsx';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
 import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from './theme/ThemeContext';
+import { store } from './store/store';
+import { Provider } from 'react-redux';
 
 const rootEl = document.getElementById('root');
 if (!rootEl) {
@@ -14,7 +17,11 @@ createRoot(rootEl).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter basename="/react-project/rs-react-app/">
-        <App />
+        <Provider store={store}>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </Provider>
       </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>

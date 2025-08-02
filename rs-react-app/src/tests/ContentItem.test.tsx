@@ -4,6 +4,9 @@ import ContentItem from '../components/ContentItem';
 import type { ShortItemModel } from '../models/models';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import * as ReactRouterDom from 'react-router-dom';
+import favouritesReducer from '../store/favouritesReducer';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 
 const mockNavigate = vi.fn();
 
@@ -16,6 +19,21 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+const renderWithStore = (ui: React.ReactNode, { preloadedState = {} } = {}) => {
+  const testStore = configureStore({
+    reducer: {
+      favourites: favouritesReducer,
+    },
+    preloadedState,
+  });
+
+  return render(
+    <MemoryRouter>
+      <Provider store={testStore}>{ui}</Provider>
+    </MemoryRouter>
+  );
+};
+
 describe('ContentItem Component', () => {
   beforeEach(() => {
     mockNavigate.mockClear();
@@ -27,13 +45,10 @@ describe('ContentItem Component', () => {
       description: 'Jedi Knight from Tatooine',
       gender: 'male',
       id: 1,
+      onToggle: () => vi.fn(),
     };
 
-    render(
-      <MemoryRouter>
-        <ContentItem {...testItem} />
-      </MemoryRouter>
-    );
+    renderWithStore(<ContentItem {...testItem} />);
 
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     expect(screen.getByText('Gender:')).toBeInTheDocument();
@@ -43,10 +58,14 @@ describe('ContentItem Component', () => {
   });
 
   it('renders empty strings when props are missing', () => {
-    render(
-      <MemoryRouter>
-        <ContentItem name="" description="" gender="" id={0} />
-      </MemoryRouter>
+    renderWithStore(
+      <ContentItem
+        name=""
+        description=""
+        gender=""
+        id={0}
+        onToggle={() => vi.fn()}
+      />
     );
 
     expect(screen.getByText('Gender:')).toBeInTheDocument();
@@ -57,10 +76,14 @@ describe('ContentItem Component', () => {
   });
 
   it('handles partially missing data', () => {
-    const { rerender } = render(
-      <MemoryRouter>
-        <ContentItem name="Darth Vader" description="" gender="male" id={1} />
-      </MemoryRouter>
+    renderWithStore(
+      <ContentItem
+        name="Darth Vader"
+        description=""
+        gender="male"
+        id={1}
+        onToggle={() => vi.fn()}
+      />
     );
 
     expect(screen.getByText('Darth Vader')).toBeInTheDocument();
@@ -68,30 +91,28 @@ describe('ContentItem Component', () => {
     expect(screen.getByText('male')).toBeInTheDocument();
     expect(screen.getByText('Info:')).toBeInTheDocument();
 
-    rerender(
-      <MemoryRouter>
-        <ContentItem
-          name="Dart Veyder"
-          description="Sith Lord"
-          gender="male"
-          id={2}
-        />
-      </MemoryRouter>
+    renderWithStore(
+      <ContentItem
+        name="Dart Veyder"
+        description="Sith Lord"
+        gender="male"
+        id={2}
+        onToggle={() => vi.fn()}
+      />
     );
 
     expect(screen.getByText('Sith Lord')).toBeInTheDocument();
   });
 
   it('handles special characters', () => {
-    render(
-      <MemoryRouter>
-        <ContentItem
-          name="R2-D2 & C-3PO"
-          description="Droids < > & @ # $ %"
-          gender="robot"
-          id={1}
-        />
-      </MemoryRouter>
+    renderWithStore(
+      <ContentItem
+        name="R2-D2 & C-3PO"
+        description="Droids < > & @ # $ %"
+        gender="robot"
+        id={2}
+        onToggle={() => vi.fn()}
+      />
     );
 
     expect(screen.getByText('R2-D2 & C-3PO')).toBeInTheDocument();
@@ -100,27 +121,108 @@ describe('ContentItem Component', () => {
   });
 
   it('navigates to correct path when clicked', () => {
+    const store = configureStore({
+      reducer: {
+        favourites: favouritesReducer,
+      },
+      preloadedState: {
+        favourites: {
+          items: [],
+        },
+      },
+    });
+
     render(
-      <MemoryRouter initialEntries={['/1']}>
-        <Routes>
-          <Route
-            path="/:pageNumber"
-            element={
-              <ContentItem
-                name="Leia Organa"
-                description="Princess"
-                gender="female"
-                id={1}
-              />
-            }
-          />
-        </Routes>
-      </MemoryRouter>
+      <Provider store={store}>
+        <MemoryRouter initialEntries={['/1']}>
+          <Routes>
+            <Route
+              path="/:pageNumber"
+              element={
+                <ContentItem
+                  name="Leia Organa"
+                  description="Princess"
+                  gender="female"
+                  id={1}
+                  onToggle={() => vi.fn()}
+                />
+              }
+            />
+          </Routes>
+        </MemoryRouter>
+      </Provider>
     );
 
     const container = screen.getByText('Leia Organa').closest('.item');
     if (container) fireEvent.click(container);
 
     expect(mockNavigate).toHaveBeenCalledWith('/1/1');
+  });
+
+  it('adds in-store class when item is in favourites', () => {
+    const testItem: ShortItemModel = {
+      name: 'Han Solo',
+      description: 'Smuggler',
+      gender: 'male',
+      id: 7,
+      onToggle: () => vi.fn(),
+    };
+
+    renderWithStore(<ContentItem {...testItem} />, {
+      preloadedState: {
+        favourites: {
+          items: [{ id: 7, name: '', description: '', gender: '' }],
+        },
+      },
+    });
+
+    const img = screen.getByAltText('planet-icon');
+    expect(img).toHaveClass('planet-icon in-store');
+  });
+
+  it('adds not-in-store class when item is not in favourites', () => {
+    const testItem: ShortItemModel = {
+      name: 'Chewbacca',
+      description: 'Wookiee',
+      gender: 'male',
+      id: 8,
+      onToggle: () => vi.fn(),
+    };
+
+    renderWithStore(<ContentItem {...testItem} />, {
+      preloadedState: {
+        favourites: {
+          items: [],
+        },
+      },
+    });
+
+    const img = screen.getByAltText('planet-icon');
+    expect(img).toHaveClass('planet-icon not-in-store');
+  });
+
+  it('calls onToggle with correct args when icon clicked', () => {
+    const onToggleMock = vi.fn();
+
+    const testItem: ShortItemModel = {
+      name: 'Yoda',
+      description: 'Jedi Master',
+      gender: 'male',
+      id: 5,
+      onToggle: onToggleMock,
+    };
+
+    renderWithStore(<ContentItem {...testItem} />, {
+      preloadedState: {
+        favourites: {
+          items: [],
+        },
+      },
+    });
+
+    const img = screen.getByAltText('planet-icon');
+    fireEvent.click(img);
+
+    expect(onToggleMock).toHaveBeenCalledWith(5, true);
   });
 });

@@ -1,8 +1,21 @@
 import ContentItem from './ContentItem';
 import type { ItemsContextType } from '../models/models';
 import '../styles/HomePage/Content.css';
+import { useDispatch } from 'react-redux';
+import { addItem, removeItemById } from '../store/favouritesReducer';
 
 export default function Content({ items }: ItemsContextType) {
+  const dispatch = useDispatch();
+
+  const toggleContentItem = (id: number, inStore: boolean) => {
+    const item = items.find((item) => item.id === id);
+    if (inStore && item) {
+      dispatch(addItem(item));
+    } else {
+      dispatch(removeItemById(id));
+    }
+  };
+
   return (
     <div className="content">
       {items.length === 0 && (
@@ -20,6 +33,7 @@ export default function Content({ items }: ItemsContextType) {
               gender={item.gender}
               key={index}
               id={item.id}
+              onToggle={toggleContentItem}
             />
           ))}
         </>

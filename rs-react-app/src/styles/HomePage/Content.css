@@ -30,6 +30,13 @@
   max-width: 350px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+
+  position: relative;
+}
+
+main.dark .about-page,
+main.dark .item {
+  background-color: rgba(223, 223, 224, 0.555);
 }
 
 .item:hover {
@@ -44,4 +51,21 @@
 
 .item-info {
   text-align: left;
+}
+
+.planet-icon {
+  max-width: 35px;
+  max-height: 35px;
+
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.planet-icon.in-store {
+  filter: drop-shadow(0 0 10px rgb(252, 247, 0));
+}
+
+main.dark .planet-icon.in-store {
+  filter: drop-shadow(0 0 10px rgb(5, 255, 38));
 }

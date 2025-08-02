@@ -25,11 +25,19 @@ export default function AuthorInfo() {
       <div className="contacts">
         <div className="contacts-heading">Contact with me:</div>
 
-        <a href="http://" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://www.linkedin.com/in/regina-moiseeva-158821284/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img src={LinkedIn} alt="linkedin-logo" className="logo" />
         </a>
 
-        <a href="http://" target="_blank" rel="noopener noreferrer">
+        <a
+          href="https://github.com/ReginaMos"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <img src={GitHub} alt="github-logo" className="logo" />
         </a>
       </div>

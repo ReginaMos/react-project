@@ -62,6 +62,7 @@ export interface ShortItemModel {
   name: string;
   description: string;
   gender: string;
+  onToggle: (id: number, inStore: boolean) => void;
 }
 
 export interface PersonShort {
