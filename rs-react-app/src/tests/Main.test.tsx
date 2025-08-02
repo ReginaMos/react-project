@@ -56,7 +56,17 @@ describe('main application element', () => {
     const browserRouter = errorBoundary.props.children;
     expect(browserRouter.type.name).toBe('BrowserRouter');
 
-    const app = browserRouter.props.children;
+    const reduxProvider = browserRouter.props.children;
+    expect(reduxProvider.type.displayName || reduxProvider.type.name).toContain(
+      'Provider'
+    );
+
+    const themeProvider = reduxProvider.props.children;
+    expect(themeProvider.type.name || themeProvider.type.displayName).toContain(
+      'ThemeProvider'
+    );
+
+    const app = themeProvider.props.children;
     expect(app.type.name).toBe('App');
   });
 });

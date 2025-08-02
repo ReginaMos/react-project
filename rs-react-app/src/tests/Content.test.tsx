@@ -3,14 +3,28 @@ import { render, screen } from '@testing-library/react';
 import Content from '../components/ContentComponent';
 import type { ItemModel } from '../models/models';
 import { MemoryRouter } from 'react-router-dom';
+import favouritesReducer from '../store/favouritesReducer';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+
+const renderWithStore = (ui: React.ReactNode, preloadedState = {}) => {
+  const testStore = configureStore({
+    reducer: {
+      favourites: favouritesReducer,
+    },
+    preloadedState,
+  });
+
+  return render(
+    <MemoryRouter>
+      <Provider store={testStore}>{ui}</Provider>
+    </MemoryRouter>
+  );
+};
 
 describe('Content Component', () => {
   it('shows empty message when items array is empty', () => {
-    render(
-      <MemoryRouter>
-        <Content items={[]} />
-      </MemoryRouter>
-    );
+    renderWithStore(<Content items={[]} />);
 
     expect(
       screen.getByText('There aren`t any elements by your request...')
@@ -54,11 +68,8 @@ describe('Content Component', () => {
       },
     ];
 
-    render(
-      <MemoryRouter>
-        <Content items={items} />
-      </MemoryRouter>
-    );
+    renderWithStore(<Content items={items} />);
+
     const itemTitles = screen.getAllByText(/(Luke|Vader|Yoda)/);
     expect(itemTitles).toHaveLength(3);
   });
@@ -89,11 +100,7 @@ describe('Content Component', () => {
       },
     ];
 
-    render(
-      <MemoryRouter>
-        <Content items={items} />
-      </MemoryRouter>
-    );
+    renderWithStore(<Content items={items} />);
 
     expect(screen.getByText('Luke')).toBeInTheDocument();
     expect(screen.getByText('male')).toBeInTheDocument();
@@ -152,11 +159,7 @@ describe('Content Component', () => {
       },
     ];
 
-    render(
-      <MemoryRouter>
-        <Content items={items} />
-      </MemoryRouter>
-    );
+    renderWithStore(<Content items={items} />);
 
     const itemContainers = document.querySelectorAll('.item');
     expect(itemContainers).toHaveLength(items.length);
@@ -206,11 +209,7 @@ describe('Content Component', () => {
       },
     ];
 
-    render(
-      <MemoryRouter>
-        <Content items={items} />
-      </MemoryRouter>
-    );
+    renderWithStore(<Content items={items} />);
 
     expect(screen.getByText('R2-D2 & C-3PO')).toBeInTheDocument();
     expect(screen.getByText('Droids < > & @ # $ %')).toBeInTheDocument();

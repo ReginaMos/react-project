@@ -36,7 +36,12 @@ describe('AuthorInfo', () => {
     links.forEach((link) => {
       expect(link).toHaveAttribute('target', '_blank');
       expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-      expect(link).toHaveAttribute('href', 'http://');
     });
+
+    expect(links[0]).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/in/regina-moiseeva-158821284/'
+    );
+    expect(links[1]).toHaveAttribute('href', 'https://github.com/ReginaMos');
   });
 });

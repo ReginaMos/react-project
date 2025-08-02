@@ -2,7 +2,10 @@ import React from 'react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import HomePage from '../pages/HomePage';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { configureStore } from '@reduxjs/toolkit';
+import favouritesReducer from '../store/favouritesReducer';
+import { Provider } from 'react-redux';
 
 vi.mock('../components/Header', () => ({ default: () => <div>Header</div> }));
 vi.mock('../components/Main', () => ({ default: () => <div>Main</div> }));
@@ -29,6 +32,27 @@ const localStorageMock = (() => {
     removeItem: vi.fn((key: string) => (store[key] = undefined)),
   };
 })();
+
+const renderWithStore = (ui: React.ReactNode, preloadedState = {}) => {
+  const testStore = configureStore({
+    reducer: {
+      favourites: favouritesReducer,
+    },
+    preloadedState,
+  });
+
+  return render(<Provider store={testStore}>{ui}</Provider>);
+};
+
+function renderWithRouteAndStore(component: React.ReactNode, route = '/1') {
+  renderWithStore(
+    <MemoryRouter initialEntries={[route]}>
+      <Routes>
+        <Route path="/:pageNumber/:heroNumber?" element={component} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
@@ -57,7 +81,7 @@ describe('HomePage Component', () => {
       return <div data-testid="result">Loaded</div>;
     }
 
-    render(<TestComponent />);
+    renderWithRouteAndStore(<TestComponent />, '/1');
 
     await waitFor(() => {
       expect(onSearchMock).toHaveBeenCalledWith('luke');
@@ -67,11 +91,7 @@ describe('HomePage Component', () => {
   it('displays Chips on API error', async () => {
     fetchMock.mockRejectedValueOnce(new Error('API failed'));
 
-    render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
-    );
+    renderWithRouteAndStore(<HomePage />, '/1');
 
     await waitFor(() => {
       expect(
@@ -81,13 +101,10 @@ describe('HomePage Component', () => {
   });
 
   it('shows Loader during API request', async () => {
-    fetchMock.mockImplementationOnce(() => new Promise(() => {}));
+    fetchMock.mockImplementationOnce(() => new Promise(() => {})); // Never resolves
 
-    render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
-    );
+    renderWithRouteAndStore(<HomePage />, '/1');
+
     await waitFor(() => {
       expect(screen.getByText('Loader')).toBeInTheDocument();
     });
@@ -95,12 +112,7 @@ describe('HomePage Component', () => {
 
   it('displays error text when API throws on 4xx or 5xx', async () => {
     fetchMock.mockRejectedValueOnce(new Error('404'));
-
-    render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
-    );
+    renderWithRouteAndStore(<HomePage />, '/1');
 
     await waitFor(() => {
       expect(
@@ -109,12 +121,7 @@ describe('HomePage Component', () => {
     });
 
     fetchMock.mockRejectedValueOnce(new Error('500'));
-
-    render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
-    );
+    renderWithRouteAndStore(<HomePage />, '/1');
 
     await waitFor(() => {
       expect(
@@ -128,11 +135,7 @@ describe('HomePage Component', () => {
       json: () => Promise.resolve({ results: [] }),
     });
 
-    render(
-      <MemoryRouter>
-        <HomePage />
-      </MemoryRouter>
-    );
+    renderWithRouteAndStore(<HomePage />, '/1');
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(1);
     });

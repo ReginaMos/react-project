@@ -21,7 +21,9 @@ export default function HomePage() {
   const [pagesCount, setPagesCount] = useState(0);
   const navigate = useNavigate();
   const params = useParams();
-  const inStore = useSelector((state: RootState) => state.favourites.items.length);
+  const inStore = useSelector(
+    (state: RootState) => state.favourites.items.length
+  );
 
   const page = Number(params.pageNumber) || 1;
   const heroId = params.heroNumber || null;
@@ -90,7 +92,7 @@ export default function HomePage() {
 
       {isLoading && <Loader />}
       {isApiError && <Chips text={isApiError} />}
-      {inStore > 0 && <StoreStateElement/>}
+      {inStore > 0 && <StoreStateElement />}
     </div>
   );
 }
