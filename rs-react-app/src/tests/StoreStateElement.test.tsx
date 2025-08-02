@@ -20,19 +20,30 @@ describe('StoreStateElement', () => {
   it('renders count of favourites', () => {
     const store = createTestStore({
       favourites: {
-        items: [{ id: 1, name: 'Luke', description: 'Jedi',
-        gender: 'male',
-        skin_color: 'fair',
-        eye_color: 'blue',
-        birth_year: '19BBY',
-        height: '172',
-        hair_color: 'blond' }, { id: 2, name: 'Leia', description: 'Jedi',
-        gender: 'male',
-        skin_color: 'fair',
-        eye_color: 'blue',
-        birth_year: '19BBY',
-        height: '172',
-        hair_color: 'blond', }],
+        items: [
+          {
+            id: 1,
+            name: 'Luke',
+            description: 'Jedi',
+            gender: 'male',
+            skin_color: 'fair',
+            eye_color: 'blue',
+            birth_year: '19BBY',
+            height: '172',
+            hair_color: 'blond',
+          },
+          {
+            id: 2,
+            name: 'Leia',
+            description: 'Jedi',
+            gender: 'male',
+            skin_color: 'fair',
+            eye_color: 'blue',
+            birth_year: '19BBY',
+            height: '172',
+            hair_color: 'blond',
+          },
+        ],
       },
     });
 
@@ -48,13 +59,19 @@ describe('StoreStateElement', () => {
   it('dispatches clearFavourites when "Clear all" is clicked', () => {
     const store = createTestStore({
       favourites: {
-        items: [{ id: 1, name: 'Luke', description: 'Jedi',
-        gender: 'male',
-        skin_color: 'fair',
-        eye_color: 'blue',
-        birth_year: '19BBY',
-        height: '172',
-        hair_color: 'blond', }],
+        items: [
+          {
+            id: 1,
+            name: 'Luke',
+            description: 'Jedi',
+            gender: 'male',
+            skin_color: 'fair',
+            eye_color: 'blue',
+            birth_year: '19BBY',
+            height: '172',
+            hair_color: 'blond',
+          },
+        ],
       },
     });
 
@@ -79,12 +96,12 @@ describe('StoreStateElement', () => {
             id: 1,
             name: 'Luke',
             description: 'Jedi',
-        gender: 'male',
-        skin_color: 'fair',
-        eye_color: 'blue',
-        birth_year: '19BBY',
-        height: '172',
-        hair_color: 'blond',
+            gender: 'male',
+            skin_color: 'fair',
+            eye_color: 'blue',
+            birth_year: '19BBY',
+            height: '172',
+            hair_color: 'blond',
           },
         ],
       },
@@ -101,16 +118,16 @@ describe('StoreStateElement', () => {
 
     const originalCreateElement = document.createElement.bind(document);
     vi.spyOn(document, 'createElement').mockImplementation((tag: string) => {
-  if (tag === 'a') {
-    return {
-      href: '',
-      download: '',
-      click: clickMock,
-      setAttribute: vi.fn(),
-    } as unknown as HTMLAnchorElement;
-  }
-  return originalCreateElement(tag);
-});
+      if (tag === 'a') {
+        return {
+          href: '',
+          download: '',
+          click: clickMock,
+          setAttribute: vi.fn(),
+        } as unknown as HTMLAnchorElement;
+      }
+      return originalCreateElement(tag);
+    });
 
     render(
       <Provider store={store}>

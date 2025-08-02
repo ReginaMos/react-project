@@ -101,7 +101,7 @@ describe('HomePage Component', () => {
   });
 
   it('shows Loader during API request', async () => {
-    fetchMock.mockImplementationOnce(() => new Promise(() => {})); // Never resolves
+    fetchMock.mockImplementationOnce(() => new Promise(() => {}));
 
     renderWithRouteAndStore(<HomePage />, '/1');
 
