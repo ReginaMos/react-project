@@ -16,7 +16,7 @@
 }
 
 main.dark .search {
-  background-color: rgba(215, 215, 219, 0.322);
+  background-color: rgba(223, 223, 224, 0.555);
 }
 
 input {
@@ -26,4 +26,8 @@ input {
   border: 1px solid #f3f0bf;
   text-align: left;
   min-width: 350px;
+}
+
+main.dark input {
+  border: 1px solid #263063;
 }

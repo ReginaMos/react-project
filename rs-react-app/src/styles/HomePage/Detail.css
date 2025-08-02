@@ -16,7 +16,8 @@
 }
 
 main.dark .details {
-  background-color: rgba(112, 131, 226, 0.719);
+  background-color: rgba(135, 150, 224, 0.719);
+  color: #243e5c;
 }
 
 .item-name {

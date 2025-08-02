@@ -32,7 +32,8 @@
   transition: all 0.3s ease-in-out;
 }
 
-main.dark .about-page,  main.dark .item{
+main.dark .about-page,
+main.dark .item {
   background-color: rgba(223, 223, 224, 0.555);
 }
 

@@ -7,6 +7,12 @@
 html {
   height: 100%;
   scroll-behavior: smooth;
+
+  background-image: url('./assets/background.jpg');
+  color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 input {
@@ -51,7 +57,7 @@ body {
   background-repeat: no-repeat;
 }
 
-body:has(.main.dark) {
+body:has(main.dark) {
   background-image: url('./assets/bg-dark.jpg');
   color: #263063;
 }
@@ -63,9 +69,13 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+}
+
+body:has(main.dark) button {
+  background-color: #263063;
+  color: #fff;
 }
 
 header {
@@ -75,10 +85,13 @@ header {
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 50px;
+
+  position: relative;
 }
 
-body:has(.main.dark) header {
+body:has(main.dark) header {
   background-color: rgba(223, 223, 224, 0.555);
+  color: #263063;
 }
 
 main {
@@ -99,6 +112,21 @@ main {
   border-radius: 10px;
 }
 
+body:has(main.dark) .nav-link {
+  color: #263063;
+}
+
 .nav-link.active {
   border: 1px solid #fff;
+}
+
+body:has(main.dark) .nav-link.active {
+  border: 1px solid #263063;
+}
+
+.theme-icon {
+  max-width: 50px;
+  position: absolute;
+  top: 20px;
+  right: 15px;
 }

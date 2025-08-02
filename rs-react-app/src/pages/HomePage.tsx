@@ -9,6 +9,7 @@ import Search from '../elements/SearchElement';
 import Pagination from '../components/Pagination';
 import type { ItemModel } from '../models/models';
 import { fetchPeople } from '../utils/fetchPeople';
+import NotFoundPage from './NotFoundPage';
 
 export default function HomePage() {
   const [items, setItems] = useState<ItemModel[]>([]);
@@ -61,6 +62,13 @@ export default function HomePage() {
   useEffect(() => {
     onSearch(String(page), searchTerm);
   }, [page, searchTerm]);
+
+  if (
+    !/^\d+$/.test(params.pageNumber || '') ||
+    (params.heroNumber && !/^\d+$/.test(params.heroNumber || ''))
+  ) {
+    return <NotFoundPage />;
+  }
 
   return (
     <div className="home-page">

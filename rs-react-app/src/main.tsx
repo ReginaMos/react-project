@@ -4,7 +4,7 @@ import './index.css';
 import App from './App.tsx';
 import ErrorBoundary from './components/ErrorBoundary.tsx';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeContext, ThemeProvider } from './theme/ThemeContext'
+import { ThemeProvider } from './theme/ThemeContext';
 
 const rootEl = document.getElementById('root');
 if (!rootEl) {
@@ -15,9 +15,9 @@ createRoot(rootEl).render(
   <StrictMode>
     <ErrorBoundary>
       <BrowserRouter basename="/react-project/rs-react-app/">
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </BrowserRouter>
     </ErrorBoundary>
   </StrictMode>
