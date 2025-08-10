@@ -78,3 +78,21 @@ export interface PersonFind {
   uid: string;
   _v: number;
 }
+
+export interface PeopleShortListResponse {
+  results: PersonShort[];
+  total_pages: number;
+}
+
+export interface PeopleFindListResponse {
+  result: PersonFind[];
+  total_pages: number;
+}
+
+export interface PeopleInfoResponse {
+  result: PersonFind;
+}
+
+export interface DetailedPersonResponse {
+  result: ItemModel;
+}
