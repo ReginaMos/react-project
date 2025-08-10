@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import useLocalStorage from '../hooks/useLocalStorage';
 import '../styles/HomePage/HomePage.css';
@@ -8,31 +7,31 @@ import Chips from '../elements/ChipsElement';
 import Search from '../elements/SearchElement';
 import Pagination from '../components/Pagination';
 import StoreStateElement from '../elements/StoreStateElement';
-import type { ItemModel } from '../models/models';
-import { fetchPeople } from '../utils/fetchPeople';
+import { useGetPeopleQuery } from '../store/peopleApi';
 import NotFoundPage from './NotFoundPage';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 
 export default function HomePage() {
-  const [items, setItems] = useState<ItemModel[]>([]);
-  const [isLoading, setLoading] = useState(false);
-  const [isApiError, setApiError] = useState('');
-  const [pagesCount, setPagesCount] = useState(0);
   const navigate = useNavigate();
   const params = useParams();
   const inStore = useSelector(
     (state: RootState) => state.favourites.items.length
   );
 
-  const page = Number(params.pageNumber) || 1;
+  const page = Number(params.pageNumber ?? 1);
   const heroId = params.heroNumber || null;
-
-  const selectedItem = items.find((item) => String(item.id) === heroId);
   const [searchTerm, setSearchTerm] = useLocalStorage<string>(
     'search_ReginaMos',
     ''
   );
+
+  const { data, error, isLoading, isFetching, refetch } = useGetPeopleQuery({
+    page: String(page),
+    find: searchTerm,
+  });
+
+  const selectedItem = data?.items.find((item) => String(item.id) === heroId);
 
   const handlePageChange = (newPage: string) => {
     if (heroId && +heroId > +newPage * 10) {
@@ -40,34 +39,12 @@ export default function HomePage() {
     } else {
       navigate(`/${newPage}`);
     }
-
-    onSearch(newPage, searchTerm);
   };
 
-  const onSearch = async (page: string, find: string) => {
-    setLoading(true);
-    setApiError('');
-    try {
-      const data = await fetchPeople(page, find);
-      if (typeof data !== 'string') {
-        setItems(data.items);
-        setPagesCount(data.count);
-        setSearchTerm(find);
-      } else {
-        setApiError('API error: ' + data);
-      }
-    } catch (err) {
-      setApiError(
-        'Unexpected error: ' +
-          (err instanceof Error ? err.message : String(err))
-      );
-    }
-    setLoading(false);
+  const handleSearch = (page: string, find: string) => {
+    setSearchTerm(find);
+    navigate(`/${page}`);
   };
-
-  useEffect(() => {
-    onSearch(String(page), searchTerm);
-  }, [page, searchTerm]);
 
   if (
     !/^\d+$/.test(params.pageNumber || '') ||
@@ -78,20 +55,24 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
-      <Search onSearch={onSearch} />
+      <Search onSearch={handleSearch} onRefresh={refetch} />
+
       <div className={`content-layout ${heroId ? 'with-details' : ''}`}>
-        <Content items={items} />
+        <Content items={data?.items || []} />
         <Outlet context={{ selectedItem }} />
       </div>
 
-      <Pagination
-        currentPage={page}
-        pagesCount={pagesCount}
-        onPageChange={handlePageChange}
-      />
+      {data && (
+        <Pagination
+          currentPage={page}
+          pagesCount={data.count}
+          onPageChange={handlePageChange}
+        />
+      )}
 
       {isLoading && <Loader />}
-      {isApiError && <Chips text={isApiError} />}
+      {isFetching && !isLoading && <Loader />}
+      {error && <Chips text={`API Error: ${String(error || error)}`} />}
       {inStore > 0 && <StoreStateElement />}
     </div>
   );

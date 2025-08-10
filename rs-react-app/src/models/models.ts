@@ -4,6 +4,7 @@ export interface ErrorProps {
 
 export interface SearchContextType {
   onSearch: (page: string, searchTerm: string) => void;
+  onRefresh: () => void;
 }
 
 export interface ItemsContextType {
@@ -77,4 +78,22 @@ export interface PersonFind {
   description: string;
   uid: string;
   _v: number;
+}
+
+export interface PeopleShortListResponse {
+  results: PersonShort[];
+  total_pages: number;
+}
+
+export interface PeopleFindListResponse {
+  result: PersonFind[];
+  total_pages: number;
+}
+
+export interface PeopleInfoResponse {
+  result: PersonFind;
+}
+
+export interface DetailedPersonResponse {
+  result: ItemModel;
 }

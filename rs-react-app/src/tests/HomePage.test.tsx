@@ -6,6 +6,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import favouritesReducer from '../store/favouritesReducer';
 import { Provider } from 'react-redux';
+import { useGetPeopleQuery } from '../store/peopleApi';
 
 vi.mock('../components/Header', () => ({ default: () => <div>Header</div> }));
 vi.mock('../components/Main', () => ({ default: () => <div>Main</div> }));
@@ -14,6 +15,10 @@ vi.mock('../elements/LoaderElement', () => ({
 }));
 vi.mock('../elements/ChipsElement', () => ({
   default: ({ text }: { text: string }) => <div>Chips: {text}</div>,
+}));
+
+vi.mock('../store/peopleApi', () => ({
+  useGetPeopleQuery: vi.fn(),
 }));
 
 const fetchMock = vi.fn();
@@ -89,19 +94,31 @@ describe('HomePage Component', () => {
   });
 
   it('displays Chips on API error', async () => {
-    fetchMock.mockRejectedValueOnce(new Error('API failed'));
+    (useGetPeopleQuery as vi.Mock).mockReturnValue({
+      data: null,
+      error: 'API failed',
+      isLoading: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    });
 
     renderWithRouteAndStore(<HomePage />, '/1');
 
     await waitFor(() => {
       expect(
-        screen.getByText('Chips: API error: Error: API failed')
+        screen.getByText('Chips: API Error: API failed')
       ).toBeInTheDocument();
     });
   });
 
   it('shows Loader during API request', async () => {
-    fetchMock.mockImplementationOnce(() => new Promise(() => {}));
+    (useGetPeopleQuery as vi.Mock).mockReturnValue({
+      data: null,
+      error: null,
+      isLoading: true,
+      isFetching: false,
+      refetch: vi.fn(),
+    });
 
     renderWithRouteAndStore(<HomePage />, '/1');
 
@@ -111,33 +128,66 @@ describe('HomePage Component', () => {
   });
 
   it('displays error text when API throws on 4xx or 5xx', async () => {
-    fetchMock.mockRejectedValueOnce(new Error('404'));
-    renderWithRouteAndStore(<HomePage />, '/1');
-
-    await waitFor(() => {
-      expect(
-        screen.getByText('Chips: API error: Error: 404')
-      ).toBeInTheDocument();
+    (useGetPeopleQuery as vi.Mock).mockReturnValue({
+      data: null,
+      error: '404',
+      isLoading: false,
+      isFetching: false,
+      refetch: vi.fn(),
     });
 
-    fetchMock.mockRejectedValueOnce(new Error('500'));
     renderWithRouteAndStore(<HomePage />, '/1');
 
     await waitFor(() => {
-      expect(
-        screen.getByText('Chips: API error: Error: 500')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Chips: API Error: 404')).toBeInTheDocument();
+    });
+
+    (useGetPeopleQuery as vi.Mock).mockReturnValue({
+      data: null,
+      error: '500',
+      isLoading: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    });
+    renderWithRouteAndStore(<HomePage />, '/1');
+
+    await waitFor(() => {
+      expect(screen.getByText('Chips: API Error: 500')).toBeInTheDocument();
     });
   });
 
   it('calls API on component mount', async () => {
-    fetchMock.mockResolvedValueOnce({
-      json: () => Promise.resolve({ results: [] }),
+    const mockRefetch = vi.fn();
+
+    (useGetPeopleQuery as vi.Mock).mockReturnValue({
+      data: { items: [], count: 0 },
+      error: null,
+      isLoading: false,
+      isFetching: false,
+      refetch: mockRefetch,
     });
 
     renderWithRouteAndStore(<HomePage />, '/1');
     await waitFor(() => {
-      expect(fetchMock).toHaveBeenCalledTimes(1);
+      expect(useGetPeopleQuery).toHaveBeenCalledTimes(1);
+      expect(useGetPeopleQuery).toHaveBeenCalledWith({
+        page: '1',
+        find: '',
+      });
     });
+  });
+
+  it('renders content when data is loaded', () => {
+    (useGetPeopleQuery as vi.Mock).mockReturnValue({
+      data: { items: [{ id: 1, name: 'Luke' }], count: 5 },
+      error: null,
+      isLoading: false,
+      isFetching: false,
+      refetch: vi.fn(),
+    });
+
+    renderWithRouteAndStore(<HomePage />, '/1');
+
+    expect(screen.getByText('Luke')).toBeInTheDocument();
   });
 });

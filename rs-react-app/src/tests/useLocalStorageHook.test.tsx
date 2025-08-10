@@ -71,4 +71,41 @@ describe('useLocalStorage', () => {
       );
     });
   });
+
+  it('should maintain separate state for different keys', async () => {
+    render(
+      <>
+        <TestComponent keyName="key1" />
+        <TestComponent keyName="key2" />
+      </>
+    );
+
+    const [input1, input2] = screen.getAllByPlaceholderText('Test input');
+    await userEvent.type(input1, 'value1');
+    await userEvent.type(input2, 'value2');
+
+    expect(input1).toHaveValue('value1');
+    expect(input2).toHaveValue('value2');
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'key1',
+      JSON.stringify('value1')
+    );
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'key2',
+      JSON.stringify('value2')
+    );
+  });
+
+  it('should handle complex objects in localStorage', () => {
+    const complexValue = { a: 1, b: { c: 2 } };
+    localStorage.setItem('complexKey', JSON.stringify(complexValue));
+
+    function ComplexComponent() {
+      const [value] = useLocalStorage('complexKey', {});
+      return <div>{JSON.stringify(value)}</div>;
+    }
+
+    render(<ComplexComponent />);
+    expect(screen.getByText(JSON.stringify(complexValue))).toBeInTheDocument();
+  });
 });

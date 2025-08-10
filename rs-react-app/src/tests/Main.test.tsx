@@ -8,6 +8,16 @@ vi.mock('react-dom/client', () => ({
   createRoot: createRootMock,
 }));
 
+vi.mock('../store', () => ({
+  store: {},
+}));
+
+vi.mock('../App', () => ({
+  default: function App() {
+    return <div />;
+  },
+}));
+
 describe('main application element', () => {
   const originalConsoleError = console.error;
   const originalGetElementById = document.getElementById;

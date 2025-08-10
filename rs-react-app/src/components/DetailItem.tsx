@@ -8,7 +8,7 @@ export default function DetailItem({ item }: { item: ItemModel }) {
   const navigate = useNavigate();
 
   const handleCloseDetails = () => {
-    const page = Number(params.pageNumber) || 1;
+    const page = Number(params.pageNumber ?? 1);
     navigate(`/${page}`);
   };
 
