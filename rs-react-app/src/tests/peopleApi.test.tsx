@@ -4,7 +4,6 @@ import { api } from '../store/peopleApi';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import type { PropsWithChildren } from 'react';
-// import type { PeopleFindListResponse, PeopleInfoResponse, PeopleShortListResponse } from '../models/models';
 
 interface PersonProperties {
   name: string;
@@ -40,7 +39,10 @@ interface PeopleShortListResponse {
   total_pages: number;
 }
 
-type ApiResponse = PeopleShortListResponse | PeopleInfoResponse | PeopleFindListResponse;
+type ApiResponse =
+  | PeopleShortListResponse
+  | PeopleInfoResponse
+  | PeopleFindListResponse;
 
 function setupApiStore() {
   const store = configureStore({
