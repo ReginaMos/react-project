@@ -4,6 +4,7 @@ export interface ErrorProps {
 
 export interface SearchContextType {
   onSearch: (page: string, searchTerm: string) => void;
+  onRefresh: () => void;
 }
 
 export interface ItemsContextType {

@@ -7,8 +7,7 @@ import Chips from '../elements/ChipsElement';
 import Search from '../elements/SearchElement';
 import Pagination from '../components/Pagination';
 import StoreStateElement from '../elements/StoreStateElement';
-import { useGetPeopleQuery, api } from '../store/peopleApi';
-import { useDispatch } from 'react-redux';
+import { useGetPeopleQuery } from '../store/peopleApi';
 import NotFoundPage from './NotFoundPage';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
@@ -16,7 +15,6 @@ import type { RootState } from '../store/store';
 export default function HomePage() {
   const navigate = useNavigate();
   const params = useParams();
-  const dispatch = useDispatch();
   const inStore = useSelector(
     (state: RootState) => state.favourites.items.length
   );
@@ -28,14 +26,11 @@ export default function HomePage() {
     ''
   );
 
-  const {
-    data,
-    error,
-    isLoading,
-    isFetching,
-    refetch,
-  } = useGetPeopleQuery({ page: String(page), find: searchTerm });
-  
+  const { data, error, isLoading, isFetching, refetch } = useGetPeopleQuery({
+    page: String(page),
+    find: searchTerm,
+  });
+
   const selectedItem = data?.items.find((item) => String(item.id) === heroId);
 
   const handlePageChange = (newPage: string) => {
@@ -60,33 +55,28 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
-      <Search onSearch={handleSearch} />
+      <Search onSearch={handleSearch} onRefresh={refetch} />
 
-      <div style={{ marginBottom: 8 }}>
+      {/* <div style={{ marginBottom: 8 }}>
         <button onClick={() => refetch()}>Refresh (refetch)</button>
-        <button
-          onClick={() =>
-            dispatch(api.util.invalidateTags([{ type: 'People', id: 'LIST' }]))
-          }
-        >
-          Invalidate cache
-        </button>
-      </div>
+      </div> */}
 
       <div className={`content-layout ${heroId ? 'with-details' : ''}`}>
         <Content items={data?.items || []} />
         <Outlet context={{ selectedItem }} />
       </div>
 
-      {data && <Pagination
-        currentPage={page}
-        pagesCount={data.count}
-        onPageChange={handlePageChange}
-      />}
+      {data && (
+        <Pagination
+          currentPage={page}
+          pagesCount={data.count}
+          onPageChange={handlePageChange}
+        />
+      )}
 
       {isLoading && <Loader />}
       {isFetching && !isLoading && <Loader />}
-      {error && <Chips text={`Ошибка: ${String((error) || error)}`}  />}
+      {error && <Chips text={`Ошибка: ${String(error || error)}`} />}
       {inStore > 0 && <StoreStateElement />}
     </div>
   );

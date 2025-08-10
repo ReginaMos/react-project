@@ -16,17 +16,16 @@ function deleteSpaces(str = '') {
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://www.swapi.tech/api' }),
-  tagTypes: ['People', 'Person'],
   endpoints: (builder) => ({
     getPeople: builder.query<APIResponse, { page: string; find?: string }>({
       async queryFn(arg, _queryApi, _extraOptions, fetchWithBQ) {
         try {
           const { page, find = '' } = arg;
           const searchTerm = deleteSpaces(find);
-          const basePath = `/people?page=${page}&limit=10`;
+          const basePath = `/people?page=${page}&limit=12`;
           const url = searchTerm ? `${basePath}&name=${searchTerm}` : basePath;
 
-          const res = await fetchWithBQ(url); 
+          const res = await fetchWithBQ(url);
           if (res.error) return { error: res.error };
           const data = res.data as PeopleFindListResponse;
 
@@ -35,7 +34,7 @@ export const api = createApi({
 
           if (searchTerm) {
             const results: PersonFind[] = data.result || [];
-            const firstItem = (+page - 1) * 10;
+            const firstItem = (+page - 1) * 12;
             detailedItems = results
               .map((item) => ({
                 id: +item.uid,
@@ -48,15 +47,15 @@ export const api = createApi({
                 height: item.properties.height,
                 hair_color: item.properties.hair_color,
               }))
-              .slice(firstItem, firstItem + 10);
-            count = Math.ceil(results.length / 10);
+              .slice(firstItem, firstItem + 12);
+            count = Math.ceil(results.length / 12);
           } else {
             const data = res.data as PeopleShortListResponse;
             const results: PersonShort[] = data.results || [];
-            
+
             const details = await Promise.all(
               results.map(async (item) => {
-                const r = await fetchWithBQ(item.url); 
+                const r = await fetchWithBQ(item.url);
                 if (r.error) {
                   return {
                     id: +item.uid,
@@ -96,17 +95,9 @@ export const api = createApi({
             } as APIResponse,
           };
         } catch (error) {
-          return { error: { status: 'CUSTOM_ERROR', error: String(error) }};
+          return { error: { status: 'CUSTOM_ERROR', error: String(error) } };
         }
       },
-
-      providesTags: (result) =>
-        result
-          ? [
-              { type: 'People', id: 'LIST' as const },
-              ...result.items.map((item) => ({ type: 'Person' as const, id: item.id })),
-            ]
-          : [{ type: 'People', id: 'LIST' as const }],
     }),
 
     getPersonById: builder.query<ItemModel, string>({
@@ -125,7 +116,6 @@ export const api = createApi({
           hair_color: person.properties.hair_color,
         };
       },
-      providesTags: (_result, _error, id) => [{ type: 'Person', id }],
     }),
   }),
 });

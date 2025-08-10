@@ -1,3 +1,12 @@
+.search-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+
+  margin-bottom: 30px;
+}
+
 .search {
   display: flex;
   justify-content: space-between;
@@ -11,8 +20,6 @@
   background-color: rgb(51 52 57 / 44%);
   border-radius: 10px;
   padding: 20px;
-
-  margin-bottom: 30px;
 }
 
 main.dark .search {
