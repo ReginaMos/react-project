@@ -19,7 +19,7 @@ export default function HomePage() {
     (state: RootState) => state.favourites.items.length
   );
 
-  const page = Number(params.pageNumber) || 1;
+  const page = Number(params.pageNumber ?? 1);
   const heroId = params.heroNumber || null;
   const [searchTerm, setSearchTerm] = useLocalStorage<string>(
     'search_ReginaMos',
@@ -57,10 +57,6 @@ export default function HomePage() {
     <div className="home-page">
       <Search onSearch={handleSearch} onRefresh={refetch} />
 
-      {/* <div style={{ marginBottom: 8 }}>
-        <button onClick={() => refetch()}>Refresh (refetch)</button>
-      </div> */}
-
       <div className={`content-layout ${heroId ? 'with-details' : ''}`}>
         <Content items={data?.items || []} />
         <Outlet context={{ selectedItem }} />
@@ -76,7 +72,7 @@ export default function HomePage() {
 
       {isLoading && <Loader />}
       {isFetching && !isLoading && <Loader />}
-      {error && <Chips text={`Ошибка: ${String(error || error)}`} />}
+      {error && <Chips text={`API Error: ${String(error || error)}`} />}
       {inStore > 0 && <StoreStateElement />}
     </div>
   );
