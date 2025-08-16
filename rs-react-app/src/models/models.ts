@@ -9,6 +9,7 @@ export interface SearchContextType {
 
 export interface ItemsContextType {
   items: ItemModel[];
+  onItemClick: (id: number) => void;
 }
 
 export interface DetailsState {
@@ -64,6 +65,7 @@ export interface ShortItemModel {
   description: string;
   gender: string;
   onToggle: (id: number, inStore: boolean) => void;
+  onItemClick: (id: number) => void;
 }
 
 export interface PersonShort {
@@ -96,4 +98,11 @@ export interface PeopleInfoResponse {
 
 export interface DetailedPersonResponse {
   result: ItemModel;
+}
+
+export interface HomePageProps {
+  initialPage: number;
+  initialHeroId: string | null;
+  initialFind: string;
+  locale: string;
 }

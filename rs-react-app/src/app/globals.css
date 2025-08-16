@@ -1,0 +1,7 @@
+html[lang='ru'] {
+  font-family: var(--font-russo), sans-serif;
+}
+
+html[lang='en'] {
+  font-family: var(--font-orbitron), sans-serif;
+}

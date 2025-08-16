@@ -4,8 +4,12 @@ import '../styles/HomePage/Content.css';
 import { useDispatch } from 'react-redux';
 import { addItem, removeItemById } from '../store/favouritesReducer';
 
-export default function Content({ items }: ItemsContextType) {
+export default function Content({ items, onItemClick }: ItemsContextType) {
   const dispatch = useDispatch();
+
+  const heroClick = (id: number) => {
+    onItemClick(id);
+  };
 
   const toggleContentItem = (id: number, inStore: boolean) => {
     const item = items.find((item) => item.id === id);
@@ -34,6 +38,7 @@ export default function Content({ items }: ItemsContextType) {
               key={index}
               id={item.id}
               onToggle={toggleContentItem}
+              onItemClick={heroClick}
             />
           ))}
         </>

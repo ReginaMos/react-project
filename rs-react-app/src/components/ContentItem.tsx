@@ -1,4 +1,3 @@
-import { useNavigate, useParams } from 'react-router-dom';
 import type { ShortItemModel } from '../models/models';
 import planet from '../assets/planet-icon.png';
 import { useSelector } from 'react-redux';
@@ -10,15 +9,8 @@ export default function ContentItem({
   gender,
   id,
   onToggle,
+  onItemClick,
 }: ShortItemModel) {
-  const navigate = useNavigate();
-  const params = useParams();
-  const page = Number(params.pageNumber) || 1;
-
-  const handleOpenDetails = () => {
-    navigate(`/${page}/${id}`);
-  };
-
   const inStore = useSelector((state: RootState) =>
     state.favourites.items.some((item) => item.id === id)
   );
@@ -28,11 +20,15 @@ export default function ContentItem({
     onToggle(id, !inStore);
   };
 
+  const heroClick = () => {
+    onItemClick(id);
+  };
+
   return (
-    <div className="item" onClick={handleOpenDetails}>
+    <div className="item" onClick={heroClick}>
       <div>
         <img
-          src={planet}
+          src={planet.src}
           alt="planet-icon"
           className={`planet-icon ${inStore ? 'in-store' : 'not-in-store'}`}
           onClick={toggleStatus}
