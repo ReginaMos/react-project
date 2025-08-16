@@ -100,6 +100,11 @@ header {
 
   position: relative;
   min-width: 50vw;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 60px;
 }
 
 header.dark {
@@ -115,7 +120,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 60px;
+  gap: 40px;
 }
 
 .nav-link {
@@ -139,7 +144,27 @@ body:has(header.dark) .nav-link.active {
 
 .theme-icon {
   max-width: 50px;
-  position: absolute;
-  top: 20px;
-  right: 15px;
+}
+
+.lang-switcher {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.locale {
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.locale.active, .locale:hover {
+  border: 1px solid #fff;
+}
+
+body:has(header.dark) .locale.active, body:has(header.dark) .locale:hover {
+  border: 1px solid #263063;
 }

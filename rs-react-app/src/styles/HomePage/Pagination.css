@@ -28,8 +28,8 @@
   transition: all 0.3s ease-in-out;
 }
 
-header.dark .current-page,
-header.dark .pagination-arrow {
+body:has(header.dark) .current-page,
+body:has(header.dark) .pagination-arrow {
   background-color: rgba(223, 223, 224, 0.555);
 }
 

@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useContext } from 'react';
 import { ThemeContext } from '../theme/ThemeContext';
 import Image from 'next/image';
@@ -8,7 +8,9 @@ import { useTranslations } from 'next-intl';
 
 export default function Header() {
   const pathname = usePathname();
-  const isHomeOrDetail = /^\/(en|ru)$/.test(pathname || "");
+  const router = useRouter();
+  
+  const isHomeOrDetail = /^\/(en|ru)$/.test(pathname || '');
   const localeMatch = pathname?.match(/^\/(en|ru)/);
   const locale = localeMatch ? localeMatch[1] : 'en';
 
@@ -17,8 +19,29 @@ export default function Header() {
 
   const t = useTranslations('Header');
 
+  const switchLanguage = (newLocale: 'en' | 'ru') => {
+    const pathWithoutLocale = pathname?.replace(/^\/(en|ru)/, '');
+    router.push(`/${newLocale}${pathWithoutLocale}`);
+    document.documentElement.lang = newLocale;
+  };
+
   return (
     <header className={theme}>
+       <div className="lang-switcher">
+        <div
+          onClick={() => switchLanguage('en')}
+          className={locale === 'en' ? 'locale active' : 'locale'}
+        >
+          EN
+        </div>
+        <div
+          onClick={() => switchLanguage('ru')}
+          className={locale === 'ru' ? 'locale active' : 'locale'}
+        >
+          RU
+        </div>
+      </div>
+
       <nav className="nav">
         <Link
           href={`/${locale}?page=1`}

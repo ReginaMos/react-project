@@ -13,5 +13,26 @@
   "Header": {
     "home": "Home",
     "about": "About"
+  },
+  "Search": {
+    "refetch": "Refetch",
+    "search": "Search",
+    "find": "Find"
+  },
+  "Content": {
+    "nothing": "There aren`t any elements by your request...",
+    "gender": "Gender:",
+    "info": "Info:",
+    "details": "Details of",
+    "birth-year": "Birth year:",
+    "height": "Height:",
+    "skin-color": "Skin color:",
+    "eye-color": "Eye color:",
+    "hair-color": "Hair color:"
+  },
+  "Store": {
+    "main-text": "elements selected",
+    "clear": "Clear all",
+    "save": "Save"
   }
 }

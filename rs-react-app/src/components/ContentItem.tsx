@@ -2,6 +2,7 @@ import type { ShortItemModel } from '../models/models';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 export default function ContentItem({
   name,
@@ -24,6 +25,8 @@ export default function ContentItem({
     onItemClick(id);
   };
 
+  const t = useTranslations('Content');
+
   return (
     <div className="item" onClick={heroClick}>
       <div>
@@ -39,10 +42,10 @@ export default function ContentItem({
       <div className="item-name">{name}</div>
       <div className="item-info">
         <div className="item-gender">
-          <b>Gender:</b> {gender}
+          <b>{t('gender')}</b> {gender}
         </div>
         <div className="item-description">
-          <b>Info:</b> {description}
+          <b>{t('info')}</b> {description}
         </div>
       </div>
     </div>

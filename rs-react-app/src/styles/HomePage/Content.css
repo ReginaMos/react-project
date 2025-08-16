@@ -34,8 +34,8 @@
   position: relative;
 }
 
-header.dark .about-page,
-header.dark .item {
+body:has(header.dark) .about-page,
+body:has(header.dark) .item {
   background-color: rgba(223, 223, 224, 0.555);
 }
 
@@ -66,6 +66,6 @@ header.dark .item {
   filter: drop-shadow(0 0 10px rgb(252, 247, 0));
 }
 
-header.dark .planet-icon.in-store {
+body:has(header.dark) .planet-icon.in-store {
   filter: drop-shadow(0 0 10px rgb(5, 255, 38));
 }

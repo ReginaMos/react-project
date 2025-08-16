@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import { clearFavourites } from '../store/favouritesReducer';
 import '../styles/StoreState.css';
+import { useTranslations } from 'next-intl';
 
 export default function StoreStateElement() {
   const dispatch = useDispatch();
@@ -42,12 +43,14 @@ export default function StoreStateElement() {
     URL.revokeObjectURL(link.href);
   };
 
+  const t = useTranslations('Store');
+
   return (
     <div className="store-state">
-      <div className="store-count">{count} elements selected</div>
+      <div className="store-count">{count} {t('main-text')}</div>
       <div className="store-buttons">
-        <button onClick={() => dispatch(clearFavourites())}>Clear all</button>
-        <button onClick={saveCSV}>Save</button>
+        <button onClick={() => dispatch(clearFavourites())}>{t('clear')}</button>
+        <button onClick={saveCSV}>{t('save')}</button>
       </div>
     </div>
   );

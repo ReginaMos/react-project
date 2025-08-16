@@ -12,20 +12,34 @@ import DetailItem from '../components/DetailItem';
 import { useGetPeopleQuery } from '../store/peopleApi';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
+import { useEffect, useState } from 'react';
+import '../styles/HomePage/HomePage.css';
 
 export default function HomePage() {
   const router = useRouter();
-  const pathname = usePathname();
+  const pathname = usePathname() || '/en';
   const searchParams = useSearchParams();
 
   const [searchTerm, setSearchTerm] = useLocalStorage<string>(
     'search_ReginaMos',
     ''
   );
+  const [heroId, setHeroId] = useState<string | null>(null);
 
   const page = Number(searchParams?.get('page') ?? '1');
-  const heroId = searchParams?.get('hero') ?? null;
+  // const heroId = searchParams?.get('hero') ?? null;
   const find = searchTerm;
+
+  useEffect(() => {
+    if (!searchParams?.get('page')) {
+      router.replace(`${pathname}?page=1`);
+    }
+  }, [pathname, searchParams, router]);
+
+  useEffect(() => {
+    const h = searchParams?.get('hero');
+    setHeroId(h);
+  }, [searchParams]);
 
   const inStore = useSelector(
     (state: RootState) => state.favourites.items.length
@@ -42,23 +56,14 @@ export default function HomePage() {
   const pushWithParams = (next: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams?.toString());
     Object.entries(next).forEach(([k, v]) => {
-      if (v === null || v === '') {
-        params.delete(k);
-      } else {
-        params.set(k, v);
-      }
+      if (!v) params.delete(k);
+      else params.set(k, v);
     });
-    const url = `${pathname}?${params.toString()}`;
-    router.push(url);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
-  const handlePageChange = (newPage: number | string) => {
-    const np = String(newPage);
-    if (heroId && +heroId > +np * 10) {
-      pushWithParams({ page: np, hero: heroId });
-    } else {
-      pushWithParams({ page: np, hero: null });
-    }
+  const handlePageChange = (newPage: string) => {
+    pushWithParams({ page: newPage, hero: null });
   };
 
   const handleSearch = (nextPage: string, value: string) => {
@@ -67,11 +72,17 @@ export default function HomePage() {
   };
 
   const openHero = (id: string | number) => {
-    pushWithParams({ hero: String(id) });
+    setHeroId(String(id));
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set('hero', String(id));
+    router.push(`${pathname}?${params.toString()}`); // URL обновился, но рендер HomePage не перезагружается
   };
 
   const closeHero = () => {
-    pushWithParams({ hero: null });
+    setHeroId(null);
+    const params = new URLSearchParams(searchParams?.toString());
+    params.delete('hero');
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -82,10 +93,7 @@ export default function HomePage() {
         <Content items={data?.items || []} onItemClick={openHero} />
 
         {heroId && selectedItem && (
-          <aside>
-            <DetailItem item={selectedItem} />
-            <button onClick={closeHero}>×</button>
-          </aside>
+          <DetailItem item={selectedItem} onClick={closeHero} />
         )}
       </div>
 
