@@ -28,6 +28,7 @@ export default function Search({ onSearch, onRefresh }: SearchContextType) {
           value={inputText}
           onChange={handleInput}
           placeholder="Search"
+          className='search-input'
         />
         <Button onAction={handleClick} text="Find" class="find-btn" />
       </div>

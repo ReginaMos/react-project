@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 
 export default function Header() {
   const pathname = usePathname();
-  const isHomeOrDetail = /^\/(en|ru)\/(\d+)(\/\d+)?$/.test(pathname || '');
+  const isHomeOrDetail = /^\/(en|ru)$/.test(pathname || "");
   const localeMatch = pathname?.match(/^\/(en|ru)/);
   const locale = localeMatch ? localeMatch[1] : 'en';
 
@@ -21,7 +21,7 @@ export default function Header() {
     <header className={theme}>
       <nav className="nav">
         <Link
-          href={`/${locale}`}
+          href={`/${locale}?page=1`}
           className={isHomeOrDetail ? 'nav-link active' : 'nav-link'}
         >
           {t('home')}

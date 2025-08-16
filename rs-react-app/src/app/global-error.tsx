@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import '../styles/ErrorBoundary.css';
 
 export default function GlobalError({
   error,

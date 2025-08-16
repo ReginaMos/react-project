@@ -27,7 +27,7 @@ export default function Pagination({
       <div className="current-page"> {currentPage} </div>
 
       <Image
-        src="/icons/left-arrow.svg"
+        src="/icons/right-arrow.svg"
         width={50}
         height={50}
         alt="right-arrow-icon"

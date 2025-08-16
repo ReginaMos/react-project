@@ -1,21 +1,27 @@
 import '../styles/HomePage/Detail.css';
-import closeIcon from '../assets/close-icon.svg';
 import type { ItemModel } from '../models/models';
-import { useNavigate, useParams } from 'react-router-dom';
+import Image from 'next/image';
 
-export default function DetailItem({ item }: { item: ItemModel }) {
-  const params = useParams();
-  const navigate = useNavigate();
+interface DetailsProps {
+  item: ItemModel;
+  onClick: () => void 
+ }
 
+export default function DetailItem({ item, onClick }: DetailsProps) {
   const handleCloseDetails = () => {
-    const page = Number(params.pageNumber ?? 1);
-    navigate(`/${page}`);
+    onClick();
   };
 
   return (
     <div className="details">
       <div className="close-icon">
-        <img src={closeIcon} alt="close-icon" onClick={handleCloseDetails} />
+         <Image
+            src="/icons/close-icon.svg"
+            width={25}
+            height={25}
+            alt="close-icon" 
+            onClick={handleCloseDetails}
+          />
       </div>
       <div className="item-name">
         Details of <b>{item.name}</b>
