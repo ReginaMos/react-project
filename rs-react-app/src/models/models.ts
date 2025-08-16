@@ -106,3 +106,7 @@ export interface HomePageProps {
   initialFind: string;
   locale: string;
 }
+
+export interface AboutPageProps {
+  locale: string ;
+};

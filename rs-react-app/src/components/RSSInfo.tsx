@@ -1,19 +1,30 @@
-import logo from '../assets/rs.png';
+'use client';
+
+import { useTranslations } from 'next-intl';
 import '../styles/AboutPage/RSSInfo.css';
+import Image from 'next/image';
 
 export default function RSSInfo() {
+  const t = useTranslations('AboutPage');
+
   return (
     <div className="rss-info">
       <div className="rss-text">
-        My journey in React began in <b>Rolling Scopes School</b> in July, 2025.
-        You can also join - click on the logo!
+       {t.rich('rss', {
+          bold: (message: React.ReactNode) => <b>{message}</b>,
+        })}
       </div>
       <a
         href="https://rs.school/courses/reactjs"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img src={logo} className="logo" alt="rss-logo"></img>
+        <Image
+          src='/icons/rs.png'
+          width={50}
+          height={50}
+          className="logo" alt="rss-logo"
+        />
       </a>
     </div>
   );

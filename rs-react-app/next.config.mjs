@@ -2,7 +2,6 @@
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig = {
-  output: 'export',
   distDir: './dist',
 };
 

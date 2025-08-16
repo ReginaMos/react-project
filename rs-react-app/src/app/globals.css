@@ -53,7 +53,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  padding: 50px;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -99,9 +99,10 @@ header {
   margin-bottom: 50px;
 
   position: relative;
+  min-width: 50vw;
 }
 
-body:has(header.dark) header {
+header.dark {
   background-color: rgba(223, 223, 224, 0.555);
   color: #263063;
 }

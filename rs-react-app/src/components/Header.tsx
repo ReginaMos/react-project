@@ -1,5 +1,4 @@
 'use client';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useContext } from 'react';
@@ -8,7 +7,9 @@ import Image from 'next/image';
 
 export default function Header() {
   const pathname = usePathname();
-  const isHomeOrDetail = /^\/(\d+)(\/\d+)?$/.test(location.pathname);
+  const isHomeOrDetail = /^\/(en|ru)\/(\d+)(\/\d+)?$/.test(pathname || '');
+  const localeMatch = pathname?.match(/^\/(en|ru)/);
+  const locale = localeMatch ? localeMatch[1] : 'en';
 
   const { theme, changeTheme } = useContext(ThemeContext);
   const iconSrc = theme === 'light' ? '/icons/sun.svg' : '/icons/moon.svg';
@@ -17,14 +18,14 @@ export default function Header() {
     <header className={theme}>
       <nav className="nav">
         <Link
-          href="/"
+          href={`/${locale}`}
           className={isHomeOrDetail ? 'nav-link active' : 'nav-link'}
         >
           Home
         </Link>
         <Link
-          href="/about"
-          className={pathname === '/about' ? 'nav-link active' : 'nav-link'}
+           href={`/${locale}/about`}
+          className={pathname === `/${locale}/about` ? 'nav-link active' : 'nav-link'}
         >
           About
         </Link>
@@ -38,7 +39,6 @@ export default function Header() {
         onClick={changeTheme}
         className="theme-icon"
       />
-
     </header>
   );
 }

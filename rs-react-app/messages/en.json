@@ -2,5 +2,12 @@
   "NotFoundPage": {
     "main-text": "Ooops! Something went wrong!",
     "button-text": "Back to Home Page"
+  },
+  "AboutPage": {
+     "intro": "Hello, my name is <bold>Regina</bold> and I'm author of this app!",
+     "description-1": "I am a creative person with an analytical mind. I approach my work responsibly, I try to do everything on time and with high quality.",
+     "description-2": "I have good knowledge and experience in the layout of layouts of varying complexity using HTML&CSS&JS, as well as creating components on Vue JS and React JS. I consider front-end development an interesting direction, where I see prospects for developing my skills and want to continue developing in this area.",
+     "contacts": "Contact with me:",
+     "rss": "My journey in React began in <bold>Rolling Scopes School</bold> in July, 2025. You can also join - click on the logo!"
   }
 }

@@ -19,10 +19,10 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <Header/>
+      <Header />
       <main>
-       {children}
-      </main>
+        {children}
+        </main>
     </NextIntlClientProvider>
   );
 }
