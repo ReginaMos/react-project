@@ -4,11 +4,12 @@ import Header from '../../components/Header';
 
 export default async function LocaleLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode;
   params: { locale: string };
 }) {
+  const { locale } = await params;
   let messages;
 
   try {
@@ -20,9 +21,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <Header />
-      <main>
-        {children}
-        </main>
+      <main>{children}</main>
     </NextIntlClientProvider>
   );
 }

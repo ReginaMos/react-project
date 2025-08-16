@@ -108,5 +108,5 @@ export interface HomePageProps {
 }
 
 export interface AboutPageProps {
-  locale: string ;
-};
+  locale: string;
+}

@@ -5,8 +5,8 @@ import '../styles/AboutPage/About.css';
 export default function AboutPage() {
   return (
     <div className="about-page">
-      <AuthorInfo/>
-      <RSSInfo/>
+      <AuthorInfo />
+      <RSSInfo />
     </div>
   );
 }

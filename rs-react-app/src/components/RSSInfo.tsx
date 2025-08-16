@@ -10,7 +10,7 @@ export default function RSSInfo() {
   return (
     <div className="rss-info">
       <div className="rss-text">
-       {t.rich('rss', {
+        {t.rich('rss', {
           bold: (message: React.ReactNode) => <b>{message}</b>,
         })}
       </div>
@@ -20,10 +20,11 @@ export default function RSSInfo() {
         rel="noopener noreferrer"
       >
         <Image
-          src='/icons/rs.png'
+          src="/icons/rs.png"
           width={50}
           height={50}
-          className="logo" alt="rss-logo"
+          className="logo"
+          alt="rss-logo"
         />
       </a>
     </div>

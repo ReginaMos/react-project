@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useContext } from 'react';
 import { ThemeContext } from '../theme/ThemeContext';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 export default function Header() {
   const pathname = usePathname();
@@ -13,7 +14,9 @@ export default function Header() {
 
   const { theme, changeTheme } = useContext(ThemeContext);
   const iconSrc = theme === 'light' ? '/icons/sun.svg' : '/icons/moon.svg';
-
+  
+  const t = useTranslations('Header');
+  
   return (
     <header className={theme}>
       <nav className="nav">
@@ -21,13 +24,15 @@ export default function Header() {
           href={`/${locale}`}
           className={isHomeOrDetail ? 'nav-link active' : 'nav-link'}
         >
-          Home
+          {t('home')}
         </Link>
         <Link
-           href={`/${locale}/about`}
-          className={pathname === `/${locale}/about` ? 'nav-link active' : 'nav-link'}
+          href={`/${locale}/about`}
+          className={
+            pathname === `/${locale}/about` ? 'nav-link active' : 'nav-link'
+          }
         >
-          About
+          {t('about')}
         </Link>
       </nav>
 

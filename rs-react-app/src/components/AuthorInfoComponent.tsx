@@ -10,18 +10,14 @@ export default function AuthorInfo() {
   return (
     <>
       <div className="author-heading">
-         {t.rich('intro', {
+        {t.rich('intro', {
           bold: (message: React.ReactNode) => <b>{message}</b>,
         })}
       </div>
 
-      <div className="description">
-        {t('description-1')}
-      </div>
+      <div className="description">{t('description-1')}</div>
 
-      <div className="description">
-       {t('description-2')}
-      </div>
+      <div className="description">{t('description-2')}</div>
 
       <div className="contacts">
         <div className="contacts-heading">{t('contacts')}</div>
@@ -31,12 +27,13 @@ export default function AuthorInfo() {
           target="_blank"
           rel="noopener noreferrer"
         >
-           <Image
-              src='/icons/linkedin.webp'
-              width={50}
-              height={50}
-              alt="linkedin-logo" className="logo"
-            />
+          <Image
+            src="/icons/linkedin.webp"
+            width={50}
+            height={50}
+            alt="linkedin-logo"
+            className="logo"
+          />
         </a>
 
         <a
@@ -45,10 +42,11 @@ export default function AuthorInfo() {
           rel="noopener noreferrer"
         >
           <Image
-            src='/icons/GitHub.png'
+            src="/icons/GitHub.png"
             width={50}
             height={50}
-            alt="github-logo" className="logo"
+            alt="github-logo"
+            className="logo"
           />
         </a>
       </div>
