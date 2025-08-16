@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import type { ErrorProps } from '../models/models';
 import { ThemeContext } from './theme-context';

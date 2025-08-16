@@ -14,12 +14,12 @@
   padding: 20px;
 }
 
-main.dark .about-page {
+body:has(header.dark) .about-page {
   background-color: rgba(223, 223, 224, 0.555);
 }
 
 .logo {
-  max-width: 40px;
+  max-width: 50px;
   text-align: center;
 
   transition: all 0.3s ease-in-out;

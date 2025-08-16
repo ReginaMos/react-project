@@ -3,9 +3,15 @@ import type { ItemsContextType } from '../models/models';
 import '../styles/HomePage/Content.css';
 import { useDispatch } from 'react-redux';
 import { addItem, removeItemById } from '../store/favouritesReducer';
+import { useTranslations } from 'next-intl';
 
-export default function Content({ items }: ItemsContextType) {
+export default function Content({ items, onItemClick }: ItemsContextType) {
   const dispatch = useDispatch();
+  const t = useTranslations('Content');
+
+  const heroClick = (id: number) => {
+    onItemClick(id);
+  };
 
   const toggleContentItem = (id: number, inStore: boolean) => {
     const item = items.find((item) => item.id === id);
@@ -18,11 +24,7 @@ export default function Content({ items }: ItemsContextType) {
 
   return (
     <div className="content">
-      {items.length === 0 && (
-        <h3 className="empty-content">
-          There aren`t any elements by your request...
-        </h3>
-      )}
+      {items.length === 0 && <h3 className="empty-content">{t('nothing')}</h3>}
 
       {items.length > 0 && (
         <>
@@ -34,6 +36,7 @@ export default function Content({ items }: ItemsContextType) {
               key={index}
               id={item.id}
               onToggle={toggleContentItem}
+              onItemClick={heroClick}
             />
           ))}
         </>

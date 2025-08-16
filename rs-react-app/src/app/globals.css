@@ -1,3 +1,11 @@
+html[lang='ru'] {
+  font-family: var(--font-russo), sans-serif;
+}
+
+html[lang='en'] {
+  font-family: var(--font-orbitron), sans-serif;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,7 +16,7 @@ html {
   height: 100%;
   scroll-behavior: smooth;
 
-  background-image: url('./assets/background.jpg');
+  background-image: url('/images/background.jpg');
   color: #fff;
   background-size: cover;
   background-position: center;
@@ -45,20 +53,20 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  padding: 50px;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
 
-  background-image: url('./assets/background.jpg');
+  background-image: url('/images/background.jpg');
   color: #fff;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-body:has(main.dark) {
-  background-image: url('./assets/bg-dark.jpg');
+body:has(header.dark) {
+  background-image: url('/images/bg-dark.jpg');
   color: #263063;
 }
 
@@ -77,7 +85,7 @@ button:hover {
   box-shadow: 4px 3px 5px 15px rgba(120, 155, 182, 0.2);
 }
 
-body:has(main.dark) button {
+body:has(header.dark) button {
   background-color: #263063;
   color: #fff;
 }
@@ -91,9 +99,15 @@ header {
   margin-bottom: 50px;
 
   position: relative;
+  min-width: 50vw;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 60px;
 }
 
-body:has(main.dark) header {
+header.dark {
   background-color: rgba(223, 223, 224, 0.555);
   color: #263063;
 }
@@ -106,7 +120,7 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 60px;
+  gap: 40px;
 }
 
 .nav-link {
@@ -116,7 +130,7 @@ main {
   border-radius: 10px;
 }
 
-body:has(main.dark) .nav-link {
+body:has(header.dark) .nav-link {
   color: #263063;
 }
 
@@ -124,13 +138,35 @@ body:has(main.dark) .nav-link {
   border: 1px solid #fff;
 }
 
-body:has(main.dark) .nav-link.active {
+body:has(header.dark) .nav-link.active {
   border: 1px solid #263063;
 }
 
 .theme-icon {
   max-width: 50px;
-  position: absolute;
-  top: 20px;
-  right: 15px;
+}
+
+.lang-switcher {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.locale {
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.locale.active,
+.locale:hover {
+  border: 1px solid #fff;
+}
+
+body:has(header.dark) .locale.active,
+body:has(header.dark) .locale:hover {
+  border: 1px solid #263063;
 }

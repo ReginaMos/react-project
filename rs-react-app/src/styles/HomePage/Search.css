@@ -22,7 +22,7 @@
   padding: 20px;
 }
 
-main.dark .search {
+body:has(header.dark) .search {
   background-color: rgba(223, 223, 224, 0.555);
 }
 
@@ -35,6 +35,6 @@ input {
   min-width: 350px;
 }
 
-main.dark input {
+body:has(header.dark) input {
   border: 1px solid #263063;
 }

@@ -1,0 +1,38 @@
+{
+  "NotFoundPage": {
+    "main-text": "Ooops! Something went wrong!",
+    "button-text": "Back to Home Page"
+  },
+  "AboutPage": {
+    "intro": "Hello, my name is <bold>Regina</bold> and I'm author of this app!",
+    "description-1": "I am a creative person with an analytical mind. I approach my work responsibly, I try to do everything on time and with high quality.",
+    "description-2": "I have good knowledge and experience in the layout of layouts of varying complexity using HTML&CSS&JS, as well as creating components on Vue JS and React JS. I consider front-end development an interesting direction, where I see prospects for developing my skills and want to continue developing in this area.",
+    "contacts": "Contact with me:",
+    "rss": "My journey in React began in <bold>Rolling Scopes School</bold> in July, 2025. You can also join - click on the logo!"
+  },
+  "Header": {
+    "home": "Home",
+    "about": "About"
+  },
+  "Search": {
+    "refetch": "Refetch",
+    "search": "Search",
+    "find": "Find"
+  },
+  "Content": {
+    "nothing": "There aren`t any elements by your request...",
+    "gender": "Gender:",
+    "info": "Info:",
+    "details": "Details of",
+    "birth-year": "Birth year:",
+    "height": "Height:",
+    "skin-color": "Skin color:",
+    "eye-color": "Eye color:",
+    "hair-color": "Hair color:"
+  },
+  "Store": {
+    "main-text": "elements selected",
+    "clear": "Clear all",
+    "save": "Save"
+  }
+}

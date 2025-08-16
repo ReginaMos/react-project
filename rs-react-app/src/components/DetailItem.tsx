@@ -1,52 +1,61 @@
 import '../styles/HomePage/Detail.css';
-import closeIcon from '../assets/close-icon.svg';
 import type { ItemModel } from '../models/models';
-import { useNavigate, useParams } from 'react-router-dom';
+import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
-export default function DetailItem({ item }: { item: ItemModel }) {
-  const params = useParams();
-  const navigate = useNavigate();
+interface DetailsProps {
+  item: ItemModel;
+  onClick: () => void;
+}
 
+export default function DetailItem({ item, onClick }: DetailsProps) {
   const handleCloseDetails = () => {
-    const page = Number(params.pageNumber ?? 1);
-    navigate(`/${page}`);
+    onClick();
   };
+
+  const t = useTranslations('Content');
 
   return (
     <div className="details">
       <div className="close-icon">
-        <img src={closeIcon} alt="close-icon" onClick={handleCloseDetails} />
+        <Image
+          src="/icons/close-icon.svg"
+          width={25}
+          height={25}
+          alt="close-icon"
+          onClick={handleCloseDetails}
+        />
       </div>
       <div className="item-name">
-        Details of <b>{item.name}</b>
+        {t('details')} <b>{item.name}</b>
       </div>
       <div className="item-info">
         <div className="item-detail">
-          <b>Gender:</b> {item.gender}
+          <b>{t('gender')}</b> {item.gender}
         </div>
 
         <div className="item-detail">
-          <b>Birth year:</b> {item.birth_year}
+          <b>{t('birth-year')}</b> {item.birth_year}
         </div>
 
         <div className="item-detail">
-          <b>Height:</b> {item.height}
+          <b>{t('height')}</b> {item.height}
         </div>
 
         <div className="item-detail">
-          <b>Skin color:</b> {item.skin_color}
+          <b>{t('skin-color')}</b> {item.skin_color}
         </div>
 
         <div className="item-detail">
-          <b>Eye color:</b> {item.eye_color}
+          <b>{t('eye-color')}</b> {item.eye_color}
         </div>
 
         <div className="item-detail">
-          <b>Hair color:</b> {item.hair_color}
+          <b>{t('hair-color')}</b> {item.hair_color}
         </div>
 
         <div className="item-detail">
-          <b>Info:</b> {item.description}
+          <b>{t('info')}</b> {item.description}
         </div>
       </div>
     </div>
