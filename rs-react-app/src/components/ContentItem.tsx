@@ -1,7 +1,7 @@
 import type { ShortItemModel } from '../models/models';
-import planet from '../assets/planet-icon.png';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
+import Image from 'next/image';
 
 export default function ContentItem({
   name,
@@ -27,8 +27,10 @@ export default function ContentItem({
   return (
     <div className="item" onClick={heroClick}>
       <div>
-        <img
-          src={planet.src}
+        <Image
+          src="/icons/planet-icon.png"
+          width={35}
+          height={35}
           alt="planet-icon"
           className={`planet-icon ${inStore ? 'in-store' : 'not-in-store'}`}
           onClick={toggleStatus}

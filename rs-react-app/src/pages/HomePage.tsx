@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import useLocalStorage from '../hooks/useLocalStorage';
 import Content from '../components/ContentComponent';
@@ -13,13 +12,8 @@ import DetailItem from '../components/DetailItem';
 import { useGetPeopleQuery } from '../store/peopleApi';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
-import type { HomePageProps } from '../models/models';
 
-export default function HomePageClient({
-  initialPage,
-  initialHeroId,
-  initialFind,
-}: HomePageProps) {
+export default function HomePage() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -29,16 +23,9 @@ export default function HomePageClient({
     ''
   );
 
-  useEffect(() => {
-    if (initialFind && initialFind !== searchTerm) {
-      setSearchTerm(initialFind);
-    }
-  }, [initialFind]);
-
-  const page =
-    Number(searchParams?.get('page') ?? initialPage ?? 1) || initialPage || 1;
-  const heroId = searchParams?.get('hero') ?? initialHeroId ?? null;
-  const find = searchParams?.get('find') ?? initialFind ?? '';
+  const page = Number(searchParams?.get('page') ?? '1');
+  const heroId = searchParams?.get('hero') ?? null;
+  const find = searchTerm;
 
   const inStore = useSelector(
     (state: RootState) => state.favourites.items.length
@@ -55,8 +42,11 @@ export default function HomePageClient({
   const pushWithParams = (next: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams?.toString());
     Object.entries(next).forEach(([k, v]) => {
-      if (v === null || v === '') params.delete(k);
-      else params.set(k, v);
+      if (v === null || v === '') {
+        params.delete(k);
+      } else {
+        params.set(k, v);
+      }
     });
     const url = `${pathname}?${params.toString()}`;
     router.push(url);
@@ -73,7 +63,7 @@ export default function HomePageClient({
 
   const handleSearch = (nextPage: string, value: string) => {
     setSearchTerm(value);
-    pushWithParams({ page: nextPage, find: value, hero: null });
+    pushWithParams({ page: nextPage, hero: null });
   };
 
   const openHero = (id: string | number) => {
@@ -103,7 +93,7 @@ export default function HomePageClient({
         <Pagination
           currentPage={page}
           pagesCount={data.count}
-          onPageChange={(p) => handlePageChange(p)}
+          onPageChange={handlePageChange}
         />
       )}
 

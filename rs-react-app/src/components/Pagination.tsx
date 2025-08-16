@@ -1,7 +1,6 @@
-import leftArrow from '../assets/left-arrow.svg';
-import rightArrow from '../assets/right-arrow.svg';
 import type { PaginationProps } from '../models/models';
 import '../styles/HomePage/Pagination.css';
+import Image from 'next/image';
 
 export default function Pagination({
   currentPage,
@@ -16,15 +15,21 @@ export default function Pagination({
 
   return (
     <div className="pagination">
-      <img
-        src={leftArrow}
+      <Image
+        src="/icons/left-arrow.svg"
+        width={40}
+        height={40}
         alt="left-arrow-icon"
         className={`pagination-arrow ${currentPage === 1 ? 'disabled' : ''}`}
         onClick={() => changePage(false)}
       />
+
       <div className="current-page"> {currentPage} </div>
-      <img
-        src={rightArrow}
+
+      <Image
+        src="/icons/left-arrow.svg"
+        width={50}
+        height={50}
         alt="right-arrow-icon"
         className={`pagination-arrow ${currentPage >= pagesCount ? 'disabled' : ''}`}
         onClick={() => changePage(true)}

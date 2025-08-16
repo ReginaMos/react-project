@@ -14,9 +14,9 @@ export default function Header() {
 
   const { theme, changeTheme } = useContext(ThemeContext);
   const iconSrc = theme === 'light' ? '/icons/sun.svg' : '/icons/moon.svg';
-  
+
   const t = useTranslations('Header');
-  
+
   return (
     <header className={theme}>
       <nav className="nav">
