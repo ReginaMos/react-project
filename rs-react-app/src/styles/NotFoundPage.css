@@ -9,13 +9,13 @@ h2 {
 
 main {
   background-color: rgba(223, 223, 224, 0.555);
-    padding: 50px;
-    border-radius: 20px;
-    text-align: center;
+  padding: 50px;
+  border-radius: 20px;
+  text-align: center;
 }
 
 a {
-  all: unset
+  all: unset;
 }
 
 .error-button {
@@ -27,7 +27,7 @@ a {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
-   color: #263063;
+  color: #263063;
 }
 
 .error-button:hover {
