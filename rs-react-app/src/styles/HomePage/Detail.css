@@ -15,7 +15,7 @@
   position: relative;
 }
 
-main.dark .details {
+header.dark .details {
   background-color: rgba(135, 150, 224, 0.719);
   color: #243e5c;
 }

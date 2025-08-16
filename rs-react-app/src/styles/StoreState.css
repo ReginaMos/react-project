@@ -10,7 +10,7 @@
   padding: 20px;
 }
 
-main.dark .store-state {
+header.dark .store-state {
   background-color: rgba(223, 223, 224, 0.555);
 }
 

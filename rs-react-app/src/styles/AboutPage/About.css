@@ -14,7 +14,7 @@
   padding: 20px;
 }
 
-main.dark .about-page {
+header.dark .about-page {
   background-color: rgba(223, 223, 224, 0.555);
 }
 

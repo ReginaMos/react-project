@@ -4,18 +4,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useContext } from 'react';
 import { ThemeContext } from '../theme/ThemeContext';
-import Sun from '@/assets/sun.svg';
-import Moon from '@/assets/moon.svg';
+import Image from 'next/image';
 
 export default function Header() {
   const pathname = usePathname();
   const isHomeOrDetail = /^\/(\d+)(\/\d+)?$/.test(location.pathname);
 
   const { theme, changeTheme } = useContext(ThemeContext);
-  const iconSrc = theme === 'light' ? Sun : Moon;
+  const iconSrc = theme === 'light' ? '/icons/sun.svg' : '/icons/moon.svg';
 
   return (
-    <header>
+    <header className={theme}>
       <nav className="nav">
         <Link
           href="/"
@@ -31,12 +30,15 @@ export default function Header() {
         </Link>
       </nav>
 
-      <img
+      <Image
         src={iconSrc}
+        width={50}
+        height={50}
         alt="theme-icon"
         onClick={changeTheme}
         className="theme-icon"
       />
+
     </header>
   );
 }
