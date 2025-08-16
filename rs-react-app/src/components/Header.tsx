@@ -9,7 +9,7 @@ import { useTranslations } from 'next-intl';
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  
+
   const isHomeOrDetail = /^\/(en|ru)$/.test(pathname || '');
   const localeMatch = pathname?.match(/^\/(en|ru)/);
   const locale = localeMatch ? localeMatch[1] : 'en';
@@ -27,7 +27,7 @@ export default function Header() {
 
   return (
     <header className={theme}>
-       <div className="lang-switcher">
+      <div className="lang-switcher">
         <div
           onClick={() => switchLanguage('en')}
           className={locale === 'en' ? 'locale active' : 'locale'}

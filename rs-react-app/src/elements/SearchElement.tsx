@@ -4,10 +4,11 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import '../styles/HomePage/Search.css';
 import type { SearchContextType } from '../models/models';
 import { useTranslations } from 'next-intl';
+import { localStorageParam } from '../models/models';
 
 export default function Search({ onSearch, onRefresh }: SearchContextType) {
   const [inputText, setInputText] = useLocalStorage<string>(
-    'search_ReginaMos',
+    localStorageParam,
     ''
   );
 

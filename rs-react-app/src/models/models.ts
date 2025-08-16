@@ -96,17 +96,4 @@ export interface PeopleInfoResponse {
   result: PersonFind;
 }
 
-export interface DetailedPersonResponse {
-  result: ItemModel;
-}
-
-export interface HomePageProps {
-  initialPage: number;
-  initialHeroId: string | null;
-  initialFind: string;
-  locale: string;
-}
-
-export interface AboutPageProps {
-  locale: string;
-}
+export const localStorageParam = 'search_ReginaMos';

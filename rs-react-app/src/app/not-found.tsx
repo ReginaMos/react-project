@@ -1,4 +1,4 @@
-import '../../styles/NotFoundPage.css';
+import '../styles/NotFoundPage.css';
 import { useTranslations } from 'next-intl';
 
 export default function NotFoundPage() {

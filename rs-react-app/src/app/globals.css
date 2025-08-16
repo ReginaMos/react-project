@@ -161,10 +161,12 @@ body:has(header.dark) .nav-link.active {
   cursor: pointer;
 }
 
-.locale.active, .locale:hover {
+.locale.active,
+.locale:hover {
   border: 1px solid #fff;
 }
 
-body:has(header.dark) .locale.active, body:has(header.dark) .locale:hover {
+body:has(header.dark) .locale.active,
+body:has(header.dark) .locale:hover {
   border: 1px solid #263063;
 }

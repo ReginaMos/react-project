@@ -14,7 +14,7 @@
     "home": "Главная",
     "about": "Инфо"
   },
-    "Search": {
+  "Search": {
     "refetch": "Перезапуск",
     "search": "Поиск",
     "find": "Найти"

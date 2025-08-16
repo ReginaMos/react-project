@@ -1,93 +1,102 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import useLocalStorage from '../hooks/useLocalStorage';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import Content from '../components/ContentComponent';
-import Loader from '../elements/LoaderElement';
-import Chips from '../elements/ChipsElement';
+import DetailItem from '../components/DetailItem';
 import Search from '../elements/SearchElement';
 import Pagination from '../components/Pagination';
+import Loader from '../elements/LoaderElement';
 import StoreStateElement from '../elements/StoreStateElement';
-import DetailItem from '../components/DetailItem';
-import { useGetPeopleQuery } from '../store/peopleApi';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
-import { useEffect, useState } from 'react';
+import { store, type RootState } from '../store/store';
+import type { APIResponse } from '../models/models';
 import '../styles/HomePage/HomePage.css';
+import { api } from '../store/peopleApi';
 
-export default function HomePage() {
+type HomePageProps = {
+  initialData: APIResponse;
+  locale: string;
+  initialPage: number;
+  initialHeroId: string | null;
+  searchTerm?: string;
+};
+
+export default function HomePage({
+  initialData,
+  locale,
+  initialPage,
+  initialHeroId,
+  searchTerm: initialSearchTerm = '',
+}: HomePageProps) {
   const router = useRouter();
-  const pathname = usePathname() || '/en';
   const searchParams = useSearchParams();
 
-  const [searchTerm, setSearchTerm] = useLocalStorage<string>(
-    'search_ReginaMos',
-    ''
-  );
-  const [heroId, setHeroId] = useState<string | null>(null);
+  const [data, setData] = useState(initialData);
+  const [heroId, setHeroId] = useState<string | null>(initialHeroId);
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const page = Number(searchParams?.get('page') ?? '1');
-  // const heroId = searchParams?.get('hero') ?? null;
-  const find = searchTerm;
-
-  useEffect(() => {
-    if (!searchParams?.get('page')) {
-      router.replace(`${pathname}?page=1`);
-    }
-  }, [pathname, searchParams, router]);
-
-  useEffect(() => {
-    const h = searchParams?.get('hero');
-    setHeroId(h);
-  }, [searchParams]);
+  const page = Number(searchParams?.get('page') ?? initialPage);
 
   const inStore = useSelector(
     (state: RootState) => state.favourites.items.length
   );
 
-  const { data, error, isLoading, isFetching, refetch } = useGetPeopleQuery({
-    page: String(page),
-    find,
-  });
-
   const selectedItem =
     data?.items.find((it) => String(it.id) === heroId) ?? null;
-
-  const pushWithParams = (next: Record<string, string | null>) => {
-    const params = new URLSearchParams(searchParams?.toString());
-    Object.entries(next).forEach(([k, v]) => {
-      if (!v) params.delete(k);
-      else params.set(k, v);
-    });
-    router.push(`${pathname}?${params.toString()}`);
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      const result = await store.dispatch(
+        api.endpoints.getPeople.initiate(
+          { page: String(page), find: searchTerm },
+          { forceRefetch: true }
+        )
+      );
+      if ('data' in result && result.data) setData(result.data);
+    } catch (err) {
+      console.error('Error fetching data:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handlePageChange = (newPage: string) => {
-    pushWithParams({ page: newPage, hero: null });
-  };
-
-  const handleSearch = (nextPage: string, value: string) => {
-    setSearchTerm(value);
-    pushWithParams({ page: nextPage, hero: null });
-  };
+  const handleRefresh = () => fetchData();
 
   const openHero = (id: string | number) => {
     setHeroId(String(id));
-    const params = new URLSearchParams(searchParams?.toString());
+    const params = new URLSearchParams(searchParams?.toString() || '');
     params.set('hero', String(id));
-    router.push(`${pathname}?${params.toString()}`); // URL обновился, но рендер HomePage не перезагружается
+    router.push(`/${locale}?${params.toString()}`);
   };
 
   const closeHero = () => {
     setHeroId(null);
-    const params = new URLSearchParams(searchParams?.toString());
+    const params = new URLSearchParams(searchParams?.toString() || '');
     params.delete('hero');
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`/${locale}?${params.toString()}`);
+  };
+
+  const handleSearch = (nextPage: string, value: string) => {
+    setSearchTerm(value);
+    router.push(
+      `/${locale}?page=${nextPage}&find=${encodeURIComponent(value)}`
+    );
+  };
+
+  const handlePageChange = (newPage: string) => {
+    const params = new URLSearchParams(searchParams?.toString() || '');
+    params.set('page', newPage);
+    router.push(`/${locale}?${params.toString()}`);
   };
 
   return (
     <div className={`home-page ${heroId ? 'with-details' : ''}`}>
-      <Search onSearch={(p, v) => handleSearch(p, v)} onRefresh={refetch} />
+      <Search
+        onSearch={(p, v) => handleSearch(p, v)}
+        onRefresh={handleRefresh}
+      />
 
       <div className={`content-layout ${heroId ? 'with-details' : ''}`}>
         <Content items={data?.items || []} onItemClick={openHero} />
@@ -106,8 +115,6 @@ export default function HomePage() {
       )}
 
       {isLoading && <Loader />}
-      {isFetching && !isLoading && <Loader />}
-      {error && <Chips text={`API Error: ${String(error)}`} />}
       {inStore > 0 && <StoreStateElement />}
     </div>
   );

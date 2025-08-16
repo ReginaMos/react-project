@@ -24,11 +24,7 @@ export default function Content({ items, onItemClick }: ItemsContextType) {
 
   return (
     <div className="content">
-      {items.length === 0 && (
-        <h3 className="empty-content">
-          {t('nothing')}
-        </h3>
-      )}
+      {items.length === 0 && <h3 className="empty-content">{t('nothing')}</h3>}
 
       {items.length > 0 && (
         <>
