@@ -1,0 +1,3 @@
+cd forms-react-app/
+npm run format:fix
+npm run lint
