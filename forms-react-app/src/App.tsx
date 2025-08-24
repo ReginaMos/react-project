@@ -19,7 +19,7 @@ function App() {
             <div className="heading">React Forms</div>
 
             <div className="buttons-part">
-                <button onClick={openUncontrolledForm}>Unccontrolled</button>
+                <button onClick={openUncontrolledForm}>Uncontrolled</button>
                 <button onClick={openHookForm}>Hook Form</button>
             </div>
 

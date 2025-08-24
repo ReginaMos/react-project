@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { type RootState, saveForm } from '../store/store';
 import { toBase64 } from '../utils/convertToBse64';
 import type { FormData } from '../models/models';
+import '../styles/Form.css';
 
 interface UncontrolledFormProps {
     countries: string[];
@@ -74,68 +75,121 @@ class UncontrolledForm extends React.Component<
         const { countries } = this.props;
 
         return (
-            <form ref={this.formRef} onSubmit={this.handleSubmit}>
-                <label htmlFor="name">Name:</label>
-                <input id="name" type="text" />
-                {errors.name && <div>{errors.name}</div>}
+            <form
+                ref={this.formRef}
+                onSubmit={this.handleSubmit}
+                className="form"
+            >
+                <div className="form-heading">Uncontrolled Form</div>
 
-                <label htmlFor="age">Age:</label>
-                <input id="age" type="number" />
-                {errors.age && <div>{errors.age}</div>}
+                <div className="form-item">
+                    <label htmlFor="name">Name:</label>
+                    <input id="name" type="text" />
+                    {errors.name && (
+                        <span className="error-message">{errors.name}</span>
+                    )}
+                </div>
 
-                <label htmlFor="email">Email:</label>
-                <input id="email" type="email" />
-                {errors.email && <div>{errors.email}</div>}
+                <div className="form-item">
+                    <label htmlFor="age">Age:</label>
+                    <input id="age" type="number" />
+                    {errors.age && (
+                        <span className="error-message">{errors.age}</span>
+                    )}
+                </div>
 
-                <label htmlFor="password">Password:</label>
-                <input id="password" type="password" />
-                {errors.password && <div>{errors.password}</div>}
+                <div className="form-item">
+                    <label htmlFor="email">Email:</label>
+                    <input id="email" type="email" />
+                    {errors.email && (
+                        <span className="error-message">{errors.email}</span>
+                    )}
+                </div>
 
-                <label htmlFor="confirmPassword">Repeat password:</label>
-                <input id="confirmPassword" type="password" />
-                {errors.confirmPassword && <div>{errors.confirmPassword}</div>}
+                <div className="form-item">
+                    <label htmlFor="password">Password:</label>
+                    <input id="password" type="password" />
 
-                <fieldset>
-                    <legend>Gender</legend>
-                    <label htmlFor="male">
-                        <input
-                            id="male"
-                            type="radio"
-                            name="gender"
-                            value="male"
-                        />
-                        Male
+                    {errors.password && (
+                        <span className="error-message">{errors.password}</span>
+                    )}
+                </div>
+
+                <div className="form-item">
+                    <label htmlFor="confirmPassword">Repeat password:</label>
+                    <input id="confirmPassword" type="password" />
+                    {errors.confirmPassword && (
+                        <span className="error-message">
+                            {errors.confirmPassword}
+                        </span>
+                    )}
+                </div>
+
+                <div className="form-item">
+                    <fieldset>
+                        <legend>Gender</legend>
+                        <label htmlFor="male">
+                            <input
+                                id="male"
+                                type="radio"
+                                name="gender"
+                                value="male"
+                            />
+                            Male
+                        </label>
+                        <label htmlFor="female">
+                            <input
+                                id="female"
+                                type="radio"
+                                name="gender"
+                                value="female"
+                            />
+                            Female
+                        </label>
+                    </fieldset>
+
+                    {errors.gender && (
+                        <span className="error-message">{errors.gender}</span>
+                    )}
+                </div>
+
+                <div className="form-item">
+                    <label htmlFor="terms">
+                        <input id="terms" type="checkbox" /> Accept Terms and
+                        Conditions
                     </label>
-                    <label htmlFor="female">
-                        <input
-                            id="female"
-                            type="radio"
-                            name="gender"
-                            value="female"
-                        />
-                        Female
-                    </label>
-                </fieldset>
-                {errors.gender && <div>{errors.gender}</div>}
 
-                <label htmlFor="terms">
-                    <input id="terms" type="checkbox" /> Accept Terms and
-                    Conditions
-                </label>
-                {errors.terms && <div>{errors.terms}</div>}
+                    {errors.terms && (
+                        <span className="error-message">{errors.terms}</span>
+                    )}
+                </div>
 
-                <label htmlFor="picture">Picture (PNG/JPEG):</label>
-                <input id="picture" type="file" accept="image/png,image/jpeg" />
-                {errors.picture && <div>{errors.picture}</div>}
+                <div className="form-item">
+                    <label htmlFor="picture">Picture (PNG/JPEG, max 5MB)</label>
+                    <input
+                        id="picture"
+                        type="file"
+                        accept="image/png,image/jpeg"
+                    />
 
-                <label htmlFor="country">Country:</label>
-                <input id="country" list="countryList" />
-                <datalist id="countryList">
-                    {countries.map((c: string) => (
-                        <option key={c} value={c} />
-                    ))}
-                </datalist>
-                {errors.country && <div>{errors.country}</div>}
+                    {errors.picture && (
+                        <span className="error-message">{errors.picture}</span>
+                    )}
+                </div>
+
+                <div className="form-item">
+                    <label htmlFor="country">Country:</label>
+                    <input id="country" list="countryList" />
+                    <datalist id="countryList">
+                        {countries.map((c: string) => (
+                            <option key={c} value={c} />
+                        ))}
+                    </datalist>
+
+                    {errors.country && (
+                        <span className="error-message">{errors.country}</span>
+                    )}
+                </div>
 
                 <button type="submit">Submit</button>
             </form>
