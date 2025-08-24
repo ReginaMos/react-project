@@ -1,0 +1,17 @@
+.form-item-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 20px;
+}
+
+.form-item-container.lastChild {
+    border: 1px dotted #472881;
+}
+
+.form-item-container img {
+    max-width: 100px;
+    max-height: 100px;
+}

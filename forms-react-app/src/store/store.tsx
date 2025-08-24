@@ -40,6 +40,11 @@ export const { saveForm } = formsSlice.actions;
 
 export default formsSlice.reducer;
 
-export const store = configureStore({ reducer: formsSlice.reducer });
+export const store = configureStore({
+    reducer: {
+        forms: formsSlice.reducer,
+    },
+});
+
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

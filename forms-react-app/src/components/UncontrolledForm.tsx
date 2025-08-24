@@ -33,7 +33,7 @@ class UncontrolledForm extends React.Component<
         event.preventDefault();
         if (!this.formRef.current) return;
         const formData = new FormData(this.formRef.current);
-        const file = formData.get('picture') as File | null;
+        const file = formData.get('picture') as FileList | null;
 
         const saveData = {
             name: formData.get('name'),
@@ -58,13 +58,13 @@ class UncontrolledForm extends React.Component<
         const validData = parseResult.data;
 
         if (file) {
-            const base64 = await toBase64(file);
+            const base64 = await toBase64(file[0]);
             const updatedData: FormData = {
                 ...validData,
                 picture: base64,
             };
 
-            saveForm(updatedData);
+            this.props.saveForm(updatedData);
         }
         this.setState({ errors: {} });
         alert('Form submitted successfully');
@@ -198,7 +198,7 @@ class UncontrolledForm extends React.Component<
 }
 
 const mapStateToProps = (state: RootState) => ({
-    countries: state.countries,
+    countries: state.forms.countries,
 });
 
 const mapDispatchToProps = {

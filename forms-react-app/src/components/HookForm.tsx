@@ -2,8 +2,8 @@ import { useForm } from 'react-hook-form';
 import { formSchema, type formData } from '../validation/validationSchema';
 import type { FormData } from '../models/models';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useSelector } from 'react-redux';
-import { type RootState, saveForm } from '../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { type AppDispatch, type RootState, saveForm } from '../store/store';
 import { toBase64 } from '../utils/convertToBse64';
 import '../styles/Form.css';
 
@@ -12,7 +12,8 @@ interface HookFormProps {
 }
 
 export default function HookForm({ onClose }: HookFormProps) {
-    const countries = useSelector((state: RootState) => state.countries);
+    const countries = useSelector((state: RootState) => state.forms.countries);
+    const dispatch = useDispatch<AppDispatch>(); 
 
     const {
         register,
@@ -53,7 +54,7 @@ export default function HookForm({ onClose }: HookFormProps) {
                 ...data,
                 picture: base64,
             };
-            saveForm(updatedData);
+            dispatch(saveForm(updatedData));
 
             console.log('Submitted:', updatedData);
             onClose();

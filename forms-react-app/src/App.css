@@ -17,6 +17,14 @@ main {
     gap: 30px;
 }
 
+.forms-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
 button {
     align-self: center;
     padding: 10px;
