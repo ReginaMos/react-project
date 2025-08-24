@@ -1,6 +1,7 @@
 import {
     configureStore,
     createSlice,
+    nanoid,
     type PayloadAction,
 } from '@reduxjs/toolkit';
 import type { FormData } from '../models/models';
@@ -31,7 +32,10 @@ const formsSlice = createSlice({
     initialState,
     reducers: {
         saveForm: (state, action: PayloadAction<FormData>) => {
-            state.forms.push(action.payload);
+            state.forms.push({
+                ...action.payload,
+                id: nanoid(),
+            });
         },
     },
 });

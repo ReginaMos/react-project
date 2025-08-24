@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { formSchema, type formData } from '../validation/validationSchema';
 import type { FormData } from '../models/models';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState, saveForm } from '../store/store';
 import { toBase64 } from '../utils/convertToBse64';
 import '../styles/Form.css';
+import React from 'react';
 
 interface HookFormProps {
     onClose: () => void;
@@ -13,19 +14,37 @@ interface HookFormProps {
 
 export default function HookForm({ onClose }: HookFormProps) {
     const countries = useSelector((state: RootState) => state.forms.countries);
-    const dispatch = useDispatch<AppDispatch>(); 
+    const dispatch = useDispatch<AppDispatch>();
 
     const {
         register,
         handleSubmit,
         formState: { errors, isValid },
         watch,
+        control,
+        setError,
+        clearErrors,
     } = useForm<formData>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
+        reValidateMode: 'onChange',
     });
 
     const password = watch('password', '');
+    const confirmPassword = useWatch({ control, name: 'confirmPassword' });
+
+    React.useEffect(() => {
+        if (confirmPassword !== undefined) {
+            if (password !== confirmPassword) {
+                setError('confirmPassword', {
+                    type: 'manual',
+                    message: 'Passwords should match',
+                });
+            } else {
+                clearErrors('confirmPassword');
+            }
+        }
+    }, [password, confirmPassword, setError, clearErrors]);
 
     const getStrength = (pwd: string) => {
         let score = 0;
@@ -55,11 +74,9 @@ export default function HookForm({ onClose }: HookFormProps) {
                 picture: base64,
             };
             dispatch(saveForm(updatedData));
-
-            console.log('Submitted:', updatedData);
             onClose();
         } catch (err) {
-            console.error('Ошибка при чтении файла:', err);
+            console.error('Error during reading file:', err);
         }
     };
 
@@ -188,12 +205,14 @@ export default function HookForm({ onClose }: HookFormProps) {
 
             <div className="form-item">
                 <label htmlFor="country">Country</label>
-                <input id="country" list="countries" {...register('country')} />
-                <datalist id="countries">
+                <select id="country" {...register('country')}>
+                    <option value="">Select country</option>
                     {countries.map((ct: string) => (
-                        <option key={ct} value={ct} />
+                        <option key={ct} value={ct}>
+                            {ct}
+                        </option>
                     ))}
-                </datalist>
+                </select>
 
                 {errors.country && (
                     <span className="error-message">

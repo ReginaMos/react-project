@@ -40,12 +40,12 @@ export default function App() {
             <div className="heading">Data from store:</div>
 
             <div className="forms-data">
-               {forms.map((item, index) => (
-                <FormItem
-                    key={item.name}
-                    item={item}
-                    isLast={index === forms.length - 1}
-                />
+                {forms.map((item, index) => (
+                    <FormItem
+                        key={item.id}
+                        item={item}
+                        isLast={index === forms.length - 1}
+                    />
                 ))}
             </div>
         </main>

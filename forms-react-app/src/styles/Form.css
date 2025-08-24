@@ -31,7 +31,8 @@
     color: rgb(161, 18, 18);
 }
 
-input {
+input,
+select {
     padding: 10px;
     border-radius: 12px;
     border: 1px solid grey;

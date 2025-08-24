@@ -8,4 +8,5 @@ export interface FormData {
     terms: boolean;
     picture: string; // base64
     country: string;
+    id?: string;
 }

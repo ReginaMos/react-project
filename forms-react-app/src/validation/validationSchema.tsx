@@ -12,7 +12,7 @@ export const formSchema = z
             .regex(/[a-z]/, 'Must contain a lowercase')
             .regex(/[0-9]/, 'Must contain a number')
             .regex(/[!@#$%^&*]/, 'Must contain a special char'),
-        confirmPassword: z.string(),
+        confirmPassword: z.string().min(1, 'Please confirm your password'),
         gender: z.enum(['male', 'female']),
         terms: z.boolean().refine((val) => val === true, {
             message: 'Must accept terms',
@@ -38,9 +38,14 @@ export const formSchema = z
                 }
             ),
     })
-    .refine((data) => data.password === data.confirmPassword, {
-        message: 'Passwords must match',
-        path: ['confirmPassword'],
+    .superRefine(({ password, confirmPassword }, ctx) => {
+        if (password !== confirmPassword) {
+            ctx.addIssue({
+                code: 'custom',
+                path: ['confirmPassword'],
+                message: 'Passwords must match',
+            });
+        }
     });
 
 export type formData = z.infer<typeof formSchema>;

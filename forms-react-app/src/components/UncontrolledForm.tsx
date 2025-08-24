@@ -32,19 +32,21 @@ class UncontrolledForm extends React.Component<
     handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         if (!this.formRef.current) return;
-        const formData = new FormData(this.formRef.current);
-        const file = formData.get('picture') as FileList | null;
+
+        const raw = new FormData(this.formRef.current);
+        const fileInput =
+            this.formRef.current.querySelector<HTMLInputElement>('#picture');
 
         const saveData = {
-            name: formData.get('name'),
-            age: Number(formData.get('age')),
-            email: formData.get('email'),
-            password: formData.get('password'),
-            confirmPassword: formData.get('confirmPassword'),
-            gender: formData.get('gender'),
-            terms: formData.get('terms') === 'on',
-            country: formData.get('country'),
-            picture: file,
+            name: String(raw.get('name') ?? ''),
+            age: Number(raw.get('age') ?? 0),
+            email: String(raw.get('email') ?? ''),
+            password: String(raw.get('password') ?? ''),
+            confirmPassword: String(raw.get('confirmPassword') ?? ''),
+            gender: String(raw.get('gender') ?? ''),
+            terms: raw.has('terms'),
+            country: String(raw.get('country') ?? ''),
+            picture: fileInput?.files ?? new FileList(),
         };
 
         const parseResult = formSchema.safeParse(saveData);
@@ -57,8 +59,8 @@ class UncontrolledForm extends React.Component<
 
         const validData = parseResult.data;
 
-        if (file) {
-            const base64 = await toBase64(file[0]);
+        if (validData.picture.length > 0) {
+            const base64 = await toBase64(validData.picture[0]);
             const updatedData: FormData = {
                 ...validData,
                 picture: base64,
@@ -66,8 +68,9 @@ class UncontrolledForm extends React.Component<
 
             this.props.saveForm(updatedData);
         }
+
         this.setState({ errors: {} });
-        alert('Form submitted successfully');
+        this.props.onClose();
     };
 
     render() {
@@ -84,7 +87,7 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <label htmlFor="name">Name:</label>
-                    <input id="name" type="text" />
+                    <input id="name" type="text" name="name" />
                     {errors.name && (
                         <span className="error-message">{errors.name}</span>
                     )}
@@ -92,7 +95,7 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <label htmlFor="age">Age:</label>
-                    <input id="age" type="number" />
+                    <input id="age" type="number" name="age" />
                     {errors.age && (
                         <span className="error-message">{errors.age}</span>
                     )}
@@ -100,7 +103,7 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <label htmlFor="email">Email:</label>
-                    <input id="email" type="email" />
+                    <input id="email" type="email" name="email" />
                     {errors.email && (
                         <span className="error-message">{errors.email}</span>
                     )}
@@ -108,7 +111,7 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <label htmlFor="password">Password:</label>
-                    <input id="password" type="password" />
+                    <input id="password" type="password" name="password" />
 
                     {errors.password && (
                         <span className="error-message">{errors.password}</span>
@@ -117,7 +120,11 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <label htmlFor="confirmPassword">Repeat password:</label>
-                    <input id="confirmPassword" type="password" />
+                    <input
+                        id="confirmPassword"
+                        type="password"
+                        name="confirmPassword"
+                    />
                     {errors.confirmPassword && (
                         <span className="error-message">
                             {errors.confirmPassword}
@@ -155,8 +162,8 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <label htmlFor="terms">
-                        <input id="terms" type="checkbox" /> Accept Terms and
-                        Conditions
+                        <input id="terms" type="checkbox" name="terms" /> Accept
+                        Terms and Conditions
                     </label>
 
                     {errors.terms && (
@@ -179,12 +186,14 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <label htmlFor="country">Country:</label>
-                    <input id="country" list="countryList" />
-                    <datalist id="countryList">
-                        {countries.map((c: string) => (
-                            <option key={c} value={c} />
+                    <select id="country" name="country">
+                        <option value="">Select country</option>
+                        {countries.map((ct: string) => (
+                            <option key={ct} value={ct}>
+                                {ct}
+                            </option>
                         ))}
-                    </datalist>
+                    </select>
 
                     {errors.country && (
                         <span className="error-message">{errors.country}</span>
