@@ -134,7 +134,7 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <fieldset>
-                        <legend>Gender</legend>
+                        <legend>Gender:</legend>
                         <label htmlFor="male">
                             <input
                                 id="male"
@@ -162,8 +162,8 @@ class UncontrolledForm extends React.Component<
 
                 <div className="form-item">
                     <label htmlFor="terms">
-                        <input id="terms" type="checkbox" name="terms" /> Accept
-                        Terms and Conditions
+                        <input id="terms" type="checkbox" name="terms" />
+                        Accept Terms and Conditions
                     </label>
 
                     {errors.terms && (

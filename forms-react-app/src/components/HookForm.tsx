@@ -1,4 +1,4 @@
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { formSchema, type formData } from '../validation/validationSchema';
 import type { FormData } from '../models/models';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState, saveForm } from '../store/store';
 import { toBase64 } from '../utils/convertToBse64';
 import '../styles/Form.css';
-import React from 'react';
 
 interface HookFormProps {
     onClose: () => void;
@@ -21,9 +20,6 @@ export default function HookForm({ onClose }: HookFormProps) {
         handleSubmit,
         formState: { errors, isValid },
         watch,
-        control,
-        setError,
-        clearErrors,
     } = useForm<formData>({
         resolver: zodResolver(formSchema),
         mode: 'onChange',
@@ -31,20 +27,6 @@ export default function HookForm({ onClose }: HookFormProps) {
     });
 
     const password = watch('password', '');
-    const confirmPassword = useWatch({ control, name: 'confirmPassword' });
-
-    React.useEffect(() => {
-        if (confirmPassword !== undefined) {
-            if (password !== confirmPassword) {
-                setError('confirmPassword', {
-                    type: 'manual',
-                    message: 'Passwords should match',
-                });
-            } else {
-                clearErrors('confirmPassword');
-            }
-        }
-    }, [password, confirmPassword, setError, clearErrors]);
 
     const getStrength = (pwd: string) => {
         let score = 0;
@@ -85,14 +67,14 @@ export default function HookForm({ onClose }: HookFormProps) {
             <div className="form-heading">React Hook Form</div>
 
             <div className="form-item">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">Name:</label>
                 <input id="name" {...register('name')} />
                 {errors.name && (
                     <span className="error-message">{errors.name.message}</span>
                 )}
             </div>
             <div className="form-item">
-                <label htmlFor="age">Age</label>
+                <label htmlFor="age">Age:</label>
                 <input
                     id="age"
                     type="number"
@@ -103,7 +85,7 @@ export default function HookForm({ onClose }: HookFormProps) {
                 )}
             </div>
             <div className="form-item">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">Email:</label>
                 <input id="email" type="email" {...register('email')} />
                 {errors.email && (
                     <span className="error-message">
@@ -132,7 +114,7 @@ export default function HookForm({ onClose }: HookFormProps) {
                 )}
             </div>
             <div className="form-item">
-                <label htmlFor="confirmPassword">Confirm Password:</label>
+                <label htmlFor="confirmPassword">Repeat password:</label>
                 <input
                     id="confirmPassword"
                     type="password"
