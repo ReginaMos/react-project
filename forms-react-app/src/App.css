@@ -1,0 +1,40 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.heading {
+    font-size: 25px;
+}
+
+.buttons-part {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.forms-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+button {
+    align-self: center;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    background-color: aliceblue;
+}
+
+button:hover {
+    box-shadow: -1px 7px 14px 21px rgba(34, 60, 80, 0.2);
+}
