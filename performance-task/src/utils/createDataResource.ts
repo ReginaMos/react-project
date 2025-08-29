@@ -5,6 +5,9 @@ interface RawEntry {
     data: CountryRow[];
 }
 
+export let allYears: number[] = [];
+export let allFields: string[] = [];
+
 function wrapPromise<T>(promise: Promise<T>) {
     let status = 'pending';
     let result: T;
@@ -28,17 +31,22 @@ function wrapPromise<T>(promise: Promise<T>) {
 }
 
 export function transformRaw(raw: Record<string, RawEntry>): CountryData[] {
-    return Object.entries(raw).map(([countryName, entry]) => ({
+    const yearsSet = new Set<number>();
+    const fieldsSet = new Set<string>();
+
+    const result = Object.entries(raw).map(([countryName, entry]) => ({
         name: countryName,
         isoCode: entry.iso_code || undefined,
         data: entry.data.map((r) => {
             const row: CountryRow = { year: r.year };
+            yearsSet.add(r.year);
 
             for (const key of Object.keys(r)) {
                 if (key !== 'year') {
                     const value = r[key];
                     if (typeof value === 'number') {
                         row[key] = value;
+                        fieldsSet.add(key);
                     }
                 }
             }
@@ -50,6 +58,11 @@ export function transformRaw(raw: Record<string, RawEntry>): CountryData[] {
             return row;
         }),
     }));
+
+    allYears = Array.from(yearsSet).sort((a, b) => a - b);
+    allFields = Array.from(fieldsSet);
+
+    return result;
 }
 
 async function fetchAndParse(): Promise<CountryData[]> {

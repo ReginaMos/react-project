@@ -2,6 +2,7 @@ import type { CountryData } from '../../models/models';
 import MultiSelect from '../controls/MultiSelect';
 import '../../styles/Modal.css';
 import { useState } from 'react';
+import { allFields } from '../../utils/createDataResource';
 
 interface Props {
     country: CountryData;
@@ -25,7 +26,7 @@ export default function CountryModal({ country, onClose }: Props) {
                     <div className="country-heading">{country.name}</div>
                     <MultiSelect
                         onChange={changeSelectedColumns}
-                        options={[]}
+                        options={allFields}
                         selected={selectedColumns}
                     />
                 </div>
@@ -37,7 +38,9 @@ export default function CountryModal({ country, onClose }: Props) {
                         ))}
 
                         {selectedColumns &&
-                            selectedColumns.map((column) => <th key={column}>{column}</th>)}
+                            selectedColumns.map((column) => (
+                                <th key={column}>{column}</th>
+                            ))}
                     </thead>
                     <tbody>
                         {info.map((row, i) => (

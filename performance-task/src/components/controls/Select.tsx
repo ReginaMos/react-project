@@ -1,4 +1,5 @@
 import '../../styles/Select.css';
+import { allYears } from '../../utils/createDataResource';
 
 interface Props {
     sort: 'name-asc' | 'name-desc' | 'population-asc' | 'population-desc';
@@ -29,9 +30,11 @@ export default function Select({
                 value={year}
                 onChange={(e) => onYearChange(Number(e.target.value))}
             >
-                <option value={2018}>2018</option>
-                <option value={2019}>2019</option>
-                <option value={2020}>2020</option>
+                {allYears.map((item) => (
+                    <option value={item} key={item}>
+                        {item}
+                    </option>
+                ))}
             </select>
         </div>
     );

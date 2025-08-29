@@ -9,16 +9,9 @@ interface Props {
     search: string;
     sort: 'name-asc' | 'name-desc' | 'population-asc' | 'population-desc';
     year: number;
-    selectedColumns: string[];
 }
 
-export default function CountryTable({
-    resource,
-    search,
-    sort,
-    year,
-    selectedColumns,
-}: Props) {
+export default function CountryTable({ resource, search, sort, year }: Props) {
     const countries = resource.read();
     const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
         null
@@ -51,18 +44,14 @@ export default function CountryTable({
                         <th>ISO</th>
                         <th>Population</th>
                         <th>Year</th>
-                        {selectedColumns.map((col) => (
-                            <th key={col}>{col}</th>
-                        ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {countries.map((country) => (
+                    {filtered.map((country) => (
                         <CountryRow
                             key={country.isoCode || country.name}
                             country={country}
                             year={year}
-                            selectedColumns={selectedColumns}
                             onClick={() => setSelectedCountry(country)}
                         />
                     ))}
