@@ -1,3 +1,4 @@
+import React from 'react';
 import '../../styles/Select.css';
 import { allYears } from '../../utils/createDataResource';
 
@@ -8,12 +9,7 @@ interface Props {
     onYearChange: (val: number) => void;
 }
 
-export default function Select({
-    sort,
-    year,
-    onSortChange,
-    onYearChange,
-}: Props) {
+function SelectComponent({ sort, year, onSortChange, onYearChange }: Props) {
     return (
         <div className="select-items">
             <select
@@ -39,3 +35,5 @@ export default function Select({
         </div>
     );
 }
+
+export default React.memo(SelectComponent);

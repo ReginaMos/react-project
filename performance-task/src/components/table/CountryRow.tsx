@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { CountryData, CountryRow } from '../../models/models';
+import React from 'react';
 
 interface Props {
     country: CountryData;
@@ -7,7 +8,7 @@ interface Props {
     onClick: (country: CountryData) => void;
 }
 
-export default function CountryRow({ country, year, onClick }: Props) {
+function CountryRow({ country, year, onClick }: Props) {
     const row = country.data.find((r: CountryRow) => r.year === year);
 
     const [highlight, setHighlight] = useState(false);
@@ -30,3 +31,11 @@ export default function CountryRow({ country, year, onClick }: Props) {
         </tr>
     );
 }
+
+export default React.memo(CountryRow, (prevProps, nextProps) => {
+    return (
+        prevProps.year === nextProps.year &&
+        prevProps.country === nextProps.country &&
+        prevProps.onClick === nextProps.onClick
+    );
+});

@@ -1,6 +1,6 @@
 import CountryRow from './CountryRow';
 import type { CountryData } from '../../models/models';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import CountryModal from './CountryModal';
 import '../../styles/CountryTable.css';
 
@@ -17,23 +17,35 @@ export default function CountryTable({ resource, search, sort, year }: Props) {
         null
     );
 
-    const filtered = countries.filter((c) =>
-        c.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const filtered = useMemo(() => {
+        return countries
+            .filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
+            .sort((a, b) => {
+                if (sort.startsWith('name')) {
+                    return sort === 'name-asc'
+                        ? a.name.localeCompare(b.name)
+                        : b.name.localeCompare(a.name);
+                }
+                if (sort.startsWith('population')) {
+                    const popA =
+                        a.data.find((r) => r.year === year)?.population || 0;
+                    const popB =
+                        b.data.find((r) => r.year === year)?.population || 0;
+                    return sort === 'population-asc'
+                        ? popA - popB
+                        : popB - popA;
+                }
+                return 0;
+            });
+    }, [countries, search, sort, year]);
 
-    filtered.sort((a, b) => {
-        if (sort.startsWith('name')) {
-            return sort === 'name-asc'
-                ? a.name.localeCompare(b.name)
-                : b.name.localeCompare(a.name);
-        }
-        if (sort.startsWith('population')) {
-            const popA = a.data.find((r) => r.year === year)?.population || 0;
-            const popB = b.data.find((r) => r.year === year)?.population || 0;
-            return sort === 'population-asc' ? popA - popB : popB - popA;
-        }
-        return 0;
-    });
+    const handleRowClick = useCallback((country: CountryData) => {
+        setSelectedCountry(country);
+    }, []);
+
+    const handleCloseModal = useCallback(() => {
+        setSelectedCountry(null);
+    }, []);
 
     return (
         <>
@@ -52,7 +64,7 @@ export default function CountryTable({ resource, search, sort, year }: Props) {
                             key={country.isoCode || country.name}
                             country={country}
                             year={year}
-                            onClick={() => setSelectedCountry(country)}
+                            onClick={handleRowClick}
                         />
                     ))}
                 </tbody>
@@ -61,7 +73,7 @@ export default function CountryTable({ resource, search, sort, year }: Props) {
             {selectedCountry && (
                 <CountryModal
                     country={selectedCountry}
-                    onClose={() => setSelectedCountry(null)}
+                    onClose={handleCloseModal}
                 />
             )}
         </>
