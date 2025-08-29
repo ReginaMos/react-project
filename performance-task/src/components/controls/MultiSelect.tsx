@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import '../../styles/MultiSelect.css';
 
 interface MultiSelectProps {
     options: string[];
@@ -28,7 +29,7 @@ export default function MultiSelect({
             </button>
 
             {open && (
-                <div>
+                <div className="multiselect-items">
                     {options.map((option) => (
                         <label key={option}>
                             <input

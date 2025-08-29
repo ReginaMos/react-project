@@ -1,10 +1,10 @@
-tbody tr {
+.country-table tbody tr {
     padding: 5px;
     border-radius: 15px;
     cursor: pointer;
 }
 
-tbody tr:hover {
+.country-table tbody tr:hover {
     background-color: azure;
 }
 

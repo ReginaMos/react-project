@@ -1,0 +1,10 @@
+.multiselect-items {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+    align-items: flex-start;
+
+    position: absolute;
+    top: 0;
+}

@@ -9,6 +9,7 @@
 table {
     border-collapse: separate;
     border-spacing: 5px;
+    margin: 0 auto;
 }
 
 th {

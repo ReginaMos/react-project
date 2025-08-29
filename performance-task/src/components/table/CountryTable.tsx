@@ -37,7 +37,7 @@ export default function CountryTable({ resource, search, sort, year }: Props) {
 
     return (
         <>
-            <table>
+            <table className="country-table">
                 <thead>
                     <tr>
                         <th>Country</th>
