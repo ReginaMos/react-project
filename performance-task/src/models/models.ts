@@ -8,3 +8,8 @@ export interface CountryData {
     isoCode?: string;
     data: CountryRow[];
 }
+
+export interface ReturnedData {
+    countries: CountryData[];
+    allYears: number[];
+}

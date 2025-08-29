@@ -33,14 +33,16 @@ export default function CountryModal({ country, onClose }: Props) {
 
                 <table>
                     <thead>
-                        {requiredColumns.map((column) => (
-                            <th key={column}>{column}</th>
-                        ))}
-
-                        {selectedColumns &&
-                            selectedColumns.map((column) => (
+                        <tr>
+                            {requiredColumns.map((column) => (
                                 <th key={column}>{column}</th>
                             ))}
+
+                            {selectedColumns &&
+                                selectedColumns.map((column) => (
+                                    <th key={column}>{column}</th>
+                                ))}
+                        </tr>
                     </thead>
                     <tbody>
                         {info.map((row, i) => (

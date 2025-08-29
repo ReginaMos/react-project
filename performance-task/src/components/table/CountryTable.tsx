@@ -1,18 +1,28 @@
 import CountryRow from './CountryRow';
-import type { CountryData } from '../../models/models';
+import type { CountryData, ReturnedData } from '../../models/models';
 import { useCallback, useMemo, useState } from 'react';
 import CountryModal from './CountryModal';
 import '../../styles/CountryTable.css';
+import React from 'react';
 
 interface Props {
-    resource: { read: () => CountryData[] };
+    resource: { read: () => ReturnedData };
     search: string;
     sort: 'name-asc' | 'name-desc' | 'population-asc' | 'population-desc';
     year: number;
+    onYearsReady: (years: number[], lastYear: number) => void;
 }
 
-export default function CountryTable({ resource, search, sort, year }: Props) {
-    const countries = resource.read();
+export default function CountryTable({
+    resource,
+    search,
+    sort,
+    year,
+    onYearsReady,
+}: Props) {
+    const { countries, allYears } = resource.read();
+    const lastYear = allYears[allYears.length - 1];
+
     const [selectedCountry, setSelectedCountry] = useState<CountryData | null>(
         null
     );
@@ -46,6 +56,10 @@ export default function CountryTable({ resource, search, sort, year }: Props) {
     const handleCloseModal = useCallback(() => {
         setSelectedCountry(null);
     }, []);
+
+    React.useEffect(() => {
+        onYearsReady(allYears, lastYear);
+    }, [allYears, lastYear, onYearsReady]);
 
     return (
         <>

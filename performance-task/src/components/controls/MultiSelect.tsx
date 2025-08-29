@@ -36,7 +36,6 @@ export default function MultiSelect({
                                 type="checkbox"
                                 checked={selected.includes(option)}
                                 onChange={() => toggleOption(option)}
-                                className="mr-2"
                             />
                             {option}
                         </label>

@@ -1,11 +1,10 @@
-import type { CountryData, CountryRow } from '../models/models';
+import type { ReturnedData, CountryRow } from '../models/models';
 
 interface RawEntry {
     iso_code?: string;
     data: CountryRow[];
 }
 
-export let allYears: number[] = [];
 export let allFields: string[] = [];
 
 function wrapPromise<T>(promise: Promise<T>) {
@@ -30,7 +29,7 @@ function wrapPromise<T>(promise: Promise<T>) {
     };
 }
 
-export function transformRaw(raw: Record<string, RawEntry>): CountryData[] {
+export function transformRaw(raw: Record<string, RawEntry>): ReturnedData {
     const yearsSet = new Set<number>();
     const fieldsSet = new Set<string>();
 
@@ -59,24 +58,24 @@ export function transformRaw(raw: Record<string, RawEntry>): CountryData[] {
         }),
     }));
 
-    allYears = Array.from(yearsSet).sort((a, b) => a - b);
     allFields = Array.from(fieldsSet);
 
-    return result;
+    return {
+        countries: result,
+        allYears: Array.from(yearsSet).sort((a, b) => a - b),
+    };
 }
 
-async function fetchAndParse(): Promise<CountryData[]> {
+async function fetchAndParse(): Promise<ReturnedData> {
     const res = await fetch(
         'https://nyc3.digitaloceanspaces.com/owid-public/data/co2/owid-co2-data.json'
     );
     const raw = await res.json();
 
-    const countries: CountryData[] = transformRaw(raw);
-
-    return countries;
+    return transformRaw(raw);
 }
 
-let resource: { read: () => CountryData[] } | null = null;
+let resource: { read: () => ReturnedData } | null = null;
 
 export function getDataResource() {
     if (!resource) {

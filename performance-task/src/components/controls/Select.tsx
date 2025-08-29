@@ -1,15 +1,15 @@
 import React from 'react';
 import '../../styles/Select.css';
-import { allYears } from '../../utils/createDataResource';
 
 interface Props {
     sort: 'name-asc' | 'name-desc' | 'population-asc' | 'population-desc';
     year: number;
+    years: number[];
     onSortChange: (val: Props['sort']) => void;
     onYearChange: (val: number) => void;
 }
 
-function SelectComponent({ sort, year, onSortChange, onYearChange }: Props) {
+function Select({ sort, year, years, onSortChange, onYearChange }: Props) {
     return (
         <div className="select-items">
             <select
@@ -26,7 +26,7 @@ function SelectComponent({ sort, year, onSortChange, onYearChange }: Props) {
                 value={year}
                 onChange={(e) => onYearChange(Number(e.target.value))}
             >
-                {allYears.map((item) => (
+                {years.map((item) => (
                     <option value={item} key={item}>
                         {item}
                     </option>
@@ -36,4 +36,4 @@ function SelectComponent({ sort, year, onSortChange, onYearChange }: Props) {
     );
 }
 
-export default React.memo(SelectComponent);
+export default React.memo(Select);
