@@ -1,0 +1,47 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    height: 500px;
+    overflow: auto;
+}
+
+.modal-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modal table,
+.modal th {
+    text-align: center;
+}
+
+button {
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 12px;
+    background-color: antiquewhite;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover {
+    background-color: rgb(185, 175, 161);
+}

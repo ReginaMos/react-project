@@ -1,0 +1,8 @@
+tbody tr {
+    padding: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+tbody tr:hover {
+    background-color: azure;
+}
