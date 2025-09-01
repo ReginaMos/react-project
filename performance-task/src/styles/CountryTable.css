@@ -1,0 +1,14 @@
+.country-table tbody tr {
+    padding: 5px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.country-table tbody tr:hover {
+    background-color: azure;
+}
+
+.highlight {
+    background-color: rgb(255, 255, 2);
+    transition: background-color 3s ease;
+}

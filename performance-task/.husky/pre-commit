@@ -1,0 +1,3 @@
+cd performance-task/
+npm run format:fix
+npm run lint
